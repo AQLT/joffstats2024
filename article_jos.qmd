@@ -35,8 +35,8 @@ library(kableExtra)
 This paper studies and compares real-time estimates of the trend cycle component with moving averages based on local polynomial regression.
 In particular, this theory allows to reproduce Henderson's symmetric and Musgrave's asymmetric filters.
 This paper describes how they can be extended to include a timeliness criterion to minimise the phase shift.
-While asymmetric filters are generally parameterised globally, which can be suboptimal around turning points, this paper proposes a procedure for parameterising them locally.
-An empirical comparison, based on simulated and real data, shows that modelling polynomial trends that are too complex introduces more revisions without reducing the phase shift, and that local parameterisation reduces the delay in detecting turning points and reduces revisions.
+While asymmetric filters are generally parametrised globally, which can be suboptimal around turning points, this paper proposes a procedure for parametrising them locally.
+An empirical comparison, based on simulated and real data, shows that modelling polynomial trends that are too complex introduces more revisions without reducing the phase shift, and that local parametrisation reduces the delay in detecting turning points and reduces revisions.
 The paper also shows how these results can be easily reproduced using the R package `rjd3filters` dedicated to the manipulation of moving averages.
 
 Keywords: time series, trend-cycle, seasonal adjustment, turning points, R statistical software.
@@ -532,7 +532,7 @@ This surprising result highlights the fact that the phase shift is not controlle
 In terms of revision ($A_w+S_w+T_w+R_w$), the LC and QL filters consistently outperform the CQ and DAF filters. 
 
 These theoretical properties are consistent with the empirical results observed in @sec-comparison. Revisions are more important for the CQ and DAF filters, which leads to greater variability in estimations and a longer delay in detecting turning points. 
-The globally parameterised QL filter (with $R$ fixed for all asymmetric filters) may result in later detection of turning points than the LC filter.
+The globally parametrised QL filter (with $R$ fixed for all asymmetric filters) may result in later detection of turning points than the LC filter.
 Indeed, to identify a turning point at date $t$, it is necessary to have knowledge of at least two points after the given date to confirm the reversal in trend.
 
 
@@ -639,16 +639,16 @@ This extension is implemented in the R function `rjd3filters::lp_filter()`.
 One drawback is that $T_g(\boldsymbol v)$ is not normalized: the weight $\alpha_T$ has no economic sense.
 It is then difficult to calibrate the value of $\alpha_T$ since the value of $\lvert\delta/\sigma\rvert$ must also be defined.
 That's why in this paper we will not compare this extension to the other methods and we will focus on the local calibration of $\lvert\delta/\sigma\rvert$.
-However, in future studies, we could imagine a two step calibration: fix the value of $\lvert\delta/\sigma\rvert$ to find $\alpha_T$ by cross-validation and then use this weight with a local parameterisation of the ratio $\lvert\delta/\sigma\rvert$ (as in @sec-localic).
+However, in future studies, we could imagine a two step calibration: fix the value of $\lvert\delta/\sigma\rvert$ to find $\alpha_T$ by cross-validation and then use this weight with a local parametrisation of the ratio $\lvert\delta/\sigma\rvert$ (as in @sec-localic).
 
-## Local parameterisation of asymmetric filters {#sec-localic}
+## Local parametrisation of asymmetric filters {#sec-localic}
 
-Asymmetric filters are usually parameterised globally: $\lvert\delta/\sigma\rvert$ estimated on all the data using the IC-ratio or a cross-validation criterion. 
-However, we might prefer a local parameterisation: ratio $\lvert\delta/\sigma\rvert$ which varies as a function of time.
-Indeed, although the overall parameterisation is generally valid, assuming a constant value of the $\lvert\delta/\sigma\rvert$ ratio for all asymmetric filters does not appear relevant for real-time estimation, especially during periods of economic downturn.
-For example, with the LC method, global parameterisation means assuming that the slope of the trend is constant, whereas during economic downturns it tends towards 0 up to the turning point.
+Asymmetric filters are usually parametrised globally: $\lvert\delta/\sigma\rvert$ estimated on all the data using the IC-ratio or a cross-validation criterion. 
+However, we might prefer a local parametrisation: ratio $\lvert\delta/\sigma\rvert$ which varies as a function of time.
+Indeed, although the overall parametrisation is generally valid, assuming a constant value of the $\lvert\delta/\sigma\rvert$ ratio for all asymmetric filters does not appear relevant for real-time estimation, especially during periods of economic downturn.
+For example, with the LC method, global parametrisation means assuming that the slope of the trend is constant, whereas during economic downturns it tends towards 0 up to the turning point.
 
-This is what is proposed in this article, with a local parameterisation of the asymmetric filters by estimating $\delta$ and $\sigma^2$ separately.
+This is what is proposed in this article, with a local parametrisation of the asymmetric filters by estimating $\delta$ and $\sigma^2$ separately.
 Although this does not give an unbiased estimator of the ratio $\lvert\delta/\sigma\rvert$, it does allow the main evolutions to be captured, such as the decay towards 0 before a turning point and the growth after the turning point for the LC method:
 
 - The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(w_{-p},\dots,w_p)$:
@@ -670,10 +670,10 @@ img <- sprintf("img/filters_used/mm_penteconcavite.%s", "pdf")
 knitr::include_graphics(img)
 ```
 
-In the empirical applications of @sec-comparison, the final local parameterisation is obtained by estimating $\delta$ using all the data (i.e., using the symmetric filters shown in @fig-mmpenteconcac), while maintaining a real-time estimate of $\sigma^2$.
-@fig-mmpenteconcac-ex shows an example of the comparison of estimates of the ratio $|\delta_1/\sigma|$ with a global estimator (IC ratio) and two the local parameterisation:
+In the empirical applications of @sec-comparison, the final local parametrisation is obtained by estimating $\delta$ using all the data (i.e., using the symmetric filters shown in @fig-mmpenteconcac), while maintaining a real-time estimate of $\sigma^2$.
+@fig-mmpenteconcac-ex shows an example of the comparison of estimates of the ratio $|\delta_1/\sigma|$ with a global estimator (IC ratio) and two the local parametrisation:
 
-- @fig-mmpenteconcac-ex-1: using a symmetric filter to estimate $\delta_1$ (final local parameterisation).
+- @fig-mmpenteconcac-ex-1: using a symmetric filter to estimate $\delta_1$ (final local parametrisation).
 
 - @fig-mmpenteconcac-ex-2: using the asymmetric filter which need two points in the futur to estimate $\delta_1$.
 This is closed to the real-time estimates since two points in the future are needed to detect a turning point.
@@ -769,11 +769,11 @@ $$
 
 ## Comparison 
 
-Excluding for the moment the local parameterisations of the polynomial filters, the linear-constant polynomial filter (LC) seems to give the best results in terms of delay in the detection of turning points (@fig-graphstpsimul).
+Excluding for the moment the local parametrisations of the polynomial filters, the linear-constant polynomial filter (LC) seems to give the best results in terms of delay in the detection of turning points (@fig-graphstpsimul).
 Performance is relatively close to that obtained by extending the series using an ARIMA model.
 However, when variability is low, the LC filter seems to give poorer results and the quadratic-linear polynomial filter (QL) seems to give the best results.
 
-For series with moderate variability, local parameterisation of the LC and QL filters reduces the phase shift.
+For series with moderate variability, local parametrisation of the LC and QL filters reduces the phase shift.
 For series with high variability, the phase shift is only reduced by using the final $\hat\delta$ parameters: real-time estimates seem to add more variance.
 For series with low variability, performance seems to be slightly improved only with the LC filter.
 
@@ -786,10 +786,10 @@ knitr::include_graphics(img)
 ```
 
 In terms of revisions, the variability of the series has little effect on the respective performances of the different methods, but it does affect the orders of magnitude, which is why the results are presented only for series with medium variability (Table\ \ref{tab-simulrev}).
-In general, LC filters always minimise revisions (with relatively small effect from the local parameterisation of the filters) and revisions are greater with cubic-quadratic (CQ) and direct (DAF) polynomial filters.
+In general, LC filters always minimise revisions (with relatively small effect from the local parametrisation of the filters) and revisions are greater with cubic-quadratic (CQ) and direct (DAF) polynomial filters.
 
 For the QL filter, there is a large revision between the second and third estimates: this may be due to the fact that for the second estimate (when one point in the future is known), the QL filter assigns a greater weight to the estimate in $t+1$ than to the estimate in $t$, which creates a discontinuity. 
-This revision is considerably reduced by parameterising the filter locally.
+This revision is considerably reduced by parametrising the filter locally.
 For polynomial filters other than the LC filter, the large revisions at the first estimate were to be expected given the coefficient curve: a very large weight is associated with the current observation and there is a strong discontinuity between the moving average used for real-time estimation (when no point in the future is known) and the other moving averages.
 
 Extending the series using an ARIMA model gives revisions with the latest estimates of the same order of magnitude as the LC filter, but slightly larger revisions between consecutive estimates, particularly between the fourth and fifth estimates (as might be expected, as highlighted in @sec-mmetprev).
@@ -871,7 +871,7 @@ For this series, the phase shift is 6 months for the LC and CQ methods and the e
 Except for the LC method (where the turning point is first detected in January 2001), the high phase shift is due to revisions in the turning point detected in the intermediate estimates (even if the correct turning point is detected after 2 months, it is no longer detected after 3 months).
 It is of two months for the other methods (QL, DAF).
 
-In this example, local parameterisation does not reduce the phase shift, but it does reduce revisions.
+In this example, local parametrisation does not reduce the phase shift, but it does reduce revisions.
 The QL and DAF polynomials lead to greater variability in the intermediate estimates, especially in February 2001.
 
 
@@ -892,7 +892,7 @@ knitr::include_graphics(img)
 The quality of the intermediate estimates can also be analysed using the implicit forecasts of the different methods (@fig-ce16ov-previmp-lp). 
 As a reminder, these are forecasts of the raw series which, by applying the symmetric Henderson filter to the extended series, give the same estimates as the asymmetric moving averages. 
 The forecasts of the ARIMA model are naive and do not take the turning point into account, unlike the other methods.
-Finally, local parameterisation of the QL filter produces much more consistent forecasts.
+Finally, local parametrisation of the QL filter produces much more consistent forecasts.
 
 ```{r, out.width="95%"}
 #| label: fig-ce16ov-previmp-lp
@@ -925,8 +925,8 @@ During economic downturns, asymmetric filters used as an alternative to extendin
 
 At the end of the period, modelling polynomial trends of degree greater than three (cubic-quadratic, CQ, and direct, DAF) seems to introduce variance into the estimates (and therefore more revisions) without allowing faster detection of turning points.
 At the end of the period, for estimating the trend-cycle, we can therefore restrict ourselves to methods modelling polynomial trends of degree two or less (linear-constant, LC, and quadratic-linear, QL).
-In addition, parameterising polynomial filters locally as suggested in this paper enables turning points to be detected more quickly (especially for the QL filter).
-Even when the phase shift is not reduced, local parameterisation is recommended because it reduces revisions and produces intermediate estimates that are more consistent with expected future trends.
+In addition, parametrising polynomial filters locally as suggested in this paper enables turning points to be detected more quickly (especially for the QL filter).
+Even when the phase shift is not reduced, local parametrisation is recommended because it reduces revisions and produces intermediate estimates that are more consistent with expected future trends.
 However, with these methods, the length of the filter used must be adapted to the variability of the series: if the filter used is too short (i.e. if the variability of the series is "low"), retaining polynomial trends of degree one or less (LC method) produces poorer results in terms of detecting turning points.
 
 This study could be extended in many ways.
