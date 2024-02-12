@@ -218,7 +218,7 @@ Several approaches can be used for real-time estimation:
 
 1. Use asymmetric moving averages to take account of the lack of available data;
 
-2. Apply symmetrical filters to extended forecast series.
+2. Apply symmetric filters to extended forecast series.
 This method seems to date back to @deforest1877adjustment, which also suggests modelling a polynomial trend of degree three or less at the end of the period:\
 "*As the first $m$ and last $m$ terms of the series cannot be reached directly by the formula, the series should be graphically extended by m terms at both ends, first plotting the observations on paper as ordinates, and then extending the curve along what seems to be its probable course, and measuring the ordinates of the extended portions.*
 *It is not necessary that this extension should coincide with what would be the true course of the curve in those parts. *
@@ -229,7 +229,7 @@ Ultimately, the second method is equivalent to using asymmetric moving averages,
 
 Conversely, the implicit forecasts of an asymmetric moving average can be deduced from a reference symmetric moving average. 
 This allows to judge the quality of real-time estimates of the trend-cycle and to anticipate future revisions when forecasts are far from expected evolutions.\
-Let us denote $v=(v_{-h},\dots, v_{h})$ the reference symmetrical moving average and $w^0,\dots w^{h-1}$ a sequence of asymmetrical moving averages, of order $h+1$ to $2h$ used to estimate the last $h$ points with, for convention, $w_t^q=0$ for $t>q$.
+Let us denote $v=(v_{-h},\dots, v_{h})$ the reference symmetric moving average and $w^0,\dots w^{h-1}$ a sequence of asymmetric moving averages, of order $h+1$ to $2h$ used to estimate the last $h$ points with, for convention, $w_t^q=0$ for $t>q$.
 This means that $w^0=(w_{-h}^0,\dots, w_{0}^0)$ is used for estimation in real time (when no points are known in the future), $w^1=(w_{-h}^1,\dots, w_{1}^1)$ for estimation of the penultimate point (when only one point is known in the future), and so on.
 Let also note $y_{-h},\dots,y_{0}$ the observed series studied and $y_{1}^*,\dots y_h^*$ the implicit forecast induced by $w^0,\dots w^{h-1}$.
 This means that for all $q$ we have:
@@ -370,7 +370,7 @@ The quantity $h(x_0)$ is called the *bandwidth*.
 If $\varepsilon_i$ is white noise, then we can estimate by least squares $\mu(x_0)$ using the observations which are in $\left[x_0-h(x_0),x_0+h(x_0)\right]$. 
 
 In practice, this means assuming that the trend is locally polynomial. 
-Various estimation methods can be used to derive symmetrical and asymmetrical moving averages.  
+Various estimation methods can be used to derive symmetric and asymmetric moving averages.  
 @GrayThomson1996 propose a complete statistical framework which makes it possible, in particular, to model the error in approximating the trend by local polynomials.
 However, as the specification of this error is generally complex, simpler models may be preferred, such as that of @proietti2008.  
 Finally, @dagumbianconcini2008 propose a similar modelling of the trend-cycle but using the theory of Hilbert spaces with reproducing kernels for estimation, which has the particular advantage of facilitating the calculation of different moving averages at different time frequencies.
@@ -525,7 +525,7 @@ We obtain Musgrave filters when the Henderson kernel is used and the Henderson f
 Appendix [-@sec-an-cof] shows the coefficients, gain and phase shift functions of the four asymmetric filters.
 
 Table\ \ref{tab-criteriaLp} compares the quality criteria of the different methods using the Henderson filter and $h=6$ (a symmetric filter with 13 terms). 
-For real-time filters ($q=0$), a more complex asymmetrical filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance. 
+For real-time filters ($q=0$), a more complex asymmetric filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance. 
 This result varies as $q$ increases: for $q=2$, the QL filter has greater timeliness than the LC filter. 
 This surprising result highlights the fact that the phase shift is not controlled by @proietti2008's approach.
 
@@ -645,13 +645,13 @@ However, in future studies, we could imagine a two step calibration: fix the val
 
 Asymmetric filters are usually parameterised globally: $\lvert\delta/\sigma\rvert$ estimated on all the data using the IC-ratio or a cross-validation criterion. 
 However, we might prefer a local parameterisation: ratio $\lvert\delta/\sigma\rvert$ which varies as a function of time.
-Indeed, although the overall parameterisation is generally valid, assuming a constant value of the $\lvert\delta/\sigma\rvert$ ratio for all asymmetrical filters does not appear relevant for real-time estimation, especially during periods of economic downturn.
+Indeed, although the overall parameterisation is generally valid, assuming a constant value of the $\lvert\delta/\sigma\rvert$ ratio for all asymmetric filters does not appear relevant for real-time estimation, especially during periods of economic downturn.
 For example, with the LC method, global parameterisation means assuming that the slope of the trend is constant, whereas during economic downturns it tends towards 0 up to the turning point.
 
 This is what is proposed in this article, with a local parameterisation of the asymmetric filters by estimating $\delta$ and $\sigma^2$ separately.
 Although this does not give an unbiased estimator of the ratio $\lvert\delta/\sigma\rvert$, it does allow the main evolutions to be captured, such as the decay towards 0 before a turning point and the growth after the turning point for the LC method:
 
-- The variance $\sigma^2$ can be estimated using the observed data set and the symmetrical filter $(w_{-p},\dots,w_p)$:
+- The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(w_{-p},\dots,w_p)$:
 $$
 \hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\hat \mu_t)^2}{1-2w_0^2+\sum w_i^2}.
 $$
@@ -696,8 +696,8 @@ knitr::include_graphics(c("img/filters_used/mm_penteconcavite_ex.pdf",
 
 The different methods are compared on simulated and real data. 
 
-For all series, a symmetrical 13-term filter is used.
-These methods are also compared with estimates obtained by extending the series with an ARIMA model, then applying a 13-term symmetrical Henderson filter.
+For all series, a symmetric 13-term filter is used.
+These methods are also compared with estimates obtained by extending the series with an ARIMA model, then applying a 13-term symmetric Henderson filter.
 The ARIMA model is determined automatically, using no seasonal lag (the series being seasonally adjusted) and no external variables (such as external regressors for correction of atypical points).
 
 The performance of the different methods is judged on criteria relating to revisions (between two consecutive estimates and in relation to the final estimate) and the number of periods required to detect turning points.
@@ -862,7 +862,7 @@ The differences between the methods are also illustrated using an example from t
 The series studied correspond to the database published in November 2022.
 The series studied is the level of employment in the United States (series `CE160V`, used in logarithm) around the February 2001 turning point, consistent with the monthly dating of the turning points.
 This point and this series were chosen because the economic turnaround is particularly visible in the raw series (@fig-ce16ov-previmp-lp), because this series is used for dating economic cycles and because the FRED-MD database facilitates the reproducibility of the results (thanks to the availability of series published on past dates).
-Studying the series up to January 2020, this series has a medium variability: a symmetrical filter of 13 terms is therefore appropriate.
+Studying the series up to January 2020, this series has a medium variability: a symmetric filter of 13 terms is therefore appropriate.
 Appendix [-@ann-ex-r] shows how the code to reproduce the different plots.
 
 @fig-ce16ovlp shows the successive estimates of the trend-cycle using the different methods studied.
@@ -890,7 +890,7 @@ knitr::include_graphics(img)
 
 
 The quality of the intermediate estimates can also be analysed using the implicit forecasts of the different methods (@fig-ce16ov-previmp-lp). 
-As a reminder, these are forecasts of the raw series which, by applying the symmetrical Henderson filter to the extended series, give the same estimates as the asymmetrical moving averages. 
+As a reminder, these are forecasts of the raw series which, by applying the symmetric Henderson filter to the extended series, give the same estimates as the asymmetric moving averages. 
 The forecasts of the ARIMA model are naive and do not take the turning point into account, unlike the other methods.
 Finally, local parameterisation of the QL filter produces much more consistent forecasts.
 
