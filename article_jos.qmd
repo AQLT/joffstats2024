@@ -32,7 +32,7 @@ library(kableExtra)
 # Abstract {-}
 
 :::: {.abstract}
-This paper studies and compares real-time estimates of the trend cycle component with moving averages based on local polynomial regression.
+This paper studies and compares real-time estimates of the trend-cycle component with moving averages based on local polynomial regression.
 In particular, this theory allows to reproduce Henderson's symmetric and Musgrave's asymmetric filters.
 This paper describes how they can be extended to include a timeliness criterion to minimise the phase shift.
 While asymmetric filters are generally parametrised globally, which can be suboptimal around turning points, this paper proposes a procedure for parametrising them locally.
