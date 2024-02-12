@@ -218,10 +218,7 @@ Several approaches can be used for real-time estimation:
 1. Use asymmetric moving averages to take account of the lack of available data;
 
 2. Apply symmetric filters to extended forecast series.
-This method seems to date back to @deforest1877adjustment, which also suggests modelling a polynomial trend of degree three or less at the end of the period:\
-"*As the first $m$ and last $m$ terms of the series cannot be reached directly by the formula, the series should be graphically extended by m terms at both ends, first plotting the observations on paper as ordinates, and then extending the curve along what seems to be its probable course, and measuring the ordinates of the extended portions.*
-*It is not necessary that this extension should coincide with what would be the true course of the curve in those parts. *
-*The important point is that the m terms thus added, taken together with the $m+1$ adjacent given terms, should follow a curve whose form is approximately algebraic and of a degree not higher than the third.*"\
+This method seems to date back to @deforest1877adjustment, which also suggests modelling a polynomial trend of degree three or less at the end of the period.
 This is also the approach used in the X-13ARIMA seasonal adjustment method, which extends the series by one year with an ARIMA model.
 
 Ultimately, the second method is equivalent to using asymmetric moving averages, since forecasts are linear combinations of the past. 
