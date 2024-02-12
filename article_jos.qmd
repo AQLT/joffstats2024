@@ -47,7 +47,7 @@ JEL Classification: E32, E37.
 
 
 
-# Introduction {-}
+# Introduction
 
 Analysis of the economic cycle, and in particular the early detection of turning points in a series, is a major topic in the analysis of economic outlook.
 To this end, economic indicators are generally seasonally adjusted.
@@ -908,7 +908,7 @@ knitr::include_graphics(img)
 ```
 
 
-# Conclusion {.unnumbered}
+# Conclusion
 
 For business cycle analysis, most statisticians use trend-cycle extraction methods, either directly or indirectly.
 They are used, for example, to reduce the noise of an indicator in order to improve its analysis, and models, such as forecasting models, usually use seasonally adjusted series based on these methods.
