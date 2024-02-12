@@ -1,5 +1,5 @@
 ---
-title: "Improving real-time trend estimates using local parametrisation of local polynomial regression filters"
+title: "Improving real-time trend estimates using local parametrisation of polynomial regression filters"
 format:
   pdf:
     documentclass: article
