@@ -1,0 +1,1880 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[top=2cm,bottom=2cm,left = 2.5cm,right = 2.5cm]{geometry}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{animate, dsfont, here, xspace}
+%\usepackage{tikz}
+\usepackage{tikz,pgfplots}
+ \pgfplotsset{compat=1.17}
+%\includepdf[fitpaper=true, pages=-]{img/pdg.pdf}
+
+
+\DeclareMathOperator{\e}{e}
+\DeclareMathOperator{\Determinant}{det}
+\renewcommand{\P}{\mathds{P}} %Apparement \P existe déjà ?
+\newcommand\N{\mathds{N}}
+\newcommand\Norm{\mathcal{N}}
+\newcommand\R{\mathds{R}}
+\newcommand\Z{\mathds{Z}}
+\newcommand{\determinant}[1]{\Determinant\left(#1\right)}
+%\newcommand\C{\mathds{C}}
+%\newcommand\Z{\mathds{Z}}
+
+
+\newcommand\1{\mathds{1}}
+\newcommand{\E}[2][]{{\mathds{E}}_{#1}
+  \def\temp{#2}\ifx\temp\empty
+  \else
+    \left[#2\right]
+  \fi
+}
+\newcommand{\V}[2][]{{\mathds{V}}_{#1}
+  \def\temp{#2}\ifx\temp\empty
+  \else
+    \left[#2\right]
+  \fi
+}
+\newcommand\ud{\,\mathrm{d}}
+\newcommand{\ps}[2]{\left\langle #1 \,,\, #2 \right\rangle}
+
+% blocks
+\usepackage{environ}
+\usepackage[tikz]{bclogo}
+
+\tikzstyle{titlestyle} =[draw=black!80,fill=black!20, text=black,
+ right=10pt, rounded corners]
+\mdfdefinestyle{symmaryboxstyle}{
+	linecolor=black!80, backgroundcolor = black!5,
+	skipabove=\baselineskip, innertopmargin=\baselineskip,
+	innerbottommargin=\baselineskip,
+	userdefinedwidth=\textwidth,
+	middlelinewidth=1.2pt, roundcorner=5pt,
+	skipabove={\dimexpr0.5\baselineskip+\topskip\relax},
+	frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
+	innerlinewidth=0pt,
+}
+\newcounter{summarybox}
+\NewEnviron{summary_box}[2][true]{%
+\refstepcounter{summarybox} % on incrémente le compteur
+\begin{mdframed}[style=symmaryboxstyle,
+nobreak=#1,
+frametitle={%
+      \tikz[baseline=(current bounding box.east),outer sep=0pt]
+      \node[titlestyle,anchor=east]
+    {Encadré \thesummarybox{} --- #2};}
+]
+\vspace{-0.5em}
+\BODY
+\end{mdframed}
+}
+
+\usepackage{amsthm}
+%\theoremstyle{remark}
+\newtheorem*{remarque}{Remarque}
+
+\usepackage{mathrsfs}
+\usepackage{fontawesome5}
+
+%\usepackage[style=authoryear,%,uniquename=false, uniquelist=false,
+%maxbibnames=2]{biblatex-chicago}
+% \usepackage[options]{natbib}
+% \bibliographystyle{chicago}
+
+%\DefineBibliographyStrings{english}{andothers={et\addabbrvspace alii}}
+\usepackage[authordate16,backend=biber,maxcitenames=2]{biblatex-chicago}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{biblatex}
+\addbibresource{biblio.bib}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Improving real-time trend estimates using local parametrisation of local polynomial regression filters},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Improving real-time trend estimates using local parametrisation
+of local polynomial regression filters}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, interior hidden, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, breakable, frame hidden]}{\end{tcolorbox}}\fi
+
+\setstretch{2}
+\hypertarget{abstract}{%
+\section*{Abstract}\label{abstract}}
+\addcontentsline{toc}{section}{Abstract}
+
+This paper studies and compares real-time estimates of the trend cycle
+component with moving averages based on local polynomial regression. In
+particular, this theory allows to reproduce Henderson's symmetric and
+Musgrave's asymmetric filters. This paper describes how they can be
+extended to include a timeliness criterion to minimise the phase shift.
+While asymmetric filters are generally parameterised globally, which can
+be suboptimal around turning points, this paper proposes a procedure for
+parameterising them locally. An empirical comparison, based on simulated
+and real data, shows that modelling polynomial trends that are too
+complex introduces more revisions without reducing the phase shift, and
+that local parameterisation reduces the delay in detecting turning
+points and reduces revisions. The paper also shows how these results can
+be easily reproduced using the R package \texttt{rjd3filters} dedicated
+to the manipulation of moving averages.
+
+Keywords: time series, trend-cycle, seasonal adjustment, turning points,
+R statistical software.
+
+JEL Classification: E32, E37.
+
+\hypertarget{introduction}{%
+\section*{Introduction}\label{introduction}}
+\addcontentsline{toc}{section}{Introduction}
+
+Analysis of the economic cycle, and in particular the early detection of
+turning points in a series, is a major topic in the analysis of economic
+outlook. To this end, economic indicators are generally seasonally
+adjusted. However, in order to improve their interpretability, it may be
+necessary to perform additional smoothing in order to reduce noise, and
+thus analyse the trend-cycle component. By construction, trend-cycle
+extraction methods are closely related to seasonal adjustment methods,
+since they are generally applied to seasonally adjusted series.
+
+A moving average, or linear filter, is a statistical method that
+consists in applying a rolling weighted mean to a times series: for each
+date \(t\) it computes a weighted mean of \(p\) past points and \(q\)
+future points where \(p,q\geq0\) depends on the moving average. Moving
+averages are ubiquitous in business cycle extraction and seasonal
+adjustment methods. For example, the X-13ARIMA seasonal adjustment
+method uses several moving averages to estimate the main components of a
+time series. Symmetric filters are applied to the center of the series,
+but when it comes to estimate the most recent points, all of these
+methods must rely on asymmetric filters. For trend-cycle extraction, the
+most popular symmetric filter is the \textcite{henderson1916note} moving
+average, which is used in the X-13ARIMA seasonal adjustment algorithm.
+
+However, for real-time estimates, due to the lack of future
+observations, all these methods must rely on asymmetric filters to
+estimate the most recent points. For example, for trend-cycle
+extraction, X-13ARIMA uses Henderson's symmetric filter and
+\textcite{musgrave1964set}'s asymmetric filters on an extended series
+using an ARIMA model. Since the predicted values are linear combinations
+of past values, this amounts to applying asymmetric averages at the end
+of the series.
+
+If the classic asymmetric moving averages have good properties regarding
+the future revisions induced by the process (see for example
+\textcite{pierce1980SA}), they create, by construction, phase shifts
+that impact the real-time estimation of turning points, introducing time
+delay in the detection.
+
+Using local polynomial regression, \textcite{proietti2008} developed
+general class of symmetric and asymmetric moving averages. In
+particular, it makes possible to reproduce Henderson's symmetric filter
+and Musgrave's asymmetric filters. However, these methods have two
+drawbacks. Firstly, the phase shift (i.e.~the delay in detecting turning
+points) is not directly controlled. Secondly, asymmetric filters depend
+on a parameter that is generally estimated over the whole series using
+assumptions that may be wrong locally. The aim of this study is to
+propose extensions to the \textcite{proietti2008} class of filters in
+order to take these shortcomings into account. The extensions have been
+implemented in the \faIcon{r-project} \texttt{rjd3filters} package
+(available at \url{https://github.com/rjdemetra/rjd3filters}) and are
+therefore easily reusable.
+
+In Section~\ref{sec-propMM}, we describe the general properties of
+moving averages and the associated quality criteria. This allows us to
+understand the foundations behind the construction of moving averages
+from local polynomial regressions, as well as those behind the two
+extensions proposed in this article (Section~\ref{sec-nonparamreg}). In
+a final section (Section~\ref{sec-comparison}), all these methods are
+compared empirically on simulated and real series.
+
+\hypertarget{sec-propMM}{%
+\section{Some properties on moving averages}\label{sec-propMM}}
+
+Lots of papers describe the definition and the properties of moving
+averages and linear filters, see for example \textcite{ch12HBSA}. In
+this section we summarize some of the main results to understand the
+next sections.
+
+Let \(p\) et \(f\) two integers, a moving average
+\(M_{\boldsymbol\theta}\) or \(M\) is defined by a set of coefficients
+\(\boldsymbol\theta=\begin{pmatrix}\theta_{-p}\\\vdots\\\theta_{f}\end{pmatrix}\)
+such as for all time series \(X_t\): \[
+M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}.
+\]
+
+\begin{itemize}
+\item
+  \(p+f+1\) is called the \emph{moving average order}.
+\item
+  When \(p=f\) the moving average is said to be \emph{centered}. If we
+  also have \(\forall k:\:\theta_{-k} = \theta_k\), the moving average
+  \(M_{\boldsymbol\theta}\) is said to be \emph{symmetric}. In this
+  case, the quantity \(h=p=f\) is called the \emph{bandwidth}.
+\end{itemize}
+
+\hypertarget{subsec:gain-deph}{%
+\subsection{Gain and phase shift functions}\label{subsec:gain-deph}}
+
+To interpret the notions of gain and phase shift, it is useful to
+illustrate the effects of moving averages on harmonic series
+\(X_t=\e^{-i\omega t}\) with \(\omega\in[0,\pi]\). The moving average
+\(M_{\boldsymbol\theta}\) transforms \(X_t\) into: \[
+Y_t = M_{\boldsymbol\theta}X_t = \sum_{k=-p}^{+f} \theta_k \e^{-i \omega (t+k)}
+= \left(\sum_{k=-p}^{+f} \theta_k \e^{-i \omega k}\right)\cdot X_t.
+\] The function
+\(\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{-i \omega k}\)
+is called the \emph{transfer function} or \emph{frequency response
+function}. The frequency response function can equivalently be defined
+as
+\(\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{i \omega k}\)
+ou
+\(\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{2\pi i \omega k}\).
+It can be rewritten as: \[
+\Gamma_{\boldsymbol\theta}(\omega) = \rho_{\boldsymbol\theta}(\omega)\e^{i\varphi_{\boldsymbol\theta}(\omega)},
+\] where
+\(\rho_{\boldsymbol\theta}(\omega)=G_{\boldsymbol\theta}(\omega)=\lvert\Gamma_{\boldsymbol\theta}(\omega)\rvert\)
+is the \emph{gain} or \emph{amplitude} function and
+\(\varphi_{\boldsymbol\theta}(\omega)\) is the \emph{phase shift} or
+\emph{time shift} function. This function is sometimes represented as
+\(\phi_{\boldsymbol\theta}(\omega)=\frac{\varphi_{\boldsymbol\theta}(\omega)}{\omega}\)
+to mesure the phase shift in number of periods. For all symmetric moving
+average we have
+\(\varphi_{\boldsymbol\theta}(\omega)\equiv 0 \;(modulo\;{\pi})\).
+
+To sum up, applying a moving average to a harmonic times series
+(\(X_t=\e^{-i\omega t}\)) affects it in in two different ways:
+
+\begin{itemize}
+\item
+  by multiplying it by an amplitude coefficient
+  \(\rho_{\boldsymbol\theta}\left(\omega\right)\) (gain);
+\item
+  by ``shifting'' it in time by
+  \(\varphi_{\boldsymbol\theta}(\omega)/\omega\) which directly affects
+  the detection of turning points. When
+  \(\varphi_{\boldsymbol\theta}(\omega)/\omega<0\) the time shift is
+  negative: the turning point is detected with delay.
+\end{itemize}
+
+Fourier decomposition allows to analyze any time series as a sum of
+harmonic series, and each component (trend, cycle, seasonal, irregular)
+is associated with a set of frequencies. Noting \(\omega = 2\pi/p\), the
+harmonic series of frequency \(\omega\) represents a series that repeats
+itself every \(p\) periods. For example, for a monthly series (12
+observations per year), seasonal movements are those that repeat every
+year: they are therefore associated with frequencies \(2\pi/12\) (annual
+periodicity), \(2\pi/12\times 2=2\pi/6,\dots,2\pi/12\times 5\). In this
+paper, we consider that the trend-cycle is associated with frequencies
+in the interval \([0, 2\pi/12[\), i.e.~movements recurring at least
+every 12 months. Even if different frequencies are sometimes used
+(e.g.~\([0, 2\pi/36]\) to consider only cycles of at least 36 months),
+this has no impact on the results of the study. The other frequencies,
+\([2\pi/12, \pi]\) are associated with the irregular component
+(undesirable oscillations).
+
+Figure~\ref{fig-graphsmusgrave} shows the gain and phase shift function
+for the asymmetric Musgrave filter (see Section~\ref{sec-lppasymf})
+often used for real-time trend-cycle estimation (i.e.~when no point in
+the future is known). The gain function is greater than 1 on the
+frequencies associated with the trend-cycle (\([0, 2\pi/12]\)): this
+means that the trend-cycle is well preserved and that short cycles of 1
+to 2 years (\([2\pi/24,2\pi/12]\)) are even amplified. However, cycles
+of 8 to 12 months (\([2\pi/12, 2\pi/8]\)), considered undesirable
+because associated with the irregular, are also amplified: this can lead
+to the detection of false turning points. At other frequencies, the gain
+function is less than 1, but always positive: this means that the series
+smoothed by this moving average will always contain noise, even if it is
+attenuated. Analysis of the phase shift shows that the shorter the
+cycles, the greater the phase shift: this means that on series smoothed
+by this moving average, turning points could be detected at the wrong
+date.
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphsmusgrave}Coefficients, gain and phase shift
+function for the Musgrave filter in real time with \(I/C=3.5\).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/musgrave.pdf}
+
+}
+
+\end{figure}
+
+\hypertarget{desirable-properties-of-a-moving-average}{%
+\subsection{Desirable properties of a moving
+average}\label{desirable-properties-of-a-moving-average}}
+
+To decompose a time series into a seasonal component, a trend-cycle and
+the irregular, the X-11 decomposition algorithm (used in X-13ARIMA) uses
+a succession of moving averages, all with specific constraints.
+
+In our case, we assume that our initial series \(y_t\) is seasonally
+adjusted and can be written as the sum of a trend-cycle, \(TC_t\), and
+an irregular component, \(I_t\): \[
+y_t=TC_t+I_t.
+\] The aim will be to build moving averages that best preserve the
+trend-cycle (\(M_{\boldsymbol\theta} (TC_t)\simeq TC_t\)) and minimise
+noise (\(M_{\boldsymbol\theta} (I_t)\simeq 0\)).
+
+\hypertarget{trend-preservation}{%
+\subsubsection{Trend preservation}\label{trend-preservation}}
+
+Trend-cycles are generally modelled by local polynomial trends (see
+Section~\ref{sec-nonparamreg}). In order to best preserve the
+trend-cycles, we try to have moving averages that preserve the
+polynomial trends. A moving average \(M_{\boldsymbol\theta}\) preserves
+a function of time \(f(t)\) if
+\(\forall t:M_{\boldsymbol\theta} f(t)=f(t)\).
+
+We have the following properties for the moving average
+\(M_{\boldsymbol\theta}\):
+
+\begin{itemize}
+\item
+  To preserve a constant trend \(X_t=a\) we need: \[
+  \forall t:M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}=\sum_{k=-p}^{+f}\theta_ka=a\sum_{k=-p}^{+f}\theta_k=a.
+  \] The sum of the coefficients of the moving average
+  \(\sum_{k=-p}^{+f}\theta_k\) must then be equal to \(1\).
+\item
+  To preserve linear trends \(X_t=at+b\) we need: \[
+  \forall t:\:M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}=\sum_{k=-p}^{+f}\theta_k[a(t+k)+b]=a\sum_{k=-p}^{+f}k\theta_k+(at+b)\sum_{k=-p}^{+f}\theta_k=at+b.
+  \] Which is equivalent to: \[
+  \sum_{k=-p}^{+f}\theta_k=1
+  \quad\text{et}\quad
+  \sum_{k=-p}^{+f}k\theta_k=0.
+  \]
+\item
+  In general, \(M_{\boldsymbol\theta}\) preserves polynomials of degree
+  \(d\) if and only if: \[
+  \sum_{k=-p}^{+f}\theta_k=1
+   \text{ and }
+  \forall j \in \left\llbracket 1,d\right\rrbracket:\:
+  \sum_{k=-p}^{+f}k^j\theta_k=0.
+  \]
+\item
+  If \(M_{\boldsymbol\theta}\) is symmetric (\(p=f\) and
+  \(\theta_{-k} = \theta_k\)) and preserves polynomials of degree \(2d\)
+  then it also preserves polynomials of degree \(2d+1\).
+\end{itemize}
+
+\hypertarget{noise-reduction}{%
+\subsubsection{Noise reduction}\label{noise-reduction}}
+
+All time series are affected by noise, which can blur the extraction of
+trends and cycles. This is why we try to reduce this noise (by reducing
+its variance) while preserving the relevant trends. The sum of the
+squares of the coefficients \(\sum_{k=-p}^{+f}\theta_k^2\) is the
+\emph{reduction of variance} ratio.
+
+Indeed, let \(\{\varepsilon_t\}\) a sequence of independent random
+variables with \(\E{\varepsilon_t}=0\), \(\V{\varepsilon_t}=\sigma^2\):
+\[
+\V{M_{\boldsymbol\theta}\varepsilon_t}=\V{\sum_{k=-p}^{+f} \theta_k \varepsilon_{t+k}}
+= \sum_{k=-p}^{+f} \theta_k^2 \V{\varepsilon_{t+k}}=
+\sigma^2\sum_{k=-p}^{+f} \theta_k^2.
+\]
+
+\hypertarget{sec-mmasym}{%
+\subsection{Real-time estimation and asymmetric moving
+average}\label{sec-mmasym}}
+
+\hypertarget{sec-mmetprev}{%
+\subsubsection{Asymmetric moving averages and
+forecasts}\label{sec-mmetprev}}
+
+For symmetric filters, the phase shift function is equal to zero (modulo
+\(\pi\)). So there is no delay in detecting turning points. However,
+they cannot be used in the beginning and in the end of the time series
+because no past or future value can be used. Thus, for real-time
+estimation, it is needed to build asymmetric moving average that
+approximate the symmetric moving average.
+
+Several approaches can be used for real-time estimation:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Use asymmetric moving averages to take account of the lack of
+  available data;
+\item
+  Apply symmetrical filters to extended forecast series. This method
+  seems to date back to \textcite{deforest1877adjustment}, which also
+  suggests modelling a polynomial trend of degree three or less at the
+  end of the period:\\
+  ``\emph{As the first \(m\) and last \(m\) terms of the series cannot
+  be reached directly by the formula, the series should be graphically
+  extended by m terms at both ends, first plotting the observations on
+  paper as ordinates, and then extending the curve along what seems to
+  be its probable course, and measuring the ordinates of the extended
+  portions.} \emph{It is not necessary that this extension should
+  coincide with what would be the true course of the curve in those
+  parts. } \emph{The important point is that the m terms thus added,
+  taken together with the \(m+1\) adjacent given terms, should follow a
+  curve whose form is approximately algebraic and of a degree not higher
+  than the third.}''\\
+  This is also the approach used in the X-13ARIMA seasonal adjustment
+  method, which extends which extends the series by one year with an
+  ARIMA model.
+\end{enumerate}
+
+Ultimately, the second method is equivalent to using asymmetric moving
+averages, since forecasts are linear combinations of the past.
+
+Conversely, the implicit forecasts of an asymmetric moving average can
+be deduced from a reference symmetric moving average. This allows to
+judge the quality of real-time estimates of the trend-cycle and to
+anticipate future revisions when forecasts are far from expected
+evolutions.\\
+Let us denote \(v=(v_{-h},\dots, v_{h})\) the reference symmetrical
+moving average and \(w^0,\dots w^{h-1}\) a sequence of asymmetrical
+moving averages, of order \(h+1\) to \(2h\) used to estimate the last
+\(h\) points with, for convention, \(w_t^q=0\) for \(t>q\). This means
+that \(w^0=(w_{-h}^0,\dots, w_{0}^0)\) is used for estimation in real
+time (when no points are known in the future),
+\(w^1=(w_{-h}^1,\dots, w_{1}^1)\) for estimation of the penultimate
+point (when only one point is known in the future), and so on. Let also
+note \(y_{-h},\dots,y_{0}\) the observed series studied and
+\(y_{1}^*,\dots y_h^*\) the implicit forecast induced by
+\(w^0,\dots w^{h-1}\). This means that for all \(q\) we have: \[
+\forall q, \quad \underbrace{\sum_{i=-h}^0 v_iy_i + \sum_{i=1}^h v_iy_i^*}_{\text{smoothing by }v\text{ of the extended series}}
+=\underbrace{\sum_{i=-h}^0 w_i^qy_i + \sum_{i=1}^h w_i^qy_i^*}_{\text{smoothing by }w^q\text{ of the extended series}}.
+\] This is equivalent to: \[
+\forall q, \quad \sum_{i=1}^h (v_i- w_i^q) y_i^*
+=\sum_{i=-h}^0 (w_i^q-v_i)y_i.
+\] To sum up, in matrix form, this is equivalent to solving: \[
+\scriptstyle
+\begin{pmatrix}
+  v_1 & v_2 & \cdots & v_h \\
+  v_1 - w_1^1 & v_2 & \cdots & v_h \\
+  \vdots & \vdots & \cdots & \vdots \\
+   v_1 - w_1^{h-1} & v_2-w_2^{h-1} & \cdots & v_h
+\end{pmatrix}
+\begin{pmatrix}y_1^* \\ \vdots \\ y_h^*\end{pmatrix}=
+\begin{pmatrix}
+  w_{-h}^0 - v_{-h} & w_{-(h-1)}^0 - v_{-(h-1)} & \cdots & w_{0}^0 - v_{0} \\
+  w_{-h}^1 - v_{-h} & w_{-(h-1)}^1 - v_{-(h-1)} & \cdots & w_{0}^1 - v_{0} \\
+  \vdots & \vdots & \cdots & \vdots \\
+  w_{-h}^{h-1} - v_{-h} & w_{-(h-1)}^{h-1} - v_{-(h-1)} & \cdots & w_{0}^{h-1} - v_{0}
+\end{pmatrix}
+\begin{pmatrix}y_{-h} \\ \vdots \\ y_0\end{pmatrix}.
+\] This is implemented in the \texttt{rjd3filters::implicit\_forecast()}
+function.
+
+As highlighted by \textcite{wildischis2004}, extending the series
+through forecasting with an ARIMA model is equivalent to calculating
+asymmetric filters whose coefficients are optimised in relation to the
+one-step ahead forecast. In other words, the aim is to minimise the
+revisions between the first and last estimates (with the symmetric
+filter). However, the phase shift induced by the asymmetric filters is
+not controlled: we might prefer to have faster detection of turning
+points and a larger revision rather than just minimising the revisions
+between the first and last estimates. Furthermore, since the
+coefficients of the symmetric filter (and therefore the weight
+associated with distant forecasts) decrease slowly, we should also be
+interested in the performance of multi-step ahead forecasting. This is
+why it may be necessary to define alternative criteria for judging the
+quality of asymmetric moving averages.
+
+\hypertarget{subsec:crit-qual}{%
+\subsubsection{Quality indicators for asymmetric moving
+averages}\label{subsec:crit-qual}}
+
+For asymmetric filters, most of the criteria come from those defined by
+\textcite{ch15HBSA} and \textcite{trilemmaWMR2019} to build asymmetric
+filters. They are summarised in Table~\ref{tab-QC} and can be calculated
+using the \texttt{rjd3filters::diagnostic\_matrix()} function.
+
+\textcite{ch15HBSA} propose a general approach to derive linear filters,
+based on an optimisation problem involving three criteria:
+\emph{Fidelity} (\(F_g\)), \emph{Smoothness} (\(S_g\)) and
+\emph{Timeliness} (\(T_g\)). Fidelity can be directly linked to the
+reduction in variance created by the filter, and timeliness to the
+notion of phase shift, which again we want to be low. This method can be
+used in\faIcon{r-project} with the function
+\texttt{rjd3filters::fst\_filter()}.
+
+\textcite{trilemmaWMR2019} propose an approach based on the
+decomposition of the mean squared error between the symmetric and the
+asymmetric filter in four quantities: \emph{Accuracy} (\(A_w\)),
+\emph{Timeliness} (\(T_w\)), \emph{Smoothness} (\(S_w\)) and
+\emph{Residual} (\(R_w\)). A simplified version of this method can be
+used in \faIcon{r-project} with the function
+\texttt{rjd3filters::dfa\_filter()}.
+
+\begin{table}[!h]
+\caption{\label{tab-QC} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3,5$.}
+{\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{ccc}
+\toprule
+Code & Description & Formula\\
+\midrule
+$b_c$ & Constant bias & $\sum_{k=-p}^{+f}\theta_{k}-1$\\
+$b_l$ & Linear bias & $\sum_{k=-p}^{+f}k\theta_{k}$\\
+$b_q$ & Quadratic bias & $\sum_{k=-p}^{+f}k^{2}\theta_{k}$\\
+$F_g$ & Variance reduction / Fidelity (Guggemos) & $\sum_{k=-p}^{+f}\theta_{k}^{2}$\\
+$S_g$ & Smoothness (Guggemos) & $\sum_{j}(\nabla^{3}\theta_{j})^{2}$\\
+\addlinespace
+$T_g$ & Timeliness (Guggemos) & $\int_{0}^{\omega_1}\rho_{\boldsymbol\theta}(\omega)\sin(\varphi_{\boldsymbol\theta}(\omega))^{2}\ud\omega$\\
+$A_w$ & Accuracy (Wildi) & $2\int_0^{\omega_1}\left(\rho_{s}(\omega)-\rho_{\boldsymbol\theta}(\omega)\right)^{2}h(\omega)\ud\omega$\\
+$T_w$ & Timeliness (Wildi) & $8\int_0^{\omega_1} \rho_{s}(\omega)\rho_{\boldsymbol\theta}(\omega)\sin^{2}\left(\frac{\varphi_s(\omega)-\varphi_{\boldsymbol\theta}(\omega)}{2}\right)h(\omega)\ud\omega$\\
+$S_w$ & Smoothness (Wildi) & $2\int_{\omega_1}^{\pi}\left(\rho_{s}(\omega)-\rho_{\boldsymbol\theta}(\omega)\right)^{2}h(\omega)\ud\omega$\\
+$R_w$ & Residual (Wildi) & $8\int_{\omega_1}^{\pi} \rho_{s}(\omega)\rho_{\boldsymbol\theta}(\omega)\sin^{2}\left(\frac{\varphi_s(\omega)-\varphi_{\boldsymbol\theta}(\omega)}{2}\right)h(\omega)\ud\omega$\\
+\bottomrule
+\end{tabular}}}
+
+\textit{Note: $X_g$ criteria from Grun-Rehomme et al (2018) and $X_w$ criteria from Wildi and McElroy (2019).}
+
+\textit{$\rho_s$ and $\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.}
+
+\textit{$h$ is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\frac{1}{2(1-\cos(x))}$).}
+\end{table}
+
+\hypertarget{sec-nonparamreg}{%
+\section{Non-parametric regression and local polynomial
+regression}\label{sec-nonparamreg}}
+
+Many trend-cycle extraction methods are based on non-parametric
+regressions, which are particularly flexible because they do not assume
+any predetermined dependency in the predictors. In practice, local
+regressions can be used. More specifically, consider a set of points
+\((x_i,y_i)_{1\leq i\leq n}\). Non-parametric regression involves
+assuming that there exists a function \(\mu\), to be estimated, such
+that \(y_i=\mu(x_i)+\varepsilon_i\) with \(\varepsilon_i\) an error
+term. According to Taylor's theorem, for any point \(x_0\), if \(\mu\)
+is differentiable \(d\) times, then:
+\begin{equation}\protect\hypertarget{eq-taylor}{}{
+\forall x \::\:\mu(x) = \mu(x_0) + \mu'(x_0)(x-x_0)+\dots +
+\frac{\mu^{(d)}(x_0)}{d!}(x-x_0)^d+R_d(x),
+}\label{eq-taylor}\end{equation} where \(R_d\) is a negligible residual
+term in the neighbourhood of \(x_0\). In a neighbourhood \(h(x_0)\)
+around \(x_0\), \(\mu\) can be approximated by a polynomial of degree
+\(d\). The quantity \(h(x_0)\) is called the \emph{bandwidth}. If
+\(\varepsilon_i\) is white noise, then we can estimate by least squares
+\(\mu(x_0)\) using the observations which are in
+\(\left[x_0-h(x_0),x_0+h(x_0)\right]\).
+
+In practice, this means assuming that the trend is locally polynomial.
+Various estimation methods can be used to derive symmetrical and
+asymmetrical moving averages.\\
+\textcite{GrayThomson1996} propose a complete statistical framework
+which makes it possible, in particular, to model the error in
+approximating the trend by local polynomials. However, as the
+specification of this error is generally complex, simpler models may be
+preferred, such as that of \textcite{proietti2008}.\\
+Finally, \textcite{dagumbianconcini2008} propose a similar modelling of
+the trend-cycle but using the theory of Hilbert spaces with reproducing
+kernels for estimation, which has the particular advantage of
+facilitating the calculation of different moving averages at different
+time frequencies. This method can be used in\faIcon{r-project} with the
+function \texttt{rjd3filters::rkhs\_filter()}.
+
+\hypertarget{symmetric-moving-averages-and-local-polynomial-regression}{%
+\subsection{Symmetric moving averages and local polynomial
+regression}\label{symmetric-moving-averages-and-local-polynomial-regression}}
+
+Using \textcite{proietti2008}'s notation, we assume that our time series
+\(y_t\) can be decomposed into \[
+y_t=\mu_t+\varepsilon_t,
+\] where \(\mu_t\) is the trend and
+\(\varepsilon_{t}\overset{i.i.d}{\sim}\mathcal{N}(0,\sigma^{2})\) is the
+noise (the series is therefore seasonally adjusted). Within a
+neighbourhood \(h\) of \(t\), the local trend \(\mu_t\) is approximated
+by a polynomial of degree \(d\), such that \(\mu_t\simeq m_{t}\) with:
+\[
+\forall j\in\left\llbracket -h,h\right\rrbracket:\:
+y_{t+j}=m_{t+j}+\varepsilon_{t+j},\quad m_{t+j}=\sum_{i=0}^{d}\beta_{i}j^{i}.
+\] The problem of trend extraction is equivalent to estimating
+\(m_t=\beta_0\) (the constant in the previous formula).
+
+In matrix notation: \[
+\underbrace{\begin{pmatrix}y_{t-h}\\
+y_{t-(h-1)}\\
+\vdots\\
+y_{t}\\
+\vdots\\
+y_{t+(h-1)}\\
+y_{t+h}
+\end{pmatrix}}_{\boldsymbol y}=\underbrace{\begin{pmatrix}1 & -h & h^{2} & \cdots & (-h)^{d}\\
+1 & -(h-1) & (h-1)^{2} & \cdots & (-(h-1))^{d}\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+1 & 0 & 0 & \cdots & 0\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+1 & h-1 & (h-1)^{2} & \cdots & (h-1)^{d}\\
+1 & h & h^{2} & \cdots & h^{d}
+\end{pmatrix}}_{\boldsymbol X}\underbrace{\begin{pmatrix}\beta_{0}\\
+\beta_{1}\\
+\vdots\\
+\vdots\\
+\vdots\\
+\vdots\\
+\beta_{d}
+\end{pmatrix}}_{\boldsymbol \beta}+\underbrace{\begin{pmatrix}\varepsilon_{t-h}\\
+\varepsilon_{t-(h-1)}\\
+\vdots\\
+\varepsilon_{t}\\
+\vdots\\
+\varepsilon_{t+(h-1)}\\
+\varepsilon_{t+h}
+\end{pmatrix}}_{\boldsymbol \varepsilon}.
+\]
+
+To estimate \(\boldsymbol \beta\) we need \(2h+1\geq d+1\) and the
+estimation is made by weighted least squares (WLS), which is equivalent
+to minimising the following objective function: \[
+S(\hat{\beta}_{0},\dots,\hat{\beta}_{d})=\sum_{j=-h}^{h}\kappa_{j}(y_{t+j}-\hat{\beta}_{0}-\hat{\beta}_{1}j-\dots-\hat{\beta}_{d}j^{d})^{2}.
+\] where \(\kappa_j\) is a set of weights called \emph{kernel}. We have
+\(\kappa_j\geq 0:\kappa_{-j}=\kappa_j\), and with
+\(\boldsymbol K=diag(\kappa_{-h},\dots,\kappa_{h})\), the estimate of
+\(\boldsymbol \beta\) can be written as
+\(\hat{\boldsymbol\beta}=(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol X'\boldsymbol K\boldsymbol y.\)
+With \(\boldsymbol e_1=\begin{pmatrix}1 \\0 \\\vdots\\0 \end{pmatrix}\),
+the estimate of the trend is:
+\begin{equation}\protect\hypertarget{eq-mmsym}{}{
+\hat{m}_{t}=\boldsymbol e_{1}\hat{\boldsymbol \beta}=\boldsymbol \theta'\boldsymbol y=\sum_{j=-h}^{h}\theta_{j}y_{t-j}\text{ with }\boldsymbol \theta=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{1}.
+}\label{eq-mmsym}\end{equation} To conclude, the estimate of the trend
+\(\hat{m}_{t}\) can be obtained applying the symmetric filter
+\(\boldsymbol \theta\) to \(y_t\) (\(\boldsymbol \theta\) is symmetric
+due to the symmetry of the kernel weights \(\kappa_j\)). Moreover,
+\(\boldsymbol X'\boldsymbol \theta=\boldsymbol e_{1}\) so: \[
+\sum_{j=-h}^{h}\theta_{j}=1,\quad\forall r\in\left\llbracket 1,d\right\rrbracket:\sum_{j=-h}^{h}j^{r}\theta_{j}=0.
+\] Hence, the filter \(\boldsymbol w\) preserve deterministic polynomial
+of order \(d\).
+
+Regarding parameter selection, the general consensus is that the choice
+between different kernels is not crucial. See, for example,
+\textcite{cleveland1996smoothing} or \textcite{Loader1999}. The only
+desired constraints on the kernel are that it assigns greater weight to
+the central estimation (\(\kappa_0\)) and decreases towards 0 as it
+moves away from the central estimation. The uniform kernel should
+therefore be avoided. It is then preferable to focus on two other
+parameters:
+
+\begin{itemize}
+\item
+  the degree of the polynomial, denoted by \(d\): if it is too small,
+  there is a risk of biased estimates of the trend-cycle, and if it is
+  too large, there is a risk of excessive variance in the estimates (due
+  to over-adjustment);
+\item
+  the number of neighbors \(2h+1\) (or the window \(h\)): if it is too
+  small, then there will be too little data for the estimates (resulting
+  in high variance in the estimates), and if it is too large, the
+  polynomial approximation will probably be wrong, leading to biased
+  estimates.
+\end{itemize}
+
+In this paper we will use the Henderson kernel: \[
+\kappa_{j}=\left[1-\frac{j^2}{(h+1)^2}\right]
+\left[1-\frac{j^2}{(h+2)^2}\right]
+\left[1-\frac{j^2}{(h+3)^2}\right].
+\] However, several other kernels are available in \texttt{rjd3filters}.
+
+\hypertarget{sec-lppasymf}{%
+\subsection{Asymmetric moving averages and local polynomial
+regression}\label{sec-lppasymf}}
+
+As mentioned in Section~\ref{sec-mmetprev}, for real-time estimation,
+several approaches can be used:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Apply symmetric filters to the series extended by forecasting
+  \(\hat{y}_{n+l\mid n},l\in\left\llbracket 1,h\right\rrbracket\).
+\item
+  Build an asymmetric filter by local polynomial approximation on the
+  available observations (\(y_{t}\) for
+  \(t\in\left\llbracket n-h,n\right\rrbracket\)).
+\item
+  Build asymmetric filters that minimise the mean squared error of
+  revision under polynomial trend reproduction constraints.
+\end{enumerate}
+
+\textcite{proietti2008} show that the first two approaches are
+equivalent when forecasts are made by polynomial extrapolation of degree
+\(d\). They are also equivalent to the third approach under the same
+constraints as those of the symmetric filter. The third method is called
+\emph{direct asymmetric filter} (DAF). This method is used for real-time
+estimation in the STL seasonal adjustment method (\emph{Seasonal-Trend
+decomposition based on Loess}, see \textcite{cleveland90}). Although DAF
+filter estimates are unbiased, this is at the cost of greater variance
+in the estimates.
+
+To solve the problem of the variance of real-time filter estimates,
+\textcite{proietti2008} propose a general method for constructing
+asymmetric filters that allows a bias-variance trade-off. This is a
+generalisation of \textcite{musgrave1964set}'s asymmetric filters (used
+in the X-13ARIMA seasonal adjustment algorithm).
+
+The initial series is modelled here as:
+\begin{equation}\protect\hypertarget{eq-lpgeneralmodel}{}{
+\boldsymbol y=\boldsymbol U \boldsymbol \gamma+\boldsymbol Z\boldsymbol \delta+\boldsymbol \varepsilon,\quad
+\boldsymbol \varepsilon\sim\mathcal{N}(0,\boldsymbol D).
+}\label{eq-lpgeneralmodel}\end{equation} where
+\([\boldsymbol U,\boldsymbol Z]\) is of full rank and forms a subset of
+the columns of \(X\). The objective is to find a filter
+\(\boldsymbol v\) that minimises the mean square error of revision (to
+the symmetric filter \(\boldsymbol \theta\)) under certain constraints.
+These constraints are represented by the matrix
+\(\boldsymbol U=\begin{pmatrix}\boldsymbol U_{p}\\\boldsymbol U_{f}\end{pmatrix}\):
+\(\boldsymbol U_p'\boldsymbol v=\boldsymbol U'\boldsymbol \theta\) (with
+\(\boldsymbol U_p\) the matrix \((h+q+1)\times (d+1)\) which contains
+the observations of the matrix \(U\) known during estimation by the
+asymmetric filter). The problem is equivalent to finding \(v\) which
+minimises: \begin{equation}\protect\hypertarget{eq-lppasym}{}{
+\varphi(\boldsymbol v)=
+\underbrace{
+  \underbrace{(\boldsymbol v-\boldsymbol \theta_{p})'\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_{p})+
+  \boldsymbol \theta_{f}'\boldsymbol D_{f}\boldsymbol \theta_{f}}_\text{revision error variance}+
+  \underbrace{[\boldsymbol \delta'(\boldsymbol Z_{p}'\boldsymbol v-\boldsymbol Z'\boldsymbol \theta)]^{2}}_{bias^2}
+}_\text{mean square revision error}+
+\underbrace{2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)}_{\text{constraints}}.
+}\label{eq-lppasym}\end{equation} where \(\boldsymbol l\) is a vector of
+Lagrange multipliers.
+
+When \(\boldsymbol U=\boldsymbol X\), the constraint is equivalent to
+preserving polynomials of degree \(d\): we find asymmetric direct
+filters (DAF) when \(\boldsymbol D=\boldsymbol K^{-1}\).
+
+When \(\boldsymbol U=\begin{pmatrix}1\\\vdots\\1\end{pmatrix}\),
+\(\boldsymbol Z=\begin{pmatrix}-h\\\vdots\\+h\end{pmatrix}\),
+\(\boldsymbol \delta=\delta_1\), \(\boldsymbol D=\sigma^2\boldsymbol I\)
+and when the symmetric filter is the Henderson filter, we find the
+asymmetric Musgrave filters (using the Henderson kernel). This filter
+assumes that, for real-time estimation, the data is generated by a
+linear process and that the asymmetric filters preserve the constants
+(\(\sum v_i=\sum \theta_i=1\)). These asymmetric filters depend on the
+ratio \(\lvert\delta_1/\sigma\rvert\), which, assuming that the trend is
+linear and the bias constant, can be linked to the I-C ratio
+\(R=\frac{\bar{I}}{\bar{C}}=\frac{\sum\lvert I_t-I_{t-1}\rvert}{\sum\lvert C_t-C_{t-1}\rvert}\):
+\(\delta_1/\sigma=2/(R\sqrt{\pi})\). This ratio is used in particular in
+X-13ARIMA to determine the length of the Henderson filter. For monthly
+data:
+
+\begin{itemize}
+\item
+  If the ratio is large (\(3.5< R\)) then a 23 term filter is used (to
+  remove more noise).
+\item
+  If the ratio is small (\(R<1\)) a 9 term filter is used.
+\item
+  Otherwise (most of the cases) a 13-term filter is used.
+\end{itemize}
+
+When \(\boldsymbol U\) corresponds to the first \(d^*+1\) columns of
+\(\boldsymbol X\), \(d^*<d\), the constraint is to reproduce polynomial
+trends of degree \(d^*\). This introduces bias but reduces the variance.
+Thus, \textcite{proietti2008} proposes three classes of asymmetric
+filters:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \emph{Linear-Constant} (LC): \(y_t\) linear (\(d=1\)) and
+  \(\boldsymbol v\) preserves constant signals (\(d^*=0\)). We obtain
+  Musgrave filters when the Henderson kernel is used and the Henderson
+  filter is used as the symmetric filter.
+\item
+  \emph{Quadratic-Linear} (QL): \(y_t\) quadratic (\(d=2\)) and
+  \(\boldsymbol v\) preserves linear signals (\(d^*=1\)).
+\item
+  \emph{Cubic-Quadratic} (CQ): \(y_t\) cubic (\(d=3\)) and
+  \(\boldsymbol v\) preserves quadratic signals (\(d^*=2\)).
+\end{enumerate}
+
+Appendix \ref{sec-an-cof} shows the coefficients, gain and phase shift
+functions of the four asymmetric filters.
+
+Table~\ref{tab-criteriaLp} compares the quality criteria of the
+different methods using the Henderson filter and \(h=6\) (a symmetric
+filter with 13 terms). For real-time filters (\(q=0\)), a more complex
+asymmetrical filter (in terms of polynomial preservation) results in
+lower timeliness and higher fidelity/smoothness: reduction in phase
+shift comes at the expense of an increase in variance. This result
+varies as \(q\) increases: for \(q=2\), the QL filter has greater
+timeliness than the LC filter. This surprising result highlights the
+fact that the phase shift is not controlled by \textcite{proietti2008}'s
+approach.
+
+In terms of revision (\(A_w+S_w+T_w+R_w\)), the LC and QL filters
+consistently outperform the CQ and DAF filters.
+
+These theoretical properties are consistent with the empirical results
+observed in Section~\ref{sec-comparison}. Revisions are more important
+for the CQ and DAF filters, which leads to greater variability in
+estimations and a longer delay in detecting turning points. The globally
+parameterised QL filter (with \(R\) fixed for all asymmetric filters)
+may result in later detection of turning points than the LC filter.
+Indeed, to identify a turning point at date \(t\), it is necessary to
+have knowledge of at least two points after the given date to confirm
+the reversal in trend.
+
+\begin{table}[!h]
+\caption{\label{tab-criteriaLp} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3,5$.}
+\centering
+\begin{tabular}[t]{cccccccccccc}
+\toprule
+Method & $b_c$ & $b_l$ & $b_q$ & $F_g$ & $S_g$ & $T_g \times 10^{-3}$ & $A_w$ & $S_w$ & $T_w$ & $R_w$ & $EQM_w$\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{$q=0$}}\\
+\hspace{1em}LC & 0 & -0.41 & -2.16 & 0.39 & 1.27 & 30.34 & 0.10 & 0.49 & 0.41 & 0.55 & 1.54\\
+\hspace{1em}QL & 0 & 0.00 & -0.47 & 0.71 & 5.15 & 0.05 & 0.07 & 1.89 & 0.00 & 0.11 & 2.07\\
+\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.91 & 11.94 & 0.01 & 0.02 & 2.23 & 0.00 & 0.10 & 2.35\\
+\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.94 & 14.20 & 0.00 & 0.01 & 2.18 & 0.00 & 0.10 & 2.29\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{$q=1$}}\\
+\hspace{1em}LC & 0 & -0.12 & -0.52 & 0.27 & 0.43 & 4.80 & 0.01 & 0.12 & 0.06 & 0.11 & 0.30\\
+\hspace{1em}QL & 0 & 0.00 & -0.06 & 0.29 & 0.71 & 0.69 & 0.00 & 0.19 & 0.01 & 0.04 & 0.25\\
+\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.57 & 0.16 & 0.02 & 0.58 & 0.00 & 0.06 & 0.66\\
+\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.41 & 0.37 & 0.06 & 0.02 & 0.76 & 0.00 & 0.06 & 0.84\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{$q=2$}}\\
+\hspace{1em}LC & 0 & 0.00 & 1.08 & 0.20 & 0.08 & 0.35 & 0.01 & 0.01 & 0.00 & 0.01 & 0.04\\
+\hspace{1em}QL & 0 & 0.00 & 0.03 & 0.22 & 0.05 & 2.08 & 0.00 & 0.01 & 0.02 & 0.07 & 0.10\\
+\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.66 & 0.13 & 0.02 & 0.56 & 0.00 & 0.06 & 0.64\\
+\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.40 & 0.77 & 0.02 & 0.02 & 0.68 & 0.00 & 0.05 & 0.74\\
+\bottomrule
+\end{tabular}
+
+\textit{Note: With $EQM_w=A_w + S_w + T_w + R_w$.}
+\end{table}
+
+\hypertarget{sec-lptimeliness}{%
+\subsection{Extension with the timeliness
+criterion}\label{sec-lptimeliness}}
+
+One drawback of the previous method is the lack of control over the
+phase shift. However, it is possible to improve the modelling by
+incorporating in Equation~\ref{eq-lppasym} the timeliness criterion
+defined by \textcite{ch15HBSA}. This was proposed by Jean Palate, then
+coded in Java and integrated into \texttt{rjd3filters}.
+
+Using the same notation as in Section~\ref{sec-lppasymf},
+\(\boldsymbol\theta\) represents the symmetric filter and
+\(\boldsymbol v\) the asymmetric filter. With
+\(\boldsymbol\theta=\begin{pmatrix}\boldsymbol\theta_p\\\boldsymbol\theta_f\end{pmatrix}\)
+and \(\boldsymbol\theta_p\) of the same length of \(\boldsymbol v\), and
+\(\boldsymbol g=\boldsymbol v-\boldsymbol \theta_p\), the timeliness
+criterion can be expressed as: \[
+T_g(\boldsymbol v)=\boldsymbol v'\boldsymbol T\boldsymbol v=\boldsymbol g'\boldsymbol T\boldsymbol g+2\boldsymbol \theta_p'\boldsymbol T\boldsymbol g+\boldsymbol \theta_p'\boldsymbol T\boldsymbol \theta_p
+\quad\text{ with }\boldsymbol T\text{ a symmetric matrix}.
+\] Furthermore, the objective function \(\varphi\) of
+Equation~\ref{eq-lppasym} can be rewritten: \begin{align*}
+\varphi(\boldsymbol v)&=(\boldsymbol v-\boldsymbol \theta_p)'\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_p)+
+  \boldsymbol \theta_f'\boldsymbol D_{f}\boldsymbol \theta_f+
+  [\boldsymbol \delta'(\boldsymbol Z_{p}'\boldsymbol v-\boldsymbol Z'\boldsymbol \theta)]^{2}+
+2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)\\
+&=\boldsymbol g'\boldsymbol Q\boldsymbol g-2\boldsymbol P\boldsymbol g+2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)+\boldsymbol c\quad\text{ with }\boldsymbol v
+\begin{cases}
+\boldsymbol Q=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z'_p \\
+\boldsymbol P=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z_p'\\
+\boldsymbol c\text{ a constant independent of }\boldsymbol v
+\end{cases}.
+\end{align*} Adding the timeliness criterion: \[
+\widetilde\varphi(\boldsymbol v)=\boldsymbol g'\widetilde {\boldsymbol Q}\boldsymbol g-
+2\widetilde {\boldsymbol P}\boldsymbol g+2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)+
+\widetilde {\boldsymbol c}\quad\text{with }
+\begin{cases}
+\widetilde {\boldsymbol Q}=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z'_p + \alpha_T\boldsymbol T\\
+\widetilde {\boldsymbol P}=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z_p'-\alpha_T\boldsymbol \theta_p\boldsymbol T\\
+\widetilde {\boldsymbol c}\text{ a constant independent of }\boldsymbol v
+\end{cases},
+\] where \(\alpha_T\) is the weight associated to the timeliness
+criterion. With \(\alpha_T=0\) we find \(\varphi(\boldsymbol v)\). This
+extension therefore makes it possible to find all the symmetric and
+asymmetric filters presented in the previous section but also
+generalizes the approach of \textcite{GrayThomson1996}. This extension
+is implemented in the \faIcon{r-project} function
+\texttt{rjd3filters::lp\_filter()}.
+
+One drawback is that \(T_g(\boldsymbol v)\) is not normalized: the
+weight \(\alpha_T\) has no economic sense. It is then difficult to
+calibrate the value of \(\alpha_T\) since the value of
+\(\lvert\delta/\sigma\rvert\) must also be defined. That's why in this
+paper we will not compare this extension to the other methods and we
+will focus on the local calibration of \(\lvert\delta/\sigma\rvert\).
+However, in future studies, we could imagine a two step calibration: fix
+the value of \(\lvert\delta/\sigma\rvert\) to find \(\alpha_T\) by
+cross-validation and then use this weight with a local parameterisation
+of the ratio \(\lvert\delta/\sigma\rvert\) (as in
+Section~\ref{sec-localic}).
+
+\hypertarget{sec-localic}{%
+\subsection{Local parameterisation of asymmetric
+filters}\label{sec-localic}}
+
+Asymmetric filters are usually parameterised globally:
+\(\lvert\delta/\sigma\rvert\) estimated on all the data using the
+IC-ratio or a cross-validation criterion. However, we might prefer a
+local parameterisation: ratio \(\lvert\delta/\sigma\rvert\) which varies
+as a function of time. Indeed, although the overall parameterisation is
+generally valid, assuming a constant value of the
+\(\lvert\delta/\sigma\rvert\) ratio for all asymmetrical filters does
+not appear relevant for real-time estimation, especially during periods
+of economic downturn. For example, with the LC method, global
+parameterisation means assuming that the slope of the trend is constant,
+whereas during economic downturns it tends towards 0 up to the turning
+point.
+
+This is what is proposed in this article, with a local parameterisation
+of the asymmetric filters by estimating \(\delta\) and \(\sigma^2\)
+separately. Although this does not give an unbiased estimator of the
+ratio \(\lvert\delta/\sigma\rvert\), it does allow the main evolutions
+to be captured, such as the decay towards 0 before a turning point and
+the growth after the turning point for the LC method:
+
+\begin{itemize}
+\tightlist
+\item
+  The variance \(\sigma^2\) can be estimated using the observed data set
+  and the symmetrical filter \((w_{-p},\dots,w_p)\): \[
+  \hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\hat \mu_t)^2}{1-2w_0^2+\sum w_i^2}.
+  \]
+\item
+  The parameter \(\delta\) can be estimated by moving average from
+  Equation~\ref{eq-mmsym}. For example, for the LC method we can use the
+  moving average
+  \(\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}\)
+  to obtain a local estimate of the slope and for the QL method we can
+  use
+  \(\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}\)
+  to obtain a local estimate of the concavity. The DAF method then
+  simply allows us to calculate the associated asymmetric moving
+  averages.\\
+  Although a moving average of different length to that used for
+  estimating the trend could be considered, this seems to degrade the
+  results in terms of phase shift (using the same methodology as in
+  Section~\ref{sec-comparison}). Furthermore, for the construction of
+  moving averages, the trend can be modelled as being locally of degree
+  2 or 3 (this has no impact on the final estimate of concavity). Here,
+  we have chosen to model a trend of degree 2: this reduces the phase
+  shift but slightly increases the revisions linked to the first
+  estimate of the trend-cycle. Figure~\ref{fig-mmpenteconcac} shows the
+  moving averages used.
+\end{itemize}
+
+\begin{figure}[H]
+
+\caption{\label{fig-mmpenteconcac}Moving averages used for real-time
+estimation of slope and concavity.}
+
+{\centering \includegraphics[width=0.9\textwidth,height=\textheight]{img/filters_used/mm_penteconcavite.pdf}
+
+}
+
+\end{figure}
+
+In the empirical applications of Section~\ref{sec-comparison}, the final
+local parameterisation is obtained by estimating \(\delta\) using all
+the data (i.e., using the symmetric filters shown in
+Figure~\ref{fig-mmpenteconcac}), while maintaining a real-time estimate
+of \(\sigma^2\). Figure~\ref{fig-mmpenteconcac-ex} shows an example of
+the comparison of estimates of the ratio \(|\delta_1/\sigma|\) with a
+global estimator (IC ratio) and two the local parameterisation:
+
+\begin{itemize}
+\item
+  Figure~\ref{fig-mmpenteconcac-ex-1}: using a symmetric filter to
+  estimate \(\delta_1\) (final local parameterisation).
+\item
+  Figure~\ref{fig-mmpenteconcac-ex-2}: using the asymmetric filter which
+  need two points in the futur to estimate \(\delta_1\). This is closed
+  to the real-time estimates since two points in the future are needed
+  to detect a turning point.
+\end{itemize}
+
+The turning points are clearly detected by the local estimators, but
+there is much more variance in the estimate of \(|\delta_1/\sigma|\) in
+the real-time estimate. This will lead to another source of revisions in
+the intermediate estimates.
+
+\begin{figure}
+
+\caption{\label{fig-mmpenteconcac-ex}Comparison of the estimates of
+\(|\delta_1/\sigma|\) with a local estimator and global estimator (with
+IC ratio) on a simulated series, the vertical lines being the simulated
+turning points.}\begin{minipage}[t]{\linewidth}
+\subcaption{\label{fig-mmpenteconcac-ex-1}Symmetric moving average used
+for \(\hat \delta_1\).}
+
+{\centering 
+
+\raisebox{-\height}{
+
+\includegraphics{img/filters_used/mm_penteconcavite_ex.pdf}
+
+}
+
+}
+
+\end{minipage}%
+\newline
+\begin{minipage}[t]{\linewidth}
+\subcaption{\label{fig-mmpenteconcac-ex-2}Asymmetric moving average
+using two futur points (\(q=2\)) used for \(\hat \delta_1\).}
+
+{\centering 
+
+\raisebox{-\height}{
+
+\includegraphics{img/filters_used/mm_penteconcavite_ex2.pdf}
+
+}
+
+}
+
+\end{minipage}%
+
+\end{figure}
+
+\hypertarget{sec-comparison}{%
+\section{Comparison of different methods}\label{sec-comparison}}
+
+The different methods are compared on simulated and real data.
+
+For all series, a symmetrical 13-term filter is used. These methods are
+also compared with estimates obtained by extending the series with an
+ARIMA model, then applying a 13-term symmetrical Henderson filter. The
+ARIMA model is determined automatically, using no seasonal lag (the
+series being seasonally adjusted) and no external variables (such as
+external regressors for correction of atypical points).
+
+The performance of the different methods is judged on criteria relating
+to revisions (between two consecutive estimates and in relation to the
+final estimate) and the number of periods required to detect turning
+points.
+
+\hypertarget{simulated-series}{%
+\subsection{Simulated series}\label{simulated-series}}
+
+\hypertarget{methodology}{%
+\subsubsection{Methodology}\label{methodology}}
+
+Following a methodology close to that of \textcite{DarneDagum2009}, nine
+monthly series are simulated between January 1960 and December 2020 with
+different levels of variability. Each simulated series
+\(y_t= C_t+ T_t + I_t\) can be written as the sum of three components:
+
+\begin{itemize}
+\item
+  the cycle
+  \(C_t = \rho [\cos (2 \pi t / \lambda) +\sin (2 \pi t / \lambda)]\),
+  \(\lambda\) is fixed at 72 (6-year cycles, so there are 19 detectable
+  turning points);
+\item
+  the trend \(T_t = T_{t-1} + \nu_t\) with
+  \(\nu_t \sim \mathcal{N}(0, \sigma_\nu^2)\), \(\sigma_\nu\) being
+  fixed at \(0.08\);
+\item
+  and the irregular \(I_t = e_t\) with
+  \(e_t \sim \mathcal{N}(0, \sigma_e^2)\).
+\end{itemize}
+
+For the different simulations, we vary the parameters \(\rho\) and
+\(\sigma_e^2\) in order to obtain series with different signal-to-noise
+ratios (see Figure~\ref{fig-graphs-data-simul}):
+
+\begin{itemize}
+\item
+  High signal-to-noise ratio (i.e.~low I-C ratio and low variability):
+  \(\sigma_e^2=0.2\) and \(\rho = 3.0, 3.5\) or \(4.0\) (I-C ratio
+  between 0.9 and 0.7);
+\item
+  Medium signal-to-noise ratio (i.e.~medium I-C ratio and medium
+  variability): \(\sigma_e^2=0.3\) and \(\rho = 1.5,\, 2.0\) or \(3.0\)
+  (I-C ratio between 2.3 and 1.4);
+\item
+  Low signal-to-noise ratio (i.e.~high I-C ratio and high variability):
+  \(\sigma_e^2=0.4\) and \(\rho = 0.5,\, 0.7\) or \(1.0\) (I-C ratio
+  between 8.9 and 5.2).
+\end{itemize}
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphs-data-simul}Simulated series with low
+(\(\sigma_e^2=0.2\) and \(\rho = 3,5\)), medium (\(\sigma_e^2=0.3\) and
+\(\rho = 2.0\)) and high variability (\(\sigma_e^2=0.4\) and
+\(\rho = 1.0\)).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/simulations/simul_data.pdf}
+
+}
+
+\end{figure}
+
+For each series and each date, the trend-cycle is estimated using the
+different methods presented in this report. Three quality criteria are
+also calculated:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Computation of the phase shift in the detection of turning points. The
+  definition of \textcite{Zellner1991} is used to determine the turning
+  points:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    An upturn occurs when the economy moves from a phase of recession to
+    a phase of expansion. This is the case at date \(t\) when
+    \(y_{t-3}\geq y_{t-2}\geq y_{t-1}<y_t\leq y_{t+1}\).\\
+  \item
+    A downturn occurs when the economy moves from a phase of expansion
+    to a phase of recession. This is the case at date \(t\) when
+    \(y_{t-3}\leq y_{t-2}\leq y_{t-1}>y_t\geq y_{t+1}\).\\
+    It thus takes at least 2 months to detect a turning point.\\
+    The phase shift is often defined as the number of months required to
+    detect the right turning point. Here we use a slightly modified
+    criterion: the phase shift is defined as the number of months needed
+    to detect the right turning point without any future revision.
+    Indeed, it can happen that the right turning point is detected by
+    asymmetric filters but is not detected by the final estimate using a
+    symmetric filter (this is the case for 41 reversal points out of the
+    9 series with asymmetric Musgrave filters) or that there are
+    revisions in successive estimates (this is the case for 7 turning
+    points out of the 9 series with asymmetric Musgrave filters).
+    Finally, relatively few turning points are detected at the right
+    date with the final estimate. With the 13-term Henderson filter, 18
+    are correctly detected in series with low variability (out of 57
+    possible), 11 in series with medium variability and 12 in series
+    with high variability.
+  \end{itemize}
+\item
+  Computation of two revision criteria: the average of the relative
+  deviations between the \(q\)\textsuperscript{th} estimate and the last
+  estimate \(MAE_{fe}(q)\) and the average of the relative deviations
+  between the \(q\)\textsuperscript{th} estimate and the
+  \(q+1\)\textsuperscript{th} estimate \(MAE_{qe}(q)\). \[
+  MAE_{fe}(q)=\mathbb E\left[
+  \left|\frac{
+  y_{t|t+q} -  y_{t|last}
+  }{
+   y_{t|last}
+  }\right|
+  \right]
+  \quad\text{and}\quad
+  MAE_{qe}(q)=\mathbb E\left[
+  \left|\frac{
+  y_{t|t+q} - y_{t|t+q+1}
+  }{
+  y_{t|t+q+1}
+  }\right|
+  \right].
+  \]
+\end{enumerate}
+
+\hypertarget{comparison}{%
+\subsection{Comparison}\label{comparison}}
+
+Excluding for the moment the local parameterisations of the polynomial
+filters, the linear-constant polynomial filter (LC) seems to give the
+best results in terms of delay in the detection of turning points
+(Figure~\ref{fig-graphstpsimul}). Performance is relatively close to
+that obtained by extending the series using an ARIMA model. However,
+when variability is low, the LC filter seems to give poorer results and
+the quadratic-linear polynomial filter (QL) seems to give the best
+results.
+
+For series with moderate variability, local parameterisation of the LC
+and QL filters reduces the phase shift. For series with high
+variability, the phase shift is only reduced by using the final
+\(\hat\delta\) parameters: real-time estimates seem to add more
+variance. For series with low variability, performance seems to be
+slightly improved only with the LC filter.
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphstpsimul}Distribution of phase shifts on
+simulated series.}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/simulations/phase_shift_simul.pdf}
+
+}
+
+\end{figure}
+
+In terms of revisions, the variability of the series has little effect
+on the respective performances of the different methods, but it does
+affect the orders of magnitude, which is why the results are presented
+only for series with medium variability (Table~\ref{tab-simulrev}). In
+general, LC filters always minimise revisions (with relatively small
+effect from the local parameterisation of the filters) and revisions are
+greater with cubic-quadratic (CQ) and direct (DAF) polynomial filters.
+
+For the QL filter, there is a large revision between the second and
+third estimates: this may be due to the fact that for the second
+estimate (when one point in the future is known), the QL filter assigns
+a greater weight to the estimate in \(t+1\) than to the estimate in
+\(t\), which creates a discontinuity. This revision is considerably
+reduced by parameterising the filter locally. For polynomial filters
+other than the LC filter, the large revisions at the first estimate were
+to be expected given the coefficient curve: a very large weight is
+associated with the current observation and there is a strong
+discontinuity between the moving average used for real-time estimation
+(when no point in the future is known) and the other moving averages.
+
+Extending the series using an ARIMA model gives revisions with the
+latest estimates of the same order of magnitude as the LC filter, but
+slightly larger revisions between consecutive estimates, particularly
+between the fourth and fifth estimates (as might be expected, as
+highlighted in Section~\ref{sec-mmetprev}).
+
+\begin{table}[!h]
+\caption{\label{tab-simulrev} Average of the relative deviations of the revisions for the different
+filters on simulated series with medium variability.}
+\centering
+\begin{tabular}{ccccccc}
+\toprule
+Method & $q=0$ & $q=1$ & $q=2$ & $q=3$ & $q=4$ & $q=5$\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{$MAE_{fe}(q) = \mathbb E\left[\left|(y_{t|t+q} -  y_{t|last})/y_{t|last}\right|\right]$}}\\
+\hspace{1em}LC & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
+\hspace{1em}LC local param. (final estimates) & 0.19 & 0.09 & 0.03 & 0.03 & 0.03 & 0.01\\
+\hspace{1em}LC local param. & 0.29 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
+\hspace{1em}QL & 0.33 & 0.10 & 0.04 & 0.04 & 0.03 & 0.01\\
+\hspace{1em}QL local param. (final estimates) & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
+\hspace{1em}QL local param. & 0.30 & 0.10 & 0.04 & 0.03 & 0.03 & 0.01\\
+\hspace{1em}CQ & 0.45 & 0.13 & 0.13 & 0.09 & 0.06 & 0.02\\
+\hspace{1em}DAF & 0.47 & 0.15 & 0.15 & 0.09 & 0.06 & 0.02\\
+\hspace{1em}ARIMA & 0.22 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{$MAE_{ce}(q)=\mathbb E\left[
+\left|(y_{t|t+q} - y_{t|t+q+1})/y_{t|t+q+1}\right|
+\right]$}}\\
+\hspace{1em}LC & 0.19 & 0.10 & 0.02 & 0.01 & 0.07 & 0.01\\
+\hspace{1em}LC local param. (final estimates) & 0.20 & 0.10 & 0.03 & 0.01 & 0.05 & 0.01\\
+\hspace{1em}LC local param. & 0.24 & 0.11 & 0.03 & 0.01 & 0.05 & 0.01\\
+\hspace{1em}QL & 0.29 & 3.46 & 0.00 & 0.03 & 0.04 & 0.01\\
+\hspace{1em}QL local param. (final estimates) & 0.31 & 0.11 & 0.02 & 0.01 & 0.04 & 0.01\\
+\hspace{1em}QL local param. & 0.24 & 0.16 & 0.00 & 0.03 & 0.04 & 0.01\\
+\hspace{1em}CQ & 0.43 & 0.02 & 0.10 & 0.07 & 0.05 & 0.02\\
+\hspace{1em}DAF & 0.66 & 0.24 & 0.11 & 0.14 & 0.06 & 0.02\\
+\hspace{1em}ARIMA & 0.21 & 0.13 & 0.02 & 0.02 & 0.25 & 0.01\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{real-series}{%
+\subsection{Real series}\label{real-series}}
+
+The differences between the methods are also illustrated using an
+example from the FRED-MD database (\textcite{fredmd}) containing
+economic series on the United States. The series studied correspond to
+the database published in November 2022. The series studied is the level
+of employment in the United States (series \texttt{CE160V}, used in
+logarithm) around the February 2001 turning point, consistent with the
+monthly dating of the turning points. This point and this series were
+chosen because the economic turnaround is particularly visible in the
+raw series (Figure~\ref{fig-ce16ov-previmp-lp}), because this series is
+used for dating economic cycles and because the FRED-MD database
+facilitates the reproducibility of the results (thanks to the
+availability of series published on past dates). Studying the series up
+to January 2020, this series has a medium variability: a symmetrical
+filter of 13 terms is therefore appropriate. Appendix
+\autocite*{ann-ex-r} shows how the code to reproduce the different
+plots.
+
+Figure~\ref{fig-ce16ovlp} shows the successive estimates of the
+trend-cycle using the different methods studied.
+
+For this series, the phase shift is 6 months for the LC and CQ methods
+and the extension of the series by ARIMA. Except for the LC method
+(where the turning point is first detected in January 2001), the high
+phase shift is due to revisions in the turning point detected in the
+intermediate estimates (even if the correct turning point is detected
+after 2 months, it is no longer detected after 3 months). It is of two
+months for the other methods (QL, DAF).
+
+In this example, local parameterisation does not reduce the phase shift,
+but it does reduce revisions. The QL and DAF polynomials lead to greater
+variability in the intermediate estimates, especially in February 2001.
+
+\begin{figure}[H]
+
+\caption{\label{fig-ce16ovlp}Successive estimates of the trend-cycle in
+US employment (in logarithms).}
+
+{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_lp.pdf}
+
+}
+
+\end{figure}
+
+The quality of the intermediate estimates can also be analysed using the
+implicit forecasts of the different methods
+(Figure~\ref{fig-ce16ov-previmp-lp}). As a reminder, these are forecasts
+of the raw series which, by applying the symmetrical Henderson filter to
+the extended series, give the same estimates as the asymmetrical moving
+averages. The forecasts of the ARIMA model are naive and do not take the
+turning point into account, unlike the other methods. Finally, local
+parameterisation of the QL filter produces much more consistent
+forecasts.
+
+\begin{figure}[H]
+
+\caption{\label{fig-ce16ov-previmp-lp}Implicit forecasts linked to
+successive estimates of the trend-cycle in US employment (in logarithms)
+using local polynomial methods.}
+
+{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_prev_imp_lp.pdf}
+
+}
+
+\end{figure}
+
+\hypertarget{conclusion}{%
+\section*{Conclusion}\label{conclusion}}
+\addcontentsline{toc}{section}{Conclusion}
+
+For business cycle analysis, most statisticians use trend-cycle
+extraction methods, either directly or indirectly. They are used, for
+example, to reduce the noise of an indicator in order to improve its
+analysis, and models, such as forecasting models, usually use seasonally
+adjusted series based on these methods.
+
+This paper presents the \faIcon{r-project} package \texttt{rjd3filters},
+which implements a several methods to build moving average for real-time
+trend-cycle estimation. It also offers various functions for the
+theoretical analysis of moving averages (gain functions, phase shift,
+quality criteria, etc.) and judging the quality of the latest estimates
+(for example with implicit forecasts). It also makes it easy to combine
+moving averages and also to integrate custom moving averages into the
+X-11 seasonal adjustment algorithm (with the
+\texttt{rjd3filters::x11plus\_trend()} function). \texttt{rjd3filters}
+thus facilitates research into the use of moving averages as part of
+real-time cycle trend estimation. This is the case, for example, with
+the local parametrisation of Musgrave moving averages and other
+asymmetric moving averages linked to local polynomial regression,
+presented in this article.
+
+By comparing the different methods, we can learn a few lessons about the
+construction of these moving averages.
+
+During economic downturns, asymmetric filters used as an alternative to
+extending the series using the ARIMA model can reduce revisions to
+intermediate estimates of the trend-cycle and enable turning points to
+be detected more quickly.
+
+At the end of the period, modelling polynomial trends of degree greater
+than three (cubic-quadratic, CQ, and direct, DAF) seems to introduce
+variance into the estimates (and therefore more revisions) without
+allowing faster detection of turning points. At the end of the period,
+for estimating the trend-cycle, we can therefore restrict ourselves to
+methods modelling polynomial trends of degree two or less
+(linear-constant, LC, and quadratic-linear, QL). In addition,
+parameterising polynomial filters locally as suggested in this paper
+enables turning points to be detected more quickly (especially for the
+QL filter). Even when the phase shift is not reduced, local
+parameterisation is recommended because it reduces revisions and
+produces intermediate estimates that are more consistent with expected
+future trends. However, with these methods, the length of the filter
+used must be adapted to the variability of the series: if the filter
+used is too short (i.e.~if the variability of the series is ``low''),
+retaining polynomial trends of degree one or less (LC method) produces
+poorer results in terms of detecting turning points.
+
+This study could be extended in many ways.
+
+One possible extension would be to look at the impact of filter length
+on the detection of turning points. Asymmetric filters are calibrated
+using indicators calculated for the estimation of symmetric filters (for
+example, to automatically determine their length), whereas a local
+estimate might be preferable. Furthermore, we have only focused on
+monthly series with a 13-term symmetric filter, but the results may be
+different if the symmetric filter studied is longer or shorter and if we
+study series with other frequencies (quarterly or daily, for example).
+
+Another possibility would be to study the impact of atypical points:
+moving averages, like any linear operator, are very sensitive to the
+presence of atypical points. To limit their impact, in X-13ARIMA a
+strong correction for atypical points is performed on the irregular
+component before applying the filters to extract the trend-cycle. This
+leads us to study the impact of these points on the estimation of the
+trend-cycle and turning points, and also to explore new types of
+asymmetric filters based on robust methods (such as robust local
+regressions or moving medians).
+
+\newpage
+
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
+
+\printbibliography[heading=none]
+
+\appendix
+\newpage
+
+\hypertarget{sec-an-cof}{%
+\section{Coefficients, gain and phase shift
+functions}\label{sec-an-cof}}
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphs-coef-lc}Coefficients, gain and phase shift
+functions for the Linear-Constant (LC) filter with \(I/C=3.5\).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/lc.pdf}
+
+}
+
+\end{figure}
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphs-coef-ql}Coefficients, gain and phase shift
+functions for the Quadratic-Linear (QL) filter with \(I/C=3.5\).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/ql.pdf}
+
+}
+
+\end{figure}
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphs-coef-cq}Coefficients, gain and phase shift
+functions for the Cubic-Quadratic (CQ) filter with \(I/C=3.5\).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/cq.pdf}
+
+}
+
+\end{figure}
+
+\begin{figure}[H]
+
+\caption{\label{fig-graphs-coef-daf}Coefficients, gain and phase shift
+functions for the direct asymmetric filter (DAF).}
+
+{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/daf.pdf}
+
+}
+
+\end{figure}
+
+\hypertarget{ann-ex-r}{%
+\section{R code example}\label{ann-ex-r}}
+
+In this appendix we present the \faIcon{r-project} code that can be used
+to estimate trend-cycle components for the US Employment with local
+polynomial filters.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \# To install rjd3filters}
+\CommentTok{\# remotes::install\_github("rjdemetra/rjd3toolkit")}
+\CommentTok{\# remotes::install\_github("rjdemetra/rjd3x11plus")}
+\CommentTok{\# remotes::install\_github("rjdemetra/rjd3filters")}
+\FunctionTok{library}\NormalTok{(rjd3filters)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+\FunctionTok{library}\NormalTok{(zoo)}
+\FunctionTok{library}\NormalTok{(forecast)}
+\NormalTok{file }\OtherTok{\textless{}{-}}\StringTok{"https://files.stlouisfed.org/files/htdocs/fred{-}md/monthly/2022{-}11.csv"}
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(file)}
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ data[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,] }\CommentTok{\# First line removed: it contains the transformation codes}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{ts}\NormalTok{(}\FunctionTok{log}\NormalTok{(data[, }\StringTok{"CE16OV"}\NormalTok{]), }\CommentTok{\# We study US employment}
+         \AttributeTok{start =} \DecValTok{1959}\NormalTok{, }\AttributeTok{frequency =} \DecValTok{12}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{window}\NormalTok{(y, }\AttributeTok{end =} \FunctionTok{c}\NormalTok{(}\DecValTok{2001}\NormalTok{, }\DecValTok{9}\NormalTok{))}
+\NormalTok{last\_dates }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{tail}\NormalTok{(}\FunctionTok{time}\NormalTok{(y), }\DecValTok{8}\NormalTok{))}
+\FunctionTok{names}\NormalTok{(last\_dates) }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(zoo}\SpecialCharTok{::}\FunctionTok{as.yearmon}\NormalTok{(last\_dates))}
+\NormalTok{last\_est }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(last\_dates, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{window}\NormalTok{(y, }\AttributeTok{end =}\NormalTok{ x))}
+
+\CommentTok{\# MA of length 13 is appropriated:}
+\FunctionTok{select\_trend\_filter}\NormalTok{(y)}
+\CommentTok{\# Final estimates:}
+\NormalTok{tc\_f }\OtherTok{\textless{}{-}} \FunctionTok{henderson}\NormalTok{(y, }\AttributeTok{length =} \DecValTok{13}\NormalTok{, }\AttributeTok{musgrave =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(y)}
+\FunctionTok{lines}\NormalTok{(tc\_f, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}
+\NormalTok{forecast}\SpecialCharTok{::}\FunctionTok{autoplot}\NormalTok{(}\FunctionTok{ts.union}\NormalTok{(y, tc\_f))}
+
+\CommentTok{\# IC{-}ratio computation}
+\NormalTok{icr }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(last\_est, }\ControlFlowTok{function}\NormalTok{(x) \{}
+  \FunctionTok{ic\_ratio}\NormalTok{(x, }\FunctionTok{henderson}\NormalTok{(x, }\AttributeTok{length =} \DecValTok{13}\NormalTok{, }\AttributeTok{musgrave =} \ConstantTok{FALSE}\NormalTok{))}
+\NormalTok{\})}
+\NormalTok{lp\_est }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"LC"}\NormalTok{, }\StringTok{"QL"}\NormalTok{, }\StringTok{"CQ"}\NormalTok{, }\StringTok{"DAF"}\NormalTok{), }\ControlFlowTok{function}\NormalTok{(method) \{}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{seq\_along}\NormalTok{(icr), }\ControlFlowTok{function}\NormalTok{(i) \{}
+\NormalTok{    lp\_coef }\OtherTok{\textless{}{-}} \FunctionTok{lp\_filter}\NormalTok{(}\AttributeTok{horizon =} \DecValTok{6}\NormalTok{,}
+                         \AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{,}
+                         \AttributeTok{endpoints =}\NormalTok{ method,}
+                         \AttributeTok{ic =}\NormalTok{ icr[i])}
+\NormalTok{    rjd3filters}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(last\_est[[i]], lp\_coef)}
+\NormalTok{  \})}
+  \FunctionTok{names}\NormalTok{(res) }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(last\_est)}
+\NormalTok{  res}
+\NormalTok{\})}
+\NormalTok{lp\_if }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"LC"}\NormalTok{, }\StringTok{"QL"}\NormalTok{, }\StringTok{"CQ"}\NormalTok{, }\StringTok{"DAF"}\NormalTok{), }\ControlFlowTok{function}\NormalTok{(method) \{}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{seq\_along}\NormalTok{(icr), }\ControlFlowTok{function}\NormalTok{(i) \{}
+\NormalTok{    lp\_coef }\OtherTok{\textless{}{-}} \FunctionTok{lp\_filter}\NormalTok{(}\AttributeTok{horizon =} \DecValTok{6}\NormalTok{,}
+                         \AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{,}
+                         \AttributeTok{endpoints =}\NormalTok{ method,}
+                         \AttributeTok{ic =}\NormalTok{ icr[i])}
+    \FunctionTok{implicit\_forecast}\NormalTok{(last\_est[[i]], lp\_coef)}
+\NormalTok{  \})}
+  \FunctionTok{names}\NormalTok{(res) }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(last\_est)}
+\NormalTok{  res}
+\NormalTok{\})}
+\FunctionTok{names}\NormalTok{(lp\_est) }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(lp\_if) }\OtherTok{\textless{}{-}}  \FunctionTok{c}\NormalTok{(}\StringTok{"LC"}\NormalTok{, }\StringTok{"QL"}\NormalTok{, }\StringTok{"CQ"}\NormalTok{, }\StringTok{"DAF"}\NormalTok{)}
+
+\CommentTok{\# Local estimates of IC{-}ratios}
+\CommentTok{\# We replicate the direct estimates to have}
+\CommentTok{\# estimators of the slope and the concavity}
+\NormalTok{gen\_MM }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{p=}\DecValTok{6}\NormalTok{, }\AttributeTok{q=}\NormalTok{p, }\AttributeTok{d=}\DecValTok{2}\NormalTok{)\{}
+\NormalTok{  X\_gen }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{d =} \DecValTok{1}\NormalTok{, }\AttributeTok{p =} \DecValTok{6}\NormalTok{, }\AttributeTok{q =}\NormalTok{ p)\{}
+    \FunctionTok{sapply}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{d, }\ControlFlowTok{function}\NormalTok{(exp) }\FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{p, q)}\SpecialCharTok{\^{}}\NormalTok{exp)}
+\NormalTok{  \}}
+\NormalTok{  k }\OtherTok{=}\NormalTok{ rjd3filters}\SpecialCharTok{::}\FunctionTok{get\_kernel}\NormalTok{(}\StringTok{"Henderson"}\NormalTok{, }\AttributeTok{h =}\NormalTok{ p)}
+\NormalTok{  k }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FunctionTok{rev}\NormalTok{(k}\SpecialCharTok{$}\NormalTok{coef[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]), k}\SpecialCharTok{$}\NormalTok{coef[}\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,q)}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])}
+\NormalTok{  K }\OtherTok{=} \FunctionTok{diag}\NormalTok{(k)}
+\NormalTok{  X }\OtherTok{=} \FunctionTok{X\_gen}\NormalTok{(}\AttributeTok{d=}\NormalTok{d, }\AttributeTok{p =}\NormalTok{ p, }\AttributeTok{q =}\NormalTok{ q)}
+\NormalTok{  e1 }\OtherTok{=}\NormalTok{ e2 }\OtherTok{=}\NormalTok{ e3 }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{, }\AttributeTok{nrow =}\NormalTok{ d}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}
+\NormalTok{  e1[}\DecValTok{1}\NormalTok{] }\OtherTok{=} \DecValTok{1}
+\NormalTok{  e2[}\DecValTok{2}\NormalTok{] }\OtherTok{=} \DecValTok{1}
+\NormalTok{  e3[}\DecValTok{3}\NormalTok{] }\OtherTok{=} \DecValTok{1}
+  \CommentTok{\# Estimator of the constant}
+\NormalTok{  M1 }\OtherTok{=}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X, e1)}
+  \CommentTok{\# Estimator of the slope}
+\NormalTok{  M2 }\OtherTok{=}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X, e2)}
+  \CommentTok{\# Estimor of the concavity}
+\NormalTok{  M3 }\OtherTok{=}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ K }\SpecialCharTok{\%*\%}\NormalTok{ X, e3)}
+\NormalTok{  mm }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{const =}\NormalTok{ M1, }\AttributeTok{slope =}\NormalTok{ M2, }\AttributeTok{concav =}\NormalTok{ M3)}
+  \FunctionTok{lapply}\NormalTok{(mm, moving\_average, }\AttributeTok{lags =} \SpecialCharTok{{-}}\NormalTok{p)}
+\NormalTok{\}}
+\NormalTok{all\_mm }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\DecValTok{6}\SpecialCharTok{:}\DecValTok{0}\NormalTok{, gen\_MM, }\AttributeTok{p =} \DecValTok{6}\NormalTok{, }\AttributeTok{d =} \DecValTok{2}\NormalTok{)}
+\NormalTok{est\_slope }\OtherTok{\textless{}{-}} \FunctionTok{finite\_filters}\NormalTok{(all\_mm[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{slope,}
+                            \FunctionTok{lapply}\NormalTok{(all\_mm[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{], }\StringTok{\textasciigrave{}}\AttributeTok{[[}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{"slope"}\NormalTok{))}
+\NormalTok{est\_concav }\OtherTok{\textless{}{-}} \FunctionTok{finite\_filters}\NormalTok{(all\_mm[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{concav,}
+                             \FunctionTok{lapply}\NormalTok{(all\_mm[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{], }\StringTok{\textasciigrave{}}\AttributeTok{[[}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{"concav"}\NormalTok{))}
+
+\NormalTok{henderson\_f }\OtherTok{\textless{}{-}} \FunctionTok{lp\_filter}\NormalTok{(}\AttributeTok{h=}\DecValTok{6}\NormalTok{)}\SpecialCharTok{@}\NormalTok{sfilter}
+\NormalTok{lp\_filter2 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(icr, }\AttributeTok{method =} \StringTok{"LC"}\NormalTok{, }\AttributeTok{h =} \DecValTok{6}\NormalTok{, }\AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{)\{}
+\NormalTok{  all\_coef }\OtherTok{=} \FunctionTok{lapply}\NormalTok{(icr, }\ControlFlowTok{function}\NormalTok{(ic)\{}
+    \FunctionTok{lp\_filter}\NormalTok{(}\AttributeTok{horizon =}\NormalTok{ h,}
+              \AttributeTok{kernel =}\NormalTok{ kernel,}
+              \AttributeTok{endpoints =}\NormalTok{ method,}
+              \AttributeTok{ic =}\NormalTok{ ic)}
+\NormalTok{  \})}
+\NormalTok{  rfilters }\OtherTok{=} \FunctionTok{lapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{h, }\ControlFlowTok{function}\NormalTok{(i)\{}
+\NormalTok{    q}\OtherTok{=}\NormalTok{h }\SpecialCharTok{{-}}\NormalTok{i}
+\NormalTok{    all\_coef[[i]][,}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"q=\%i"}\NormalTok{, q)]}
+\NormalTok{  \})}
+  \FunctionTok{finite\_filters}\NormalTok{(henderson\_f, }\AttributeTok{rfilters =}\NormalTok{ rfilters)}
+\NormalTok{\}}
+\NormalTok{loc\_lc\_est }\OtherTok{\textless{}{-}}
+  \FunctionTok{lapply}\NormalTok{(last\_est, }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    est\_loc\_slope }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{tail}\NormalTok{(est\_slope }\SpecialCharTok{*}\NormalTok{ x, }\DecValTok{6}\NormalTok{))}
+\NormalTok{    sigma2 }\OtherTok{\textless{}{-}} \FunctionTok{var\_estimator}\NormalTok{(x, henderson\_f)}
+\NormalTok{    icr }\OtherTok{=} \DecValTok{2}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(pi) }\SpecialCharTok{*}\NormalTok{ (est\_loc\_slope }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(sigma2)))}
+\NormalTok{    lp\_coef }\OtherTok{=} \FunctionTok{lp\_filter2}\NormalTok{(}\AttributeTok{ic =}\NormalTok{ icr,}
+                         \AttributeTok{method =} \StringTok{"LC"}\NormalTok{, }\AttributeTok{h =} \DecValTok{6}\NormalTok{, }\AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{)}
+\NormalTok{    rjd3filters}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(x, lp\_coef)}
+\NormalTok{  \})}
+\NormalTok{loc\_lc\_if }\OtherTok{\textless{}{-}}
+  \FunctionTok{lapply}\NormalTok{(last\_est, }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    est\_loc\_slope }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{tail}\NormalTok{(est\_slope }\SpecialCharTok{*}\NormalTok{ x, }\DecValTok{6}\NormalTok{))}
+\NormalTok{    sigma2 }\OtherTok{\textless{}{-}} \FunctionTok{var\_estimator}\NormalTok{(x, henderson\_f)}
+\NormalTok{    icr }\OtherTok{=} \DecValTok{2}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(pi) }\SpecialCharTok{*}\NormalTok{ (est\_loc\_slope }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(sigma2)))}
+\NormalTok{    lp\_coef }\OtherTok{=} \FunctionTok{lp\_filter2}\NormalTok{(}\AttributeTok{ic =}\NormalTok{ icr,}
+                         \AttributeTok{method =} \StringTok{"LC"}\NormalTok{, }\AttributeTok{h =} \DecValTok{6}\NormalTok{, }\AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{)}
+    \FunctionTok{implicit\_forecast}\NormalTok{(x, lp\_coef)}
+\NormalTok{  \})}
+\NormalTok{loc\_ql\_est }\OtherTok{\textless{}{-}}
+  \FunctionTok{lapply}\NormalTok{(last\_est, }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    est\_loc\_concav }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{tail}\NormalTok{(est\_concav }\SpecialCharTok{*}\NormalTok{ x, }\DecValTok{6}\NormalTok{))}
+\NormalTok{    sigma2 }\OtherTok{\textless{}{-}} \FunctionTok{var\_estimator}\NormalTok{(x, henderson\_f)}
+\NormalTok{    icr }\OtherTok{=} \DecValTok{2}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(pi) }\SpecialCharTok{*}\NormalTok{ (est\_loc\_concav }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(sigma2)))}
+\NormalTok{    lp\_coef }\OtherTok{=} \FunctionTok{lp\_filter2}\NormalTok{(}\AttributeTok{ic =}\NormalTok{ icr,}
+                         \AttributeTok{method =} \StringTok{"QL"}\NormalTok{, }\AttributeTok{h =} \DecValTok{6}\NormalTok{, }\AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{)}
+\NormalTok{    rjd3filters}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(x, lp\_coef)}
+\NormalTok{  \})}
+\NormalTok{loc\_ql\_if }\OtherTok{\textless{}{-}}
+  \FunctionTok{lapply}\NormalTok{(last\_est, }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    est\_loc\_concav }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{tail}\NormalTok{(est\_concav }\SpecialCharTok{*}\NormalTok{ x, }\DecValTok{6}\NormalTok{))}
+\NormalTok{    sigma2 }\OtherTok{\textless{}{-}} \FunctionTok{var\_estimator}\NormalTok{(x, henderson\_f)}
+\NormalTok{    icr }\OtherTok{=} \DecValTok{2}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(pi) }\SpecialCharTok{*}\NormalTok{ (est\_loc\_concav }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(sigma2)))}
+\NormalTok{    lp\_coef }\OtherTok{=} \FunctionTok{lp\_filter2}\NormalTok{(}\AttributeTok{ic =}\NormalTok{ icr,}
+                         \AttributeTok{method =} \StringTok{"QL"}\NormalTok{, }\AttributeTok{h =} \DecValTok{6}\NormalTok{, }\AttributeTok{kernel =} \StringTok{"Henderson"}\NormalTok{)}
+    \FunctionTok{implicit\_forecast}\NormalTok{(x, lp\_coef)}
+\NormalTok{  \})}
+
+\DocumentationTok{\#\# Plots}
+\CommentTok{\# Plots with all the estimates}
+\NormalTok{plot\_est }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, }\AttributeTok{nperiod =} \DecValTok{6}\NormalTok{) \{}
+\NormalTok{  joint\_data }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(ts.union, data)}
+\NormalTok{  joint\_data }\OtherTok{\textless{}{-}}
+    \FunctionTok{window}\NormalTok{(joint\_data,}
+           \AttributeTok{start =}\NormalTok{ last\_dates[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ nperiod }\SpecialCharTok{*} \FunctionTok{deltat}\NormalTok{(joint\_data))}
+
+\NormalTok{  data\_legend }\OtherTok{\textless{}{-}}
+    \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =}\NormalTok{ last\_dates,}
+               \AttributeTok{y =} \FunctionTok{sapply}\NormalTok{(data, tail, }\DecValTok{1}\NormalTok{),}
+               \AttributeTok{label =} \FunctionTok{colnames}\NormalTok{(joint\_data))}
+
+\NormalTok{  forecast}\SpecialCharTok{::}\FunctionTok{autoplot}\NormalTok{(joint\_data) }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ zoo}\SpecialCharTok{::}\NormalTok{as.yearmon) }\SpecialCharTok{+}
+    \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y, }\AttributeTok{label =}\NormalTok{ label, }\AttributeTok{colour =}\NormalTok{ label),}
+              \AttributeTok{data =}\NormalTok{ data\_legend,}
+              \AttributeTok{check\_overlap =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{0}\NormalTok{, }\AttributeTok{nudge\_x =} \FloatTok{0.01}\NormalTok{,}
+              \AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{inherit.aes =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)  }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{plot\_prevs }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{ (data, }\AttributeTok{nperiod =} \DecValTok{6}\NormalTok{) \{}
+\NormalTok{  joint\_data }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(ts.union, }\FunctionTok{lapply}\NormalTok{(data, }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    first\_date }\OtherTok{\textless{}{-}} \FunctionTok{time}\NormalTok{(x)[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}} \FunctionTok{deltat}\NormalTok{(x)}
+    \CommentTok{\# The last observed data is added for readability}
+    \FunctionTok{ts}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{window}\NormalTok{(y, }\AttributeTok{start =}\NormalTok{ first\_date, }\AttributeTok{end =}\NormalTok{ first\_date), x),}
+       \AttributeTok{start =}\NormalTok{ first\_date, }\AttributeTok{frequency =} \FunctionTok{frequency}\NormalTok{(x))}
+\NormalTok{  \}))}
+
+\NormalTok{  data\_legend }\OtherTok{\textless{}{-}}
+    \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =} \FunctionTok{sapply}\NormalTok{(data, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{tail}\NormalTok{(}\FunctionTok{time}\NormalTok{(x), }\DecValTok{1}\NormalTok{)),}
+               \AttributeTok{y =} \FunctionTok{sapply}\NormalTok{(data, tail, }\DecValTok{1}\NormalTok{),}
+               \AttributeTok{label =} \FunctionTok{colnames}\NormalTok{(joint\_data))}
+\NormalTok{  forecast}\SpecialCharTok{::}\FunctionTok{autoplot}\NormalTok{(joint\_data, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{    forecast}\SpecialCharTok{::}\FunctionTok{autolayer}\NormalTok{(}
+      \FunctionTok{window}\NormalTok{(y, }\AttributeTok{start =}\NormalTok{ last\_dates[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ nperiod }\SpecialCharTok{*} \FunctionTok{deltat}\NormalTok{(y)),}
+      \AttributeTok{colour =} \ConstantTok{FALSE}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ zoo}\SpecialCharTok{::}\NormalTok{as.yearmon) }\SpecialCharTok{+}
+    \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y, }\AttributeTok{label =}\NormalTok{ label, }\AttributeTok{colour =}\NormalTok{ label),}
+              \AttributeTok{data =}\NormalTok{ data\_legend,}
+              \AttributeTok{check\_overlap =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{0}\NormalTok{, }\AttributeTok{nudge\_x =} \FloatTok{0.01}\NormalTok{,}
+              \AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{inherit.aes =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{all\_est }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(lp\_est, }\FunctionTok{list}\NormalTok{(}\StringTok{"LC local param."} \OtherTok{=}\NormalTok{ loc\_lc\_est),}
+             \FunctionTok{list}\NormalTok{(}\StringTok{"QL local param."} \OtherTok{=}\NormalTok{ loc\_ql\_est))}
+\NormalTok{all\_if }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(lp\_if, }\FunctionTok{list}\NormalTok{(}\StringTok{"LC local param."} \OtherTok{=}\NormalTok{ loc\_lc\_if),}
+            \FunctionTok{list}\NormalTok{(}\StringTok{"QL local param."} \OtherTok{=}\NormalTok{ loc\_ql\_if))}
+\NormalTok{y\_lim }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{all\_plots\_est }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}
+  \FunctionTok{names}\NormalTok{(all\_est),}
+  \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{plot\_est}\NormalTok{(all\_est[[x]]) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(latex2exp}\SpecialCharTok{::}\FunctionTok{TeX}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"Trend{-}cycle with \%s"}\NormalTok{, x))) }\SpecialCharTok{+}
+    \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{ylim =}\NormalTok{ y\_lim)}
+\NormalTok{)}
+\NormalTok{all\_plots\_prev }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}
+  \FunctionTok{names}\NormalTok{(all\_if),}
+  \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{plot\_prevs}\NormalTok{(all\_if[[x]]) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(latex2exp}\SpecialCharTok{::}\FunctionTok{TeX}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"Implicit forecasts with \%s"}\NormalTok{, x)))}
+\NormalTok{)}
+\CommentTok{\# Combine all plots:}
+\FunctionTok{wrap\_plots}\NormalTok{(all\_plots\_est, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{wrap\_plots}\NormalTok{(all\_plots\_prev, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,66 @@
+---
+title: "Supplemental material"
+format:
+  pdf:
+    documentclass: article
+    number-sections: true
+    pdf-engine: pdflatex
+    toc: false
+    include-in-header: [preamble.tex]
+    #include-before-body: template/preambule.tex
+    geometry:
+      - top=2cm
+      - bottom=2cm
+      - left = 2.5cm
+      - right = 2.5cm
+linestretch: 2
+echo: false
+tbl-cap-location: top
+fig-cap-location: top
+---
+
+\appendix
+
+# Coefficients, gain and phase shift functions {#sec-an-cof}
+
+```{r, out.width="100%"}
+#| label: fig-graphs-coef-lc
+#| fig-cap: Coefficients, gain and phase shift functions for the Linear-Constant (LC) filter with $I/C=3.5$.
+img <- sprintf("img/filters_used/%s.%s", tolower("LC"), "pdf")
+knitr::include_graphics(img)
+```
+
+```{r, out.width="100%"}
+#| label: fig-graphs-coef-ql
+#| fig-cap: Coefficients, gain and phase shift functions for the Quadratic-Linear (QL) filter with $I/C=3.5$.
+img <- sprintf("img/filters_used/%s.%s", tolower("QL"), "pdf")
+knitr::include_graphics(img)
+```
+
+
+```{r, out.width="100%"}
+#| label: fig-graphs-coef-cq
+#| fig-cap: Coefficients, gain and phase shift functions for the Cubic-Quadratic (CQ) filter with $I/C=3.5$.
+img <- sprintf("img/filters_used/%s.%s", tolower("CQ"), "pdf")
+knitr::include_graphics(img)
+```
+
+```{r, out.width="100%"}
+#| label: fig-graphs-coef-daf
+#| fig-cap: Coefficients, gain and phase shift functions for the direct asymmetric filter (DAF).
+img <- sprintf("img/filters_used/%s.%s", tolower("DAF"), "pdf")
+knitr::include_graphics(img)
+```
+
+
+\newpage
+
+# R code example {#ann-ex-r}
+
+In this appendix we present the {{< fa brands r-project >}} code that can be used to estimate trend-cycle components for the US Employment with local polynomial filters.
+
+```{r, eval=FALSE, echo=TRUE}
+#| eval: false
+#| echo: true
+#| file: R_ex.R
+```
