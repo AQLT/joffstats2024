@@ -74,7 +74,7 @@ However, these methods have two drawbacks.
 Firstly, the phase shift (i.e. the delay in detecting turning points) is not directly controlled.
 Secondly, asymmetric filters depend on a parameter that is generally estimated over the whole series using assumptions that may be wrong locally.
 The aim of this study is to propose extensions to the @proietti2008 class of filters in order to take these shortcomings into account.
-The extensions have been implemented in the {{< fa brands r-project >}} `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and are therefore easily reusable.
+The extensions have been implemented in the R `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and are therefore easily reusable.
 
 In @sec-propMM, we describe the general properties of moving averages and the associated quality criteria.
 This allows us to understand the foundations behind the construction of moving averages from local polynomial regressions, as well as those behind the two extensions proposed in this article (@sec-nonparamreg).
@@ -276,10 +276,10 @@ They are summarised in Table\ \ref{tab-QC} and can be calculated using the `rjd3
 
 @ch15HBSA propose a general approach to derive linear filters, based on an optimisation problem involving three criteria: *Fidelity* ($F_g$), *Smoothness* ($S_g$) and *Timeliness* ($T_g$).
 Fidelity can be directly linked to the reduction in variance created by the filter, and timeliness to the notion of phase shift, which again we want to be low. 
-This method can be used in{{< fa brands r-project >}} with the function `rjd3filters::fst_filter()`.
+This method can be used inR with the function `rjd3filters::fst_filter()`.
 
 @trilemmaWMR2019 propose an approach based on the decomposition of the mean squared error between the symmetric and the asymmetric filter in four quantities: *Accuracy* ($A_w$), *Timeliness* ($T_w$), *Smoothness* ($S_w$) and *Residual* ($R_w$).
-A simplified version of this method can be used in {{< fa brands r-project >}} with the function `rjd3filters::dfa_filter()`.
+A simplified version of this method can be used in R with the function `rjd3filters::dfa_filter()`.
 
 ```{r, include=FALSE}
 title <- "Quality criteria for a moving average $\\boldsymbol\\theta=(\\theta_k)_{-p\\leq k\\leq f}$ defined by a gain function $\\rho_{\\boldsymbol\\theta}$ and a phase shift function $\\varphi_{\\boldsymbol\\theta}$."
@@ -374,7 +374,7 @@ Various estimation methods can be used to derive symmetrical and asymmetrical mo
 @GrayThomson1996 propose a complete statistical framework which makes it possible, in particular, to model the error in approximating the trend by local polynomials.
 However, as the specification of this error is generally complex, simpler models may be preferred, such as that of @proietti2008.  
 Finally, @dagumbianconcini2008 propose a similar modelling of the trend-cycle but using the theory of Hilbert spaces with reproducing kernels for estimation, which has the particular advantage of facilitating the calculation of different moving averages at different time frequencies.
-This method can be used in{{< fa brands r-project >}} with the function `rjd3filters::rkhs_filter()`.
+This method can be used inR with the function `rjd3filters::rkhs_filter()`.
 
 
 ## Symmetric moving averages and local polynomial regression
@@ -634,7 +634,7 @@ $$
 where $\alpha_T$ is the weight associated to the timeliness criterion. 
 With $\alpha_T=0$ we find $\varphi(\boldsymbol v)$.
 This extension therefore makes it possible to find all the symmetric and asymmetric filters presented in the previous section but also generalizes the approach of @GrayThomson1996.
-This extension is implemented in the {{< fa brands r-project >}} function `rjd3filters::lp_filter()`.
+This extension is implemented in the R function `rjd3filters::lp_filter()`.
 
 One drawback is that $T_g(\boldsymbol v)$ is not normalized: the weight $\alpha_T$ has no economic sense.
 It is then difficult to calibrate the value of $\alpha_T$ since the value of $\lvert\delta/\sigma\rvert$ must also be defined.
@@ -913,7 +913,7 @@ knitr::include_graphics(img)
 For business cycle analysis, most statisticians use trend-cycle extraction methods, either directly or indirectly.
 They are used, for example, to reduce the noise of an indicator in order to improve its analysis, and models, such as forecasting models, usually use seasonally adjusted series based on these methods.
 
-This paper presents the {{< fa brands r-project >}} package `rjd3filters`, which implements a several methods to build moving average for real-time trend-cycle estimation.
+This paper presents the R package `rjd3filters`, which implements a several methods to build moving average for real-time trend-cycle estimation.
 It also offers various functions for the theoretical analysis of moving averages (gain functions, phase shift, quality criteria, etc.) and judging the quality of the latest estimates (for example with implicit forecasts).
 It also makes it easy to combine moving averages and also to integrate custom moving averages into the X-11 seasonal adjustment algorithm (with the `rjd3filters::x11plus_trend()` function).
 `rjd3filters` thus facilitates research into the use of moving averages as part of real-time cycle trend estimation.
@@ -982,7 +982,7 @@ knitr::include_graphics(img)
 
 # R code example {#ann-ex-r}
 
-In this appendix we present the {{< fa brands r-project >}} code that can be used to estimate trend-cycle components for the US Employment with local polynomial filters.
+In this appendix we present the R code that can be used to estimate trend-cycle components for the US Employment with local polynomial filters.
 
 ```{r, eval=FALSE, echo=TRUE}
 #| eval: false
