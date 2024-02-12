@@ -1,7 +1,6 @@
 library(rjd3filters)
 library(ggplot2)
 library(patchwork)
-library(AQLThesis)
 h <- 6
 q <- 6
 X_gen <- function(d = 1, p = 6, q = p){
@@ -26,8 +25,8 @@ d3 = gen_MM(d=3)
 ylim_m2 = range(c(d2[,2], d2[,3]))
 plot_coef_ggplot <- function(data){
   data$date <- factor(rownames(data), levels = rownames(data),ordered = TRUE)
-  dataGraph <- reshape2::melt(data)
-
+  dataGraph <- reshape2::melt(data, id.vars = "date")
+  
   ggplot(data = dataGraph, aes(x = date, y = value, group = variable,
                                colour = variable)) +
     geom_line(linewidth = 0.7) +
@@ -45,7 +44,7 @@ plot_coef_ggplot <- function(data){
 
 MM_D3 = data.frame(gen_MM(d=3,q=6)[,2], gen_MM(d=3,q=6)[,3])
 rownames(MM_D3) <- rjd3filters:::coefficients_names(-6,6)
-colnames(MM_D3) <- c("Est. pente", "Est. concavité")
+colnames(MM_D3) <- c("Slope estimators", "Concavity estimators")
 plot_coef_ggplot(MM_D3)
 
 MM_d3_pente = data.frame(sapply(0:6, function(x) c(gen_MM(d=3,q=x)[,2], rep(NA, 6-x))))
@@ -63,9 +62,6 @@ colnames(MM_d2_pente) <- sprintf("q=%i",0:6)
 MM_d2_deriv2 = data.frame(sapply(0:6, function(x) c(gen_MM(d=2,q=x)[,3], rep(NA, 6-x))))
 rownames(MM_d2_deriv2) <-  rjd3filters:::coefficients_names(-6,6)
 colnames(MM_d2_deriv2) <- sprintf("q=%i",0:6)
-p = (plot_coef_ggplot(MM_d3_pente) + ggtitle("MM utilisées pour estimer la pente") +
-       theme(legend.position="none")
-) + (plot_coef_ggplot(MM_d3_deriv2) + ggtitle("MM utilisées pour estimer la concavité"))
 
 p21 = plot_coef_ggplot(MM_d2_pente) +
   theme(legend.position="none")
