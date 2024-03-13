@@ -124,8 +124,8 @@ When  $\varphi_{\boldsymbol\theta}(\omega)/\omega<0$ the time shift is negative:
 
 
 Fourier decomposition allows us to analyze any time series as a sum of harmonic series, and each component (trend, cycle, seasonal, irregular) is associated with a set of frequencies.
-Noting $\omega = 2\pi/p$, the harmonic series of frequency $\omega$ represents a series that repeats itself every $p$ periods.
-For example, for a monthly series (12 observations per year), seasonal movements are those that repeat every year: they are therefore associated with frequencies $2\pi/12$ (annual periodicity), $2\pi/12\times 2=2\pi/6,\dots,2\pi/12\times 5$.
+Noting $\omega = 2\pi/s$, the harmonic series of frequency $\omega$ represents a series that repeats itself every $s$ periods.
+For example, for a monthly series ($s=12$ observations per year), seasonal movements are those that repeat every year: they are therefore associated with frequencies $2\pi/12$ (annual periodicity), $2\pi/12\times 2=2\pi/6,\dots,2\pi/12\times 5$.
 In this paper, we consider that the trend-cycle is associated with frequencies in the interval $[0, 2\pi/12]$, i.e. movements recurring at least every 12 months.
 Even if different frequencies are sometimes used (e.g. $[0, 2\pi/36]$ to consider only cycles of at least 36 months), this has no impact on the results of the study.
 The other frequencies, $[2\pi/12, \pi]$ are associated with the irregular component (undesirable oscillations).
@@ -163,25 +163,9 @@ Trend-cycles are generally modelled by local polynomial trends (see @sec-nonpara
 In order to best preserve the trend-cycles, we try to design moving averages that preserve the polynomial trends.
 A moving average $M_{\boldsymbol\theta}$ preserves a function of time $f(t)$ if $\forall t:M_{\boldsymbol\theta} f(t)=f(t)$.
 
-We have the following properties for the moving average $M_{\boldsymbol\theta}$:
+For the moving average $M_{\boldsymbol\theta}$, it can be shown that:
 
-- To preserve a constant trend $X_t=a$ we need:
-$$
-\forall t:M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}=\sum_{k=-p}^{+f}\theta_ka=a\sum_{k=-p}^{+f}\theta_k=a.
-$$
-The sum of the coefficients of the moving average $\sum_{k=-p}^{+f}\theta_k$ must then be equal to $1$.
-
-- To preserve linear trends $X_t=at+b$ we need:
-$$
-\forall t:\:M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}=\sum_{k=-p}^{+f}\theta_k[a(t+k)+b]=a\sum_{k=-p}^{+f}k\theta_k+(at+b)\sum_{k=-p}^{+f}\theta_k=at+b.
-$$
-Which is equivalent to:
-$$
-\sum_{k=-p}^{+f}\theta_k=1
-\quad\text{and}\quad
-\sum_{k=-p}^{+f}k\theta_k=0.
-$$
-- In general, $M_{\boldsymbol\theta}$ preserves polynomials of degree $d$ if and only if:
+- $M_{\boldsymbol\theta}$ preserves polynomials of degree $d$ if and only if:
 $$
 \sum_{k=-p}^{+f}\theta_k=1
  \text{ and }
