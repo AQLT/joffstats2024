@@ -1,7 +1,5 @@
 library(AQLThesis)
-library(future)
 library(rjd3filters)
-plan(multisession)
 if(!dir.exists("data_simul/byseriespente_daf"))
   dir.create("data_simul/byseriespente_daf")
 
@@ -67,23 +65,19 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
   if(!file.exists(new_f)){
     data <- readRDS(s)
     info_fs <- lapply(data, function(x){
-      future({
-        sigma2 <- var_estimator(x, hend_filter)
+      info <- var_estimator(x, hend_filter)
         list("LC" = list(
-          `d=2` = tail(rjd3filters::filterfilter(x, MM$pente$`d=2`),6),
-          `d=3` = tail(rjd3filters::filterfilter(x, MM$pente$`d=3`),6),
+          `d=2` = tail(rjd3filters::filter(x, MM$pente$`d=2`),6),
+          `d=3` = tail(rjd3filters::filter(x, MM$pente$`d=3`),6),
           `sigma2` = sigma2
         ),
         "QL" = list(
-          `d=2` = tail(rjd3filters::filterfilter(x, MM$deriv2$`d=2`),6),
-          `d=3` = tail(rjd3filters::filterfilter(x, MM$deriv2$`d=3`),6),
+          `d=2` = tail(rjd3filters::filter(x, MM$deriv2$`d=2`),6),
+          `d=3` = tail(rjd3filters::filter(x, MM$deriv2$`d=3`),6),
           `sigma2` = sigma2
         )
         )
-      }
-      )
     })
-    info <- lapply(info_fs, value)
     saveRDS(info, new_f)
   }
 }

@@ -58,8 +58,8 @@ for (method in c("LC","QL")){
           ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
           icr = 2/(sqrt(pi) * ratio)
           icr[abs(icr) > 12] <- 12
-          lp_coef = lp_filter2(ic = icr, method = method, h = h, kernel = kernel)
-          rjd3filters::filterfilter(x, lp_coef)
+          lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
+          rjd3filters::filter(x, lp_coef)
         })
         names(series_s) <- names(data)
         

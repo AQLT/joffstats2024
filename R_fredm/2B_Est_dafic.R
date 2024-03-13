@@ -56,7 +56,7 @@ for (method in c("LC","QL")){
           data_t = data_info[[nom_d]][[method]]
           ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
           icr = 2/(sqrt(pi) * ratio)
-          lp_coef = lp_filter2(ic = icr, method = method, h = h, kernel = kernel)
+          lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
           filter(x, lp_coef)
         })
         names(series_s) <- names(data)

@@ -9,7 +9,7 @@ plan(multisession)
 
 list_series <- list.files("data_simul/byseries", full.names = TRUE)
 list_kernel <- c("Henderson", "Uniform", "Biweight", "Triweight", "Tricube",
-                 "Gaussian", "Triangular", "Parabolic")
+                 "Gaussian", "Triangular", "Parabolic")[1]
 
 fs <- list()
 j <- 1

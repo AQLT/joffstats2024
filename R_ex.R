@@ -85,7 +85,7 @@ est_concav <- finite_filters(all_mm[[1]]$concav,
 
 henderson_f <- lp_filter(h=6)@sfilter
 lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
-  all_coef = lapply(icr, function(ic){
+  all_coef = lapply(as.numeruc(icr), function(ic){
     lp_filter(horizon = h,
               kernel = kernel,
               endpoints = method,
@@ -102,7 +102,7 @@ loc_lc_est <-
     est_loc_slope <- c(tail(est_slope * x, 6))
     sigma2 <- var_estimator(x, henderson_f)
     icr = 2/(sqrt(pi) * (est_loc_slope / sqrt(sigma2)))
-    lp_coef = lp_filter2(ic = icr,
+    lp_coef = lp_filter2(icr = icr,
                          method = "LC", h = 6, kernel = "Henderson")
     rjd3filters::filter(x, lp_coef)
   })
@@ -120,7 +120,7 @@ loc_ql_est <-
     est_loc_concav <- c(tail(est_concav * x, 6))
     sigma2 <- var_estimator(x, henderson_f)
     icr = 2/(sqrt(pi) * (est_loc_concav / sqrt(sigma2)))
-    lp_coef = lp_filter2(ic = icr,
+    lp_coef = lp_filter2(icr = icr,
                          method = "QL", h = 6, kernel = "Henderson")
     rjd3filters::filter(x, lp_coef)
   })
@@ -129,7 +129,7 @@ loc_ql_if <-
     est_loc_concav <- c(tail(est_concav * x, 6))
     sigma2 <- var_estimator(x, henderson_f)
     icr = 2/(sqrt(pi) * (est_loc_concav / sqrt(sigma2)))
-    lp_coef = lp_filter2(ic = icr,
+    lp_coef = lp_filter2(icr = icr,
                          method = "QL", h = 6, kernel = "Henderson")
     implicit_forecast(x, lp_coef)
   })

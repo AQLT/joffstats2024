@@ -6,19 +6,6 @@ all_tp <- merge(readRDS("results_fredm/compile_tp_norev/troughs_lp.RDS"),
                 by=c("series","kernel", "method")) %>%
   select_var()
 
-all_tp_rkhs <- 
-  merge(readRDS("results_fredm/compile_tp_norev/troughs_rkhs.RDS"),
-        readRDS("results_fredm/compile_tp_norev/peaks_rkhs.RDS"),
-        by=c("series","kernel", "method")) %>%
-  select_var()
-
-all_tp_rkhs <- rbind(all_tp %>% mutate(article = "lpp"), 
-                     all_tp_rkhs %>% mutate(article = "rkhs"))
-all_rev_rkhs_fe <- rbind(all_rev_fe %>% mutate(article = "lpp"), 
-                         all_rev_rkhs_fe %>% mutate(article = "rkhs"))
-all_rev_rkhs_ce <- rbind(all_rev_ce %>% mutate(article = "lpp"), 
-                         all_rev_rkhs_ce %>% mutate(article = "rkhs"))
-
 all_tp_arima <- 
   merge(readRDS("results_fredm/compile_tp_norev/troughs_arima.RDS"),
         readRDS("results_fredm/compile_tp_norev/peaks_arima.RDS"),

@@ -26,17 +26,32 @@ tp_lic_daf_trunc <- merge(readRDS("results_simul/compile_tp_norev/troughs_locali
 tp_arima <-
   merge(readRDS("results_simul/compile_tp_norev/troughs_arima.RDS"),
         readRDS("results_simul/compile_tp_norev/peaks_arima.RDS"),
+        by=c("series","kernel", "method", "ny")) %>%
+  select_var() %>% 
+  mutate(method = ifelse(ny == "All", method, paste0(method,"_ny",ny))) %>% 
+  mutate(ny = NULL)
+tp_arima$method %>% unique() %>% dput()
+tp_ner_neigh <-
+  merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh.RDS"),
+        readRDS("results_simul/compile_tp_norev/peaks_ner_neigh.RDS"),
         by=c("series","kernel", "method")) %>%
   select_var()
-fst_weights <- c("weight235")
 
+order_methods  <- c("lc", "lc_localic_final", "lc_localic",
+  "ql", "ql_localic_final", "ql_localic",
+  "cq","daf", 
+  "auto_arima_ny2", "auto_arima_ny4", "auto_arima_ny6",
+  "auto_arima_ny8", "auto_arima_ny10", "auto_arima_ny12", 
+  "auto_arima_ny14", "auto_arima_ny16", "auto_arima_ny18",
+  "auto_arima_ny20", "auto_arima_ny25", "auto_arima_ny30",
+  "auto_arima",
+  "nearest_neighbour")
 all_tp <- rbind(tp_lp,
                 tp_lic_final,
                 tp_lic_daf_trunc,
-                tp_arima) %>%
-  mutate(method = factor(method,c("lc", "lc_localic_final", "lc_localic",
-                                  "ql", "ql_localic_final", "ql_localic",
-                                  "cq","daf", "auto_arima"),
+                tp_arima,
+                tp_ner_neigh) %>%
+  mutate(method = factor(method, order_methods,
                          ordered = TRUE),
          variability = factor(variability,
                               levels = c("lowvariability","mediumvariability","highvariability"),
@@ -69,7 +84,10 @@ legende <- c(lc = "LC", ql = "QL",
              ql_localic_final = "QL loc. param.\n(final estimates)",
              ql_localic = "QL loc.\nparam.",
              auto_arima = "ARIMA")
-p <- ggplot(data_tp ,aes(x=method, y = value))+
+data_tp
+p <- ggplot(data_tp %>% 
+              filter(method %in%
+                       names(legende)) ,aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
@@ -81,3 +99,29 @@ p
 ggsave("img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
+
+legende <-
+  c(
+    "auto_arima_ny2" = "2 years",
+    "auto_arima_ny4" = "4 years",
+    "auto_arima_ny6" = "6 years",
+    "auto_arima_ny8" = "8 years",
+    "auto_arima_ny10" = "10 years",
+    "auto_arima_ny12" = "12 years",
+    "auto_arima_ny14" = "14 years",
+    "auto_arima_ny16" = "16 years",
+    "auto_arima_ny18" = "18 years",
+    "auto_arima_ny20" = "20 years",
+    "auto_arima_ny25" = "25 years",
+    "auto_arima_ny30" = "30 years",
+    "auto_arima" = "Full span"
+  )
+p <- ggplot(data_tp %>% 
+              filter(method %in%
+                       names(legende)),
+                     aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende) 
+p

@@ -213,7 +213,7 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
       data_t = data_info_lic[[names(data)[i]]][[method]]
       ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
       icr = 2/(sqrt(pi) * ratio)
-      lp_coef = lp_filter2(ic = icr, method = method, h = 6, kernel = kernel)
+      lp_coef = lp_filter2(icr = icr, method = method, h = 6, kernel = kernel)
       prevs = implicit_forecast(x=y, coefs = lp_coef)
       prevs_a = ts(c(tail(y,1), prevs), start = tail(time(y),1),
                    frequency = frequency(y))
@@ -229,7 +229,7 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
       ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
       icr = 2/(sqrt(pi) * ratio)
       icr[abs(icr) > 12] <- 12
-      lp_coef = lp_filter2(ic = icr, method = method, h = 6, kernel = kernel)
+      lp_coef = lp_filter2(icr = icr, method = method, h = 6, kernel = kernel)
       prevs = implicit_forecast(x=y, coefs = lp_coef)
       prevs_a = ts(c(tail(y,1), prevs), start = tail(time(y),1),
                    frequency = frequency(y))

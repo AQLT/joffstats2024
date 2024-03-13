@@ -1,7 +1,5 @@
 library(AQLThesis)
-library(future)
 library(rjd3filters)
-plan(multisession)
 if(!dir.exists("data_simul/byseriespente_final"))
   dir.create("data_simul/byseriespente_final")
 
@@ -61,8 +59,7 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
       courbure_d2 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",2)]], -h) * last_est)
       courbure_d3 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",3)]], -h) * last_est)
 
-      info_fs <- lapply(data, function(x){
-        future({
+      info <- lapply(data, function(x){
           sigma2 <- var_estimator(x, MM_h[["henderson"]])
           list("LC" = list(
             `d=2` = tail(window(pente_d2, end = end(x)), 6),
@@ -75,11 +72,9 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
             `sigma2` = sigma2
           )
           )
-        }
-        )
+
       })
-      info <- lapply(info_fs, value)
-      saveRDS(info, new_f)
+      saveRDS(info_fs, new_f)
     }
   }
 }

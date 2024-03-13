@@ -13,35 +13,24 @@ all_rev_ce <- readRDS("results_simul/compile_revisions/lp_ce_rev.RDS") %>%
   select_series() %>% 
   select_mae()
 
-all_tp_rkhs <- 
-  merge(readRDS("results_simul/compile_tp_norev/troughs_rkhs.RDS"),
-        readRDS("results_simul/compile_tp_norev/peaks_rkhs.RDS"),
-        by=c("series","kernel", "method")) %>%
-  select_var()
-all_rev_rkhs_fe <- readRDS("results_simul/compile_revisions/rkhs_fe_rev.RDS") %>% 
-  select_series() %>% 
-  select_mae()
-all_rev_rkhs_ce <- readRDS("results_simul/compile_revisions/rkhs_ce_rev.RDS") %>% 
-  select_series() %>% 
-  select_mae()
-all_tp_rkhs <- rbind(all_tp %>% mutate(article = "lpp"), 
-                     all_tp_rkhs %>% mutate(article = "rkhs"))
-all_rev_rkhs_fe <- rbind(all_rev_fe %>% mutate(article = "lpp"), 
-                         all_rev_rkhs_fe %>% mutate(article = "rkhs"))
-all_rev_rkhs_ce <- rbind(all_rev_ce %>% mutate(article = "lpp"), 
-                         all_rev_rkhs_ce %>% mutate(article = "rkhs"))
 
 all_tp_arima <- 
   merge(readRDS("results_simul/compile_tp_norev/troughs_arima.RDS"),
         readRDS("results_simul/compile_tp_norev/peaks_arima.RDS"),
-        by=c("series","kernel", "method")) %>%
-  select_var()
+        by=c("series","kernel", "method", "ny")) %>%
+  select_var() %>% 
+  mutate(method = paste0(method,"ny",ny)) %>% 
+  select(!ny)
 all_rev_arima_fe <- readRDS("results_simul/compile_revisions/arima_fe_rev.RDS") %>% 
   select_series() %>% 
-  select_mae()
+  select_mae()%>% 
+  mutate(method = paste0(method,"ny",ny)) %>% 
+  select(!ny)
 all_rev_arima_ce <- readRDS("results_simul/compile_revisions/arima_ce_rev.RDS") %>% 
   select_series() %>% 
-  select_mae()
+  select_mae()%>% 
+  mutate(method = paste0(method,"ny",ny)) %>% 
+  select(!ny)
 
 
 all_tp_lic <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_lp.RDS"),
@@ -79,9 +68,9 @@ all_rev_ce_lic <- readRDS("results_simul/compile_revisions/localic_daf_ce_rev.RD
   select_series() %>% 
   select_mae()
 
-all_tp <- rbind(all_tp_rkhs, 
+all_tp <- rbind(all_tp, 
                 all_tp_arima %>% mutate(article = "arima")) %>% 
-  mutate(method = factor(method,levels = c("lc","ql","cq","daf", "frf", "gain", "phase", "auto_arima"),
+  mutate(method = factor(method,levels = c("lc","ql","cq","daf", "frf","auto_arima"),
                          ordered = TRUE),
          variability = factor(variability,
                               levels = c("lowvariability","mediumvariability","highvariability"),

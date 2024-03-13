@@ -14,7 +14,7 @@ henderson <- lp_filter(horizon = (l - 1) / 2)@sfilter
 s = list_series[1]
 fs <- list()
 i <- 0
-nyears <- c(4, 6, 8, 10, 12)
+nyears <- c(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 25, 30)
 for(y in nyears){
   for(s in list_series){
     i <- i+1

@@ -10,13 +10,11 @@ plan(multisession)
 kernel = "Henderson"
 method = "LC"
 s = list.files("data_simul/byseries",full.names = TRUE)[1]
-fs <- list()
-j <- 1
-reload <- FALSE
+
 d = 2
 h = 3
 lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
-  all_coef = lapply(icr, function(ic){
+  all_coef = lapply(as.numeric(icr), function(ic){
     lp_filter(horizon = h,
               kernel = kernel,
               endpoints = method,
@@ -29,6 +27,9 @@ lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
   })
   finite_filters(sym, rfilters = rfilters)
 }
+fs <- list()
+j <- 1
+reload <- FALSE
 for (method in c("LC","QL")){
   print(method)
   for(s in list.files("data_simul/byseries", full.names = TRUE)){
@@ -68,8 +69,8 @@ for (method in c("LC","QL")){
           ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
           icr = 2/(sqrt(pi) * ratio)
           icr[abs(icr) > 12] <- 12
-          lp_coef = lp_filter2(ic = icr, method = method, h = h, kernel = kernel)
-          rjd3filters::filterfilter(x, lp_coef)
+          lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
+          rjd3filters::filter(x, lp_coef)
         })
         names(series_s) <- names(data)
         
