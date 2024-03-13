@@ -4,7 +4,6 @@ source("R_fredm/4_utils.R",encoding = "UTF-8")
 library(rjd3filters)
 library(AQLThesis)
 
-Sys.setenv(LANG = "en_US.UTF-8")
 fst_weights <- "weight235"
 fst_degree <- 2
 all_tp <- get_all_tp(dossier = "results_fredm/compile_tp_norev/",

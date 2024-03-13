@@ -1,6 +1,6 @@
 library(rjd3filters)
 library(patchwork)
-library(AQLThesis)
+library(ggdemetra3)
 library(ggplot2)
 
 all_filters <- lapply(c("LC", "QL", "CQ", "DAF"), function(endpoints){
@@ -19,7 +19,6 @@ all_filters <- lapply(c("LC", "QL", "CQ", "DAF"), function(endpoints){
 names(all_filters) <- c("LC", "QL", "CQ", "DAF")
 
 
-Sys.setenv(LANG = "en_US.UTF-8")
 for(i in names(all_filters)){
   print(i)
   x <- all_filters[[i]]

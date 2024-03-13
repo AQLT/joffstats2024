@@ -5,12 +5,13 @@ if(!dir.exists("results_simul/arima"))
 library(rjd3filters)
 library(AQLThesis)
 library(future)
+library(forecast)
 plan(multisession)
 
 list_series <- list.files("data_simul/byseries", full.names = TRUE)
-list_method <- names(arima_f$`h=6`)
 s = list_series[1]
-method = "phase"
+l = 13
+henderson <- lp_filter(horizon = (l - 1) / 2)@sfilter
 fs <- list()
 i <- 0
 for(s in list_series){
@@ -40,11 +41,10 @@ for(s in list_series){
     series_s <- lapply(names(data), function(nom_d){
       x <- data[[nom_d]]
       # l = data_info[[nom_d]]["optimal_length"]
-      l = 13
       prevs = auto.arima(x, max.Q = 0, max.D = 0, max.P = 0)
       prevs = forecast(prevs, h=(l-1)/2)
       y_prevs = ts(c(x, prevs$mean), start = start(x), frequency = frequency(x))
-      window(henderson(y_prevs, musgrave = FALSE,length = l),
+      window(henderson * y_prevs,
              start = start(x), end = end(x))
     })
     names(series_s) <- names(data)

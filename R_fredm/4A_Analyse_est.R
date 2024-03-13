@@ -16,7 +16,6 @@ detected_tp <- readRDS("results_fredm/compile_tp_norev/detected_tp_lp.RDS")
 
 
 
-Sys.setenv(LANG = "en_US.UTF-8")
 data <- readRDS("data_fredm/byseries/CE16OV.RDS")[["2020"]]
 dput(round(data, 3))
 plot(data)
