@@ -50,10 +50,10 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
     data <- readRDS(s)
     info <- lapply(data, function(x){
         x = data[[5]]
-      res = rjd3filters::select_trend_filter(x)
+      res = rjd3x11plus::select_trend_filter(x)
       res = c(res[c("length", "icr")],
-              rjd3filters::select_trend_filter(x, length = 9)[1], 
-              rjd3filters::select_trend_filter(x, length = 23)[1])[c(1,3,2,4)]
+              rjd3x11plus::select_trend_filter(x, length = 9)[1], 
+              rjd3x11plus::select_trend_filter(x, length = 23)[1])[c(1,3,2,4)]
       names(res) = c("optimal_length", "icr-9", "icr-13", "icr-23")
       res
     })
