@@ -36,13 +36,13 @@ unique_series_pivot <- function(x){
 }
 
 # Graphique sur le dephasage
-format_table_tp <- function(x){
+format_table_tp <- function(x, kernel = "henderson"){
   x %>%
     tidyr::pivot_longer(
       cols = starts_with("x"),
       names_to = "name",
       values_to = "value"
-    )%>% dplyr::filter(kernel == "henderson") %>%
+    )%>% dplyr::filter(kernel %in% kernel) %>%
     unique_series_pivot() %>%
     mutate(variability = recode(variability,
                                 lowvariability = "Low variability",
