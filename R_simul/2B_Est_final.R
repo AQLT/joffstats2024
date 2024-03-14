@@ -29,7 +29,7 @@ for (method in c("LC","QL")){
   print(method)
   for(s in list.files("data_simul/byseries", full.names = TRUE)){
     for(d in 2:3){
-      for(h in 6) {
+      for(h in 3:6) {
         name_file <- gsub(".RDS$", "", basename(s))
         print(name_file)
         data <- readRDS(s)

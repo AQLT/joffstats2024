@@ -22,7 +22,7 @@ series = list(
               )
 series = lapply(series,ts, start = start, frequency = frequency)
 
-tp = turning_points(series[[9]][,"cycle"])
+tp = turning_points(series[[1]][,"cycle"])
 first_date = time(series[[9]][,"cycle"])[25]
 tp = lapply(tp, function(x)x[x>=first_date])
 saveRDS(tp, "data_simul/tp_simul1.RDS")
@@ -49,7 +49,6 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
   fs[[i]] <- future({
     data <- readRDS(s)
     info <- lapply(data, function(x){
-        x = data[[5]]
       res = rjd3x11plus::select_trend_filter(x)
       res = c(res[c("length", "icr")],
               rjd3x11plus::select_trend_filter(x, length = 9)[1], 

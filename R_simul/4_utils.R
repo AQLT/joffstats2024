@@ -34,3 +34,48 @@ unique_series_pivot <- function(x){
   x[to_remove$remove,"value"] <- NA
   x
 }
+
+# Graphique sur le dephasage
+format_table_tp <- function(x){
+  x %>%
+    tidyr::pivot_longer(
+      cols = starts_with("x"),
+      names_to = "name",
+      values_to = "value"
+    )%>% dplyr::filter(kernel == "henderson") %>%
+    unique_series_pivot() %>%
+    mutate(variability = recode(variability,
+                                lowvariability = "Low variability",
+                                mediumvariability = "Medium  variability",
+                                highvariability = "High variability")) %>%
+    na.omit()
+}
+
+
+normalise_rev <- function(x, ref = "lc", suff = "^(rev|X)"){
+  ref = x[(x$method == "lc"),grep(suff,colnames(x)) ]
+  for(m in unique(x$method)){
+    if(nrow(x[x$method == m,grep(suff,colnames(x))]) > 0){
+      x[x$method == m,grep(suff,colnames(x))] <-
+        x[x$method == m,grep(suff,colnames(x))] / ref
+    }
+  }
+  x
+}
+summarise_ref <- function(x, normalise = FALSE){
+  if(normalise){
+    x = x %>% normalise_rev()
+    digits = 1
+  } else{
+    digits = 2
+  }
+  x %>%
+    group_by(variability, method) %>%
+    summarise(across(
+      .cols = where(is.numeric),
+      .fns = list(Mean = \(x) round(mean(x),digits)),
+      .names = "{col}"
+    )) %>%
+    select(!c(rev.q6:rev.q10, length)) %>%
+    data.frame()
+}

@@ -45,6 +45,7 @@ all_tp <- lapply(seq_along(all_files), function(i){
 
 full_names <- gsub("_tp.RDS$", "", basename(all_files))
 split <- strsplit(full_names, "_")
+series <- sapply(split, `[`, 1)
 ny <- gsub("ny", "", sapply(split, `[`, 2))
 ny[is.na(ny)] <- "All"
 method <- "auto_arima"

@@ -54,7 +54,7 @@ icr_local <- abs(icr_local)
 icr_local2 <- abs(icr_local2)
 
 icr <- sapply(y, function(x) {
-  ic_ratio(x, henderson(x, length = 13, musgrave = FALSE))
+  rjd3x11plus::ic_ratio(x, rjd3x11plus::henderson(x, length = 13, musgrave = FALSE))
 })
 icr <- ts(icr, end = end(y[[length(y)]]),
           frequency = 12)
@@ -63,7 +63,7 @@ data <- ts.intersect(icr, icr_local,icr_local2)
 
 tp = readRDS("data_simul/tp_simul1.RDS")
 
-p <- AQLTools::graph_ts(data[,c(1,2)],n_xlabel = 10,outDec = ".") +
+p <- autoplot(data[,c(1,2)]) +
   geom_vline(data = data.frame(xintercept = c(tp$downturn,
                                               tp$upturn)),
              aes(xintercept = xintercept)) +
@@ -72,6 +72,8 @@ p <- AQLTools::graph_ts(data[,c(1,2)],n_xlabel = 10,outDec = ".") +
     labels = c(
       latex2exp::TeX("Global $|\\delta_1/\\sigma|"),
       latex2exp::TeX("Local $|\\delta_1/\\sigma|"))) +
+  scale_x_continuous(breaks = seq(1960,2020, by = 5)) +
+  labs(x = NULL, y = NULL) +
   theme_bw() +
   theme(legend.justification = c(0,1),
         legend.position = c(0,1),
@@ -86,7 +88,7 @@ ggsave("img/filters_used/mm_penteconcavite_ex.pdf",
             plot = p,
             width = 7,height = 2)
 
-p2 <- AQLTools::graph_ts(data[,c(1,3)],n_xlabel = 10,outDec = ".") +
+p2 <- autoplot(data[,c(1,3)]) +
   geom_vline(data = data.frame(xintercept = c(tp$downturn,
                                               tp$upturn)),
              aes(xintercept = xintercept)) +
@@ -95,6 +97,8 @@ p2 <- AQLTools::graph_ts(data[,c(1,3)],n_xlabel = 10,outDec = ".") +
     labels = c(
       latex2exp::TeX("Global $|\\delta_1/\\sigma|"),
       latex2exp::TeX("Local $|\\delta_1/\\sigma|"))) +
+  scale_x_continuous(breaks = seq(1960,2020, by = 5)) +
+  labs(x = NULL, y = NULL) +
   theme_bw() +
   theme(legend.justification = c(0,1),
         legend.position = c(0,1),

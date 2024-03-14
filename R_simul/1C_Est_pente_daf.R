@@ -57,26 +57,26 @@ MM = lapply(MM, function(x){
 s = list.files("data_simul/byseries",full.names = TRUE)[1]
 d = 2
 h=6
+hend_filter = lp_filter(horizon = h)@sfilter
 for(s in list.files("data_simul/byseries",full.names = TRUE)){
   new_f = sprintf("data_simul/byseriespente_daf/%s.RDS",
                   gsub(".RDS", "",basename(s)))
   print(new_f)
-  hend_filter = lp_filter(horizon = h)@sfilter
   if(!file.exists(new_f)){
     data <- readRDS(s)
-    info_fs <- lapply(data, function(x){
-      info <- var_estimator(x, hend_filter)
-        list("LC" = list(
-          `d=2` = tail(rjd3filters::filter(x, MM$pente$`d=2`),6),
-          `d=3` = tail(rjd3filters::filter(x, MM$pente$`d=3`),6),
-          `sigma2` = sigma2
-        ),
-        "QL" = list(
-          `d=2` = tail(rjd3filters::filter(x, MM$deriv2$`d=2`),6),
-          `d=3` = tail(rjd3filters::filter(x, MM$deriv2$`d=3`),6),
-          `sigma2` = sigma2
-        )
-        )
+    info <- lapply(data, function(x){
+      sigma2 <- var_estimator(x, hend_filter)
+      list("LC" = list(
+        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$pente$`d=2`),6)),
+        `d=3` = as.numeric(tail(rjd3filters::filter(x, MM$pente$`d=3`),6)),
+        `sigma2` = sigma2
+      ),
+      "QL" = list(
+        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$deriv2$`d=2`),6)),
+        `d=3` = as.numeric(tail(rjd3filters::filter(x, MM$deriv2$`d=3`),6)),
+        `sigma2` = sigma2
+      )
+      )
     })
     saveRDS(info, new_f)
   }
