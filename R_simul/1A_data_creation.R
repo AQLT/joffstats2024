@@ -19,7 +19,7 @@ series = list(
   lowvariability1 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 3),
   lowvariability2 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 3.5),
   lowvariability3 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 4)
-              )
+)
 series = lapply(series,ts, start = start, frequency = frequency)
 
 tp = turning_points(series[[1]][,"cycle"])
@@ -63,7 +63,7 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
 vs <- lapply(fs, value)
 
 last_icr <- do.call(rbind, lapply(lapply(list.files("data_simul/byseriesinfo",full.names = TRUE), readRDS),
-                                   function(x) x[[length(x)]]))
+                                  function(x) x[[length(x)]]))
 rownames(last_icr) <- list.files("data_simul/byseriesinfo",full.names = FALSE)
 round(last_icr,1)
 
