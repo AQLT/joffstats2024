@@ -70,7 +70,10 @@ for (method in c("LC","QL")){
           icr = 2/(sqrt(pi) * ratio)
           icr[abs(icr) > 12/3] <- 12/3
           lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
-          rjd3filters::filter(x, lp_coef)
+          res <- rjd3filters::filter(x, lp_coef)
+          
+          res[1:((l-1)/2)] <- NA
+          res
         })
         names(series_s) <- names(data)
         

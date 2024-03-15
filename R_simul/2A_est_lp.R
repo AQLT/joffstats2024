@@ -54,7 +54,10 @@ for(kernel in list_kernel){
                               kernel = kernel,
                               endpoints = method,
                               ic = icr)
-          rjd3filters::filter(x, lp_coef)
+          res <- rjd3filters::filter(x, lp_coef)
+          
+          res[1:((l-1)/2)] <- NA
+          res
         })
         names(series_s) <- names(data)
         
