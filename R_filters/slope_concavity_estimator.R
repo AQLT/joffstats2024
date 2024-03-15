@@ -69,6 +69,5 @@ p22 = plot_coef_ggplot(MM_d2_deriv2)
 p = (p21 + ggtitle("Slope estimators")) +
   (p22 + ggtitle("Concavity estimators"))
 p
-ggMultisave("img/filters_used/mm_penteconcavite",
-            plot = p,
-            width = 7,height = 3)
+ggsave("img/filters_used/mm_penteconcavite.pdf",
+       width = 7,height = 3)
