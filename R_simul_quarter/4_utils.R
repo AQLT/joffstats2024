@@ -76,6 +76,6 @@ summarise_ref <- function(x, normalise = FALSE){
       .fns = list(Mean = \(x) round(mean(x),digits)),
       .names = "{col}"
     )) %>%
-    select(!c(rev.q6:rev.q10, length)) %>%
+    select(!c(rev.q3:rev.q10, length)) %>%
     data.frame()
 }
