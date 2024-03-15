@@ -13,7 +13,8 @@ all_tp_lp <- lapply(seq_along(all_files), function(i){
   compute_time_lag(data = readRDS(f),
                    peaks = tp$downturn,
                    troughs = tp$upturn,
-                   type = "no_revisions")
+                   type = "no_revisions",
+                   frequency = 4)
 })
 
 full_names <- gsub("_tp.RDS$", "", basename(all_files))
@@ -40,7 +41,8 @@ all_tp <- lapply(seq_along(all_files), function(i){
   compute_time_lag(readRDS(f),                    
                    peaks = tp$downturn,
                    troughs = tp$upturn,
-                   type = "no_revisions")
+                   type = "no_revisions",
+                   frequency = 4)
 })
 
 full_names <- gsub("_tp.RDS$", "", basename(all_files))
@@ -60,29 +62,30 @@ saveRDS(all_t, "results_simul_quarter/compile_tp_norev/troughs_arima.RDS")
 saveRDS(all_p, "results_simul_quarter/compile_tp_norev/peaks_arima.RDS")
 
 
-all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = "_tp",full.names = TRUE)
-all_tp <- lapply(seq_along(all_files), function(i){
-  print(i)
-  f = all_files[i]
-  compute_time_lag(readRDS(f),                    
-                   peaks = tp$downturn,
-                   troughs = tp$upturn,
-                   type = "no_revisions")
-})
-
-full_names <- gsub("_tp.RDS$", "", basename(all_files))
-split <- strsplit(full_names, "_")
-series <- sapply(split, `[`, 1)
-method <- "nearest_neighbour"
-kernel = "henderson"
-all_t <- data.frame(t(sapply(all_tp, function(x) x[["troughs"]][["phaseshift"]])),
-                    series, kernel, method)
-all_p <- data.frame(t(sapply(all_tp, function(x) x[["peaks"]][["phaseshift"]])),
-                    series, kernel, method)
-rownames(all_t) <- rownames(all_p) <- full_names
-
-saveRDS(all_t, "results_simul_quarter/compile_tp_norev/troughs_ner_neigh.RDS")
-saveRDS(all_p, "results_simul_quarter/compile_tp_norev/peaks_ner_neigh.RDS")
+# all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = "_tp",full.names = TRUE)
+# all_tp <- lapply(seq_along(all_files), function(i){
+#   print(i)
+#   f = all_files[i]
+#   compute_time_lag(readRDS(f),                    
+#                    peaks = tp$downturn,
+#                    troughs = tp$upturn,
+#                    type = "no_revisions",
+#                    frequency = 4)
+# })
+# 
+# full_names <- gsub("_tp.RDS$", "", basename(all_files))
+# split <- strsplit(full_names, "_")
+# series <- sapply(split, `[`, 1)
+# method <- "nearest_neighbour"
+# kernel = "henderson"
+# all_t <- data.frame(t(sapply(all_tp, function(x) x[["troughs"]][["phaseshift"]])),
+#                     series, kernel, method)
+# all_p <- data.frame(t(sapply(all_tp, function(x) x[["peaks"]][["phaseshift"]])),
+#                     series, kernel, method)
+# rownames(all_t) <- rownames(all_p) <- full_names
+# 
+# saveRDS(all_t, "results_simul_quarter/compile_tp_norev/troughs_ner_neigh.RDS")
+# saveRDS(all_p, "results_simul_quarter/compile_tp_norev/peaks_ner_neigh.RDS")
 
 
 for(dir in c("localic_daf_trunc", "localic_final")){
@@ -93,7 +96,8 @@ for(dir in c("localic_daf_trunc", "localic_final")){
     compute_time_lag(readRDS(f),
                      peaks = tp$downturn,
                      troughs = tp$upturn,
-                     type = "no_revisions")
+                     type = "no_revisions",
+                     frequency = 4)
   })
   
   full_names <- gsub("_tp.RDS$", "", basename(all_files))

@@ -8,10 +8,26 @@ library(future)
 library(forecast)
 plan(multisession)
 
+X_gen <- function(d = 1, p = 2, q = p){
+  sapply(0:d, function(exp) seq(-p, q)^exp)
+}
+
+gen_MM <- function(p=2, q=p, d=2){
+  k = rjd3filters::get_kernel("Henderson", h = p)
+  k
+  k = c(rev(k$coef[-1]), k$coef[seq(0,q)+1])
+  K = diag(k)
+  X = X_gen(d=d, p = p, q = q)
+  e1 = matrix(0, ncol = 1, nrow = d+1)
+  e1[1] = 1
+  M1 = K %*% X %*% solve(t(X) %*% K %*% X, e1)
+  M1
+}
+
 list_series <- list.files("data_simul_quarter/byseries", full.names = TRUE)
 l = 5
-filter <- lapply(6:0, function(i){
-  fst_filter(lags = 5-i-1, leads = i)
+filter <- lapply(2:0, function(i){
+  fst_filter(lags = 5-i-1, leads = i,pdegree = 2)
 })
 hend_ner_nb <-finite_filters(filter[[1]], filter[-1])
 s = list_series[1]

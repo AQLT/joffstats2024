@@ -57,28 +57,28 @@ for(suffix in c("_fe_rev", "_ce_rev")){
 
   saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/arima%s.RDS", suffix))
 
-  all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = suffix,full.names = TRUE)
-  
-  all_rev <- lapply(seq_along(all_files), function(i){
-    print(i)
-    f = all_files[i]
-    
-    data = readRDS(f)
-    data = summary_revisions(data,                    
-                             peaks = tp$downturn,
-                             troughs = tp$upturn)
-    
-    full_names <- gsub(sprintf("%s.RDS$", suffix), "", basename(f))
-    split <- strsplit(full_names, "_")
-    series <- sapply(split, `[`, 1)
-    data$series <- series
-    data$kernel <- "henderson"
-    data$method <- "ner_neigh"
-    data
-  })
-  all_rev = do.call(rbind, all_rev)
-  
-  saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/ner_neigh%s.RDS", suffix))
+  # all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = suffix,full.names = TRUE)
+  # 
+  # all_rev <- lapply(seq_along(all_files), function(i){
+  #   print(i)
+  #   f = all_files[i]
+  #   
+  #   data = readRDS(f)
+  #   data = summary_revisions(data,                    
+  #                            peaks = tp$downturn,
+  #                            troughs = tp$upturn)
+  #   
+  #   full_names <- gsub(sprintf("%s.RDS$", suffix), "", basename(f))
+  #   split <- strsplit(full_names, "_")
+  #   series <- sapply(split, `[`, 1)
+  #   data$series <- series
+  #   data$kernel <- "henderson"
+  #   data$method <- "ner_neigh"
+  #   data
+  # })
+  # all_rev = do.call(rbind, all_rev)
+  # 
+  # saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/ner_neigh%s.RDS", suffix))
   
 }
 

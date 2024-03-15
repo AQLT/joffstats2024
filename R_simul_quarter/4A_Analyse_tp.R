@@ -1,6 +1,6 @@
 # Pour que ce programme puisse tourner, il faut également avoir lancé ceux sous R_local_ic
 
-source("R_simul/4_utils.R",encoding = "UTF-8")
+source("R_simul_quarter/4_utils.R",encoding = "UTF-8")
 library(ggplot2)
 library(scales)
 library(latex2exp)
@@ -30,11 +30,11 @@ tp_arima <-
   select_var() %>% 
   mutate(method = ifelse(ny == "All", method, paste0(method,"_ny",ny))) %>% 
   mutate(ny = NULL)
-tp_ner_neigh <-
-  merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_ner_neigh.RDS"),
-        readRDS("results_simul_quarter/compile_tp_norev/peaks_ner_neigh.RDS"),
-        by=c("series","kernel", "method")) %>%
-  select_var()
+# tp_ner_neigh <-
+#   merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_ner_neigh.RDS"),
+#         readRDS("results_simul_quarter/compile_tp_norev/peaks_ner_neigh.RDS"),
+#         by=c("series","kernel", "method")) %>%
+#   select_var()
 
 order_methods  <- c("lc", "lc_localic_final", "lc_localic",
   "ql", "ql_localic_final", "ql_localic",
@@ -48,8 +48,7 @@ order_methods  <- c("lc", "lc_localic_final", "lc_localic",
 all_tp <- rbind(tp_lp,
                 tp_lic_final,
                 tp_lic_daf_trunc,
-                tp_arima,
-                tp_ner_neigh) %>%
+                tp_arima) %>%
   mutate(method = factor(method, order_methods,
                          ordered = TRUE),
          variability = factor(variability,
@@ -82,17 +81,6 @@ ggsave("img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
 
-legende <- c(lc = "LC", ql = "QL",
-             cq = "CQ", daf = "DAF",
-             nearest_neighbour = "Nearest neighbour")
-p <- ggplot(data_tp %>% 
-              filter(method %in%
-                       names(legende)) ,aes(x=method, y = value))+
-  geom_boxplot() +
-  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
-  labs(y="Phase shift", x = NULL) +
-  scale_x_discrete(labels = legende)
-p
 
 legende <-
   c(

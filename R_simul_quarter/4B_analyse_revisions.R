@@ -1,6 +1,6 @@
 # Pour que ce programme puisse tourner, il faut également avoir lancé ceux sous R_local_ic
 
-source("R_simul/4_utils.R",encoding = "UTF-8")
+source("R_simul_quarter/4_utils.R",encoding = "UTF-8")
 library(ggplot2)
 library(scales)
 
@@ -15,7 +15,7 @@ for (crit in c("ce", "fe")) {
       data <- data %>% dplyr::filter(kernel == "henderson")
     if (method %in% c("localic_daf_trunc", "localic_final")){
       suff <- ifelse(method == "localic_final", "_final", "")
-      data <- data  %>% dplyr::filter(degree == "d2", h == "h6") %>%
+      data <- data  %>% dplyr::filter(degree == "d2", h == "h2") %>%
         mutate(method = sprintf("%s_localic%s", method,
                                 suff)) %>%
         select(!c(degree, h))
@@ -60,4 +60,5 @@ rev_table <- rev_tot %>% dplyr::filter(variability == "mediumvariability")%>%
     sprintf("$q=%s$", gsub("rev.q","",x))
   }) %>%
   rename(`Method` = method)
+rev_table
 saveRDS(rev_table, file = "data/simulations_revisions.RDS")
