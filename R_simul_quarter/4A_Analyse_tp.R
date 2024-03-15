@@ -13,13 +13,13 @@ tp_lp <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_lp.RDS"),
 tp_lic_final <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_localic_final.RDS"),
                           readRDS("results_simul_quarter/compile_tp_norev/peaks_localic_final.RDS"),
                           by=c("series", "kernel", "h", "degree", "method"))  %>%
-  dplyr::filter(degree == "d2", h == "h6") %>%
+  dplyr::filter(degree == "d2", h == "h2") %>%
   select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
   select(!c(degree, h))
 tp_lic_daf_trunc <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_localic_daf_trunc.RDS"),
                               readRDS("results_simul_quarter/compile_tp_norev/peaks_localic_daf_trunc.RDS"),
                               by=c("series", "kernel", "h", "degree", "method")) %>%
-  dplyr::filter(degree == "d2", h == "h6") %>%
+  dplyr::filter(degree == "d2", h == "h2") %>%
   select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
   select(!c(degree, h))
 

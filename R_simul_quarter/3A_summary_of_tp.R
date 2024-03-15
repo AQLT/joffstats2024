@@ -102,7 +102,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   series <- sapply(split, `[`, 1)
   method <- sapply(split, `[`, 2)
   if(length(grep("localic_daf", dir)) >0){
-    h <- "h6"
+    h <- "h2"
     degree <- sapply(split, `[`, 3)
   } else {
     h <- sapply(split, `[`, 3)
@@ -132,7 +132,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   series <- sapply(split, `[`, 1)
   method <- sapply(split, `[`, 2)
   if(length(grep("localic_daf", dir)) >0){
-    h <- "h6"
+    h <- "h2"
     degree <- sapply(split, `[`, 3)
   } else {
     h <- sapply(split, `[`, 3)
