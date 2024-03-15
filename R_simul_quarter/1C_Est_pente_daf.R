@@ -5,14 +5,14 @@ if(!dir.exists("data_simul_trim/byseriespente_daf"))
 
 # Dans ce programme, pour paramétrer les méthodes LC et QL :
 # 1. On prend les MM asymétriques d'estimation de la pente et polynôme degré 2 et on fait une estimation en temps réel
-# Pour chaque date on a donc h+1=6+1 moyennes mobiles
+# Pour chaque date on a donc h+1=2+1 moyennes mobiles
 # 2. la variance est estimée à chaque date sur les données connues
 
-X_gen <- function(d = 1, p = 6, q = p){
+X_gen <- function(d = 1, p = 2, q = p){
   sapply(0:d, function(exp) seq(-p, q)^exp)
 }
 
-gen_MM <- function(p=6, q=p, d=2){
+gen_MM <- function(p=2, q=p, d=2){
   k = rjd3filters::get_kernel("Henderson", h = p)
   k
   k = c(rev(k$coef[-1]), k$coef[seq(0,q)+1])
@@ -29,26 +29,20 @@ gen_MM <- function(p=6, q=p, d=2){
   cbind(M1, M2, M3)
 }
 
-MM = lapply(0:6, function(q){
-  d2 = gen_MM(p=6, q=q, d=2)
-  d3 = gen_MM(p=6, q=q, d=3)
-  add_0 <- matrix(0, ncol = ncol(d2), nrow = 6-q)
+MM = lapply(0:2, function(q){
+  d2 = gen_MM(p=2, q=q, d=2)
+  add_0 <- matrix(0, ncol = ncol(d2), nrow = 2-q)
   d2 = rbind(d2, add_0)
-  d3 = rbind(d3, add_0)
   list(pente = list(
-    `d=2` = d2[,2],
-    `d=3` = d3[,2]),
+    `d=2` = d2[,2]),
     `deriv2` = list(
-      `d=2` = d2[,3],
-      `d=3` = d3[,3]))
+      `d=2` = d2[,3]))
 })
 MM = list(pente = list(
-  `d=2` = sapply(MM, function(x) x[[1]][[1]]),
-  `d=3` = sapply(MM, function(x) x[[1]][[2]])
+  `d=2` = sapply(MM, function(x) x[[1]][[1]])
 ),
 `deriv2` = list(
-  `d=2` = sapply(MM, function(x) x[[2]][[1]]),
-  `d=3` = sapply(MM, function(x) x[[2]][[2]])
+  `d=2` = sapply(MM, function(x) x[[2]][[1]])
 )
 )
 MM = lapply(MM, function(x){
@@ -56,7 +50,7 @@ MM = lapply(MM, function(x){
 })
 s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
 d = 2
-h=6
+h=2
 hend_filter = lp_filter(horizon = h)@sfilter
 for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
   new_f = sprintf("data_simul_trim/byseriespente_daf/%s.RDS",
@@ -67,13 +61,11 @@ for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
     info <- lapply(data, function(x){
       sigma2 <- var_estimator(x, hend_filter)
       list("LC" = list(
-        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$pente$`d=2`),6)),
-        `d=3` = as.numeric(tail(rjd3filters::filter(x, MM$pente$`d=3`),6)),
+        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$pente$`d=2`),h)),
         `sigma2` = sigma2
       ),
       "QL" = list(
-        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$deriv2$`d=2`),6)),
-        `d=3` = as.numeric(tail(rjd3filters::filter(x, MM$deriv2$`d=3`),6)),
+        `d=2` = as.numeric(tail(rjd3filters::filter(x, MM$deriv2$`d=2`),h)),
         `sigma2` = sigma2
       )
       )

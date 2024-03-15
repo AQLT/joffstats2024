@@ -8,11 +8,11 @@ if(!dir.exists("data_simul_trim/byseriespente_final"))
 #  (dans gen_MM q = p)
 # 2. la variance est estimée à chaque date sur les données connues
 
-X_gen <- function(d = 1, p = 6, q = p){
+X_gen <- function(d = 1, p = 2, q = p){
   sapply(0:d, function(exp) seq(-p, q)^exp)
 }
 
-gen_MM <- function(p=6, q=p, d=2){
+gen_MM <- function(p=2, q=p, d=2){
   k = rjd3filters::get_kernel("Henderson", h = p)
   k
   k = c(rev(k$coef[-1]), k$coef[seq(0,q)+1])
@@ -30,23 +30,24 @@ gen_MM <- function(p=6, q=p, d=2){
 }
 
 
-MM = lapply(3:6, function(h){
+MM = lapply(2:3, function(h){
+  print(h)
   list(pente = list(
-    `d=2` = gen_MM(p=h, d=2)[,2],
+    `d=2` = gen_MM(p = h, d=2)[,2],
     `d=3` = gen_MM(p = h, d=3)[,2]),
     `deriv2` = list(
-      `d=2` = gen_MM(p=h, d=2)[,3],
+      `d=2` = gen_MM(p = h, d=2)[,3],
       `d=3` = gen_MM(p = h, d=3)[,3]),
     henderson = lp_filter(horizon = h)@sfilter
   )
 })
-names(MM) <- sprintf("h=%i", 3:6)
+names(MM) <- sprintf("h=%i", 2:3)
 s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
 d = 2
-h = 6
+h = 2
 for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
   print(s)
-  for(h in 3:6){
+  for(h in 2:3){
     new_f = sprintf("data_simul_trim/byseriespente_final/%s_h%i.RDS",
                     gsub(".RDS", "",basename(s)),h)
     print(new_f)
@@ -62,13 +63,13 @@ for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
       info <- lapply(data, function(x){
         sigma2 <- var_estimator(x, MM_h[["henderson"]])
         list("LC" = list(
-          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), 6)),
-          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), 6)),
+          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), h)),
+          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), h)),
           `sigma2` = sigma2
         ),
         "QL" = list(
-          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), 6)),
-          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), 6)),
+          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), h)),
+          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), h)),
           `sigma2` = sigma2
         )
         )
