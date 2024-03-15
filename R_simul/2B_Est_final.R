@@ -67,7 +67,7 @@ for (method in c("LC","QL")){
             lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
             res <- rjd3filters::filter(x, lp_coef)
             
-            res[1:((l-1)/2)] <- NA
+            res[1:h] <- NA
             res
           })
           names(series_s) <- names(data)
