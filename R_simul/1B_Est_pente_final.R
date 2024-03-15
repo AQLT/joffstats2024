@@ -62,13 +62,13 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
       info <- lapply(data, function(x){
         sigma2 <- var_estimator(x, MM_h[["henderson"]])
         list("LC" = list(
-          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), 6)),
-          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), 6)),
+          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), h)),
+          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), h)),
           `sigma2` = sigma2
         ),
         "QL" = list(
-          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), 6)),
-          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), 6)),
+          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), h)),
+          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), h)),
           `sigma2` = sigma2
         )
         )

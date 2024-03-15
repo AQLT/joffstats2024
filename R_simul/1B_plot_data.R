@@ -19,7 +19,7 @@ p <- ggplot(data = dataGraph,
   scale_x_continuous(breaks = scales::pretty_breaks(n = 10),
   ) +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 12),
-                     labels = function(x) format(x, decimal.mark = ",")) +
+                     labels = function(x) format(x, decimal.mark = ".")) +
   theme_bw() +theme(legend.background = element_rect(fill = alpha('gray99', 0.4),
                                                      colour = "gray80", linetype = "solid"),
                     legend.justification = c(0,0),
