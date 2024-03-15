@@ -8,7 +8,7 @@ all_methods <- c("lp", "arima", "localic_daf_trunc", "localic_final")
 
 for (crit in c("ce", "fe")) {
   for (method in all_methods) {
-    data <- readRDS(sprintf("results_simul_trim/compile_revisions/%s_%s_rev.RDS", method, crit)) %>%
+    data <- readRDS(sprintf("results_simul_quarter/compile_revisions/%s_%s_rev.RDS", method, crit)) %>%
       select_series() %>%
       select_mae()
     if (method == "lp")

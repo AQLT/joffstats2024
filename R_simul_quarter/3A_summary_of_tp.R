@@ -1,11 +1,11 @@
 library(AQLThesis)
-if(!dir.exists("results_simul_trim/compile_tp"))
-  dir.create("results_simul_trim/compile_tp")
+if(!dir.exists("results_simul_quarter/compile_tp"))
+  dir.create("results_simul_quarter/compile_tp")
 
-tp = readRDS("data_simul_trim/tp_simul1.RDS")
+tp = readRDS("data_simul_quarter/tp_simul1.RDS")
 
 
-all_files <- list.files("results_simul_trim/lp/",pattern = "_tp",full.names = TRUE)
+all_files <- list.files("results_simul_quarter/lp/",pattern = "_tp",full.names = TRUE)
 
 all_tp_lp <- lapply(seq_along(all_files), function(i){
   print(i)
@@ -27,12 +27,12 @@ all_p <- data.frame(t(sapply(all_tp_lp, function(x) x[["peaks"]][["phaseshift"]]
 rownames(all_t) <- rownames(all_p) <- full_names
 
 
-saveRDS(all_t, "results_simul_trim/compile_tp/troughs_lp.RDS")
-saveRDS(all_p, "results_simul_trim/compile_tp/peaks_lp.RDS")
+saveRDS(all_t, "results_simul_quarter/compile_tp/troughs_lp.RDS")
+saveRDS(all_p, "results_simul_quarter/compile_tp/peaks_lp.RDS")
 
 
 
-all_files <- list.files("results_simul_trim/arima/",pattern = "_tp",full.names = TRUE)
+all_files <- list.files("results_simul_quarter/arima/",pattern = "_tp",full.names = TRUE)
 
 all_tp <- lapply(seq_along(all_files), function(i){
   print(i)
@@ -55,10 +55,10 @@ all_p <- data.frame(t(sapply(all_tp, function(x) x[["peaks"]][["phaseshift"]])),
                     series, kernel, method, ny)
 rownames(all_t) <- rownames(all_p) <- full_names
 
-saveRDS(all_t, "results_simul_trim/compile_tp/troughs_arima.RDS")
-saveRDS(all_p, "results_simul_trim/compile_tp/peaks_arima.RDS")
+saveRDS(all_t, "results_simul_quarter/compile_tp/troughs_arima.RDS")
+saveRDS(all_p, "results_simul_quarter/compile_tp/peaks_arima.RDS")
 
-all_files <- list.files("results_simul_trim/ner_neigh/",pattern = "_tp",full.names = TRUE)
+all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = "_tp",full.names = TRUE)
 all_tp <- lapply(seq_along(all_files), function(i){
   print(i)
   f = all_files[i]
@@ -78,13 +78,13 @@ all_p <- data.frame(t(sapply(all_tp, function(x) x[["peaks"]][["phaseshift"]])),
                     series, kernel, method)
 rownames(all_t) <- rownames(all_p) <- full_names
 
-saveRDS(all_t, "results_simul_trim/compile_tp/troughs_ner_neigh.RDS")
-saveRDS(all_p, "results_simul_trim/compile_tp/peaks_ner_neigh.RDS")
+saveRDS(all_t, "results_simul_quarter/compile_tp/troughs_ner_neigh.RDS")
+saveRDS(all_p, "results_simul_quarter/compile_tp/peaks_ner_neigh.RDS")
 
 
 for(dir in c("localic_daf_trunc", "localic_final")){
   
-  all_files <- list.files(sprintf("results_simul_trim/%s/", dir),pattern = "_tp",full.names = TRUE)
+  all_files <- list.files(sprintf("results_simul_quarter/%s/", dir),pattern = "_tp",full.names = TRUE)
   all_tp_lp <- lapply(seq_along(all_files), function(i){
     print(i)
     f = all_files[i]
@@ -111,8 +111,8 @@ for(dir in c("localic_daf_trunc", "localic_final")){
                       series, kernel = "henderson", method, h, degree)
   rownames(all_t) <- rownames(all_p) <- full_names
   
-  saveRDS(all_t, sprintf("results_simul_trim/compile_tp/troughs_%s.RDS", dir))
-  saveRDS(all_p, sprintf("results_simul_trim/compile_tp/peaks_%s.RDS", dir))
+  saveRDS(all_t, sprintf("results_simul_quarter/compile_tp/troughs_%s.RDS", dir))
+  saveRDS(all_p, sprintf("results_simul_quarter/compile_tp/peaks_%s.RDS", dir))
   
   all_tp_lp <- lapply(seq_along(all_files), function(i){
     print(i)
@@ -142,7 +142,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
                       series, kernel = "henderson", method, h, degree)
   rownames(all_t) <- rownames(all_p) <- full_names
   
-  saveRDS(all_t, sprintf("results_simul_trim/compile_tp_norev/troughs_%s.RDS", dir))
-  saveRDS(all_p, sprintf("results_simul_trim/compile_tp_norev/peaks_%s.RDS", dir))
+  saveRDS(all_t, sprintf("results_simul_quarter/compile_tp_norev/troughs_%s.RDS", dir))
+  saveRDS(all_p, sprintf("results_simul_quarter/compile_tp_norev/peaks_%s.RDS", dir))
 }
 

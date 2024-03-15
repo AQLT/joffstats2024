@@ -1,12 +1,12 @@
 library(AQLThesis)
-if(!dir.exists("results_simul_trim/compile_revisions"))
-  dir.create("results_simul_trim/compile_revisions")
+if(!dir.exists("results_simul_quarter/compile_revisions"))
+  dir.create("results_simul_quarter/compile_revisions")
 
-tp = readRDS("data_simul_trim/tp_simul1.RDS")
+tp = readRDS("data_simul_quarter/tp_simul1.RDS")
 suffix = "_fe_rev"
 for(suffix in c("_fe_rev", "_ce_rev")){
   
-  all_files <- list.files("results_simul_trim/lp/",pattern = suffix,full.names = TRUE)
+  all_files <- list.files("results_simul_quarter/lp/",pattern = suffix,full.names = TRUE)
 
   all_rev <- lapply(seq_along(all_files), function(i){
     print(i)
@@ -28,10 +28,10 @@ for(suffix in c("_fe_rev", "_ce_rev")){
   })
   all_rev = do.call(rbind, all_rev)
 
-  saveRDS(all_rev, sprintf("results_simul_trim/compile_revisions/lp%s.RDS", suffix))
+  saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/lp%s.RDS", suffix))
 
 
-  all_files <- list.files("results_simul_trim/arima/",pattern = suffix,full.names = TRUE)
+  all_files <- list.files("results_simul_quarter/arima/",pattern = suffix,full.names = TRUE)
 
   all_rev <- lapply(seq_along(all_files), function(i){
     print(i)
@@ -55,9 +55,9 @@ for(suffix in c("_fe_rev", "_ce_rev")){
   })
   all_rev = do.call(rbind, all_rev)
 
-  saveRDS(all_rev, sprintf("results_simul_trim/compile_revisions/arima%s.RDS", suffix))
+  saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/arima%s.RDS", suffix))
 
-  all_files <- list.files("results_simul_trim/ner_neigh/",pattern = suffix,full.names = TRUE)
+  all_files <- list.files("results_simul_quarter/ner_neigh/",pattern = suffix,full.names = TRUE)
   
   all_rev <- lapply(seq_along(all_files), function(i){
     print(i)
@@ -78,7 +78,7 @@ for(suffix in c("_fe_rev", "_ce_rev")){
   })
   all_rev = do.call(rbind, all_rev)
   
-  saveRDS(all_rev, sprintf("results_simul_trim/compile_revisions/ner_neigh%s.RDS", suffix))
+  saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/ner_neigh%s.RDS", suffix))
   
 }
 
@@ -87,7 +87,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   
   for(suffix in c("_fe_rev", "_ce_rev")){
     
-    all_files <- list.files(sprintf("results_simul_trim/%s/", dir),pattern = suffix,full.names = TRUE)
+    all_files <- list.files(sprintf("results_simul_quarter/%s/", dir),pattern = suffix,full.names = TRUE)
     
     all_rev <- lapply(seq_along(all_files), function(i){
       print(i)
@@ -120,6 +120,6 @@ for(dir in c("localic_daf_trunc", "localic_final")){
     })
     all_rev = do.call(rbind, all_rev)
     
-    saveRDS(all_rev, sprintf("results_simul_trim/compile_revisions/%s%s.RDS",dir, suffix))
+    saveRDS(all_rev, sprintf("results_simul_quarter/compile_revisions/%s%s.RDS",dir, suffix))
   }
 }

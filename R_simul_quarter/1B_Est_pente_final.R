@@ -1,7 +1,7 @@
 library(AQLThesis)
 library(rjd3filters)
-if(!dir.exists("data_simul_trim/byseriespente_final"))
-  dir.create("data_simul_trim/byseriespente_final")
+if(!dir.exists("data_simul_quarter/byseriespente_final"))
+  dir.create("data_simul_quarter/byseriespente_final")
 
 # Dans ce programme, pour paramétrer les méthodes LC et QL :
 # 1. On prend les MM symétriques finales d'estimation de la pente et polynôme degré 2
@@ -31,24 +31,23 @@ gen_MM <- function(p=2, q=p, d=2){
 
 
 MM = lapply(2:3, function(h){
-  print(h)
   list(pente = list(
-    `d=2` = gen_MM(p = h, d=2)[,2],
-    `d=3` = gen_MM(p = h, d=3)[,2]),
+    `d=2` = gen_MM(p = h, d=2)[,2]
+    ),
     `deriv2` = list(
-      `d=2` = gen_MM(p = h, d=2)[,3],
-      `d=3` = gen_MM(p = h, d=3)[,3]),
+      `d=2` = gen_MM(p = h, d=2)[,3]
+      ),
     henderson = lp_filter(horizon = h)@sfilter
   )
 })
 names(MM) <- sprintf("h=%i", 2:3)
-s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
+s = list.files("data_simul_quarter/byseries",full.names = TRUE)[1]
 d = 2
 h = 2
-for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
+for(s in list.files("data_simul_quarter/byseries",full.names = TRUE)){
   print(s)
   for(h in 2:3){
-    new_f = sprintf("data_simul_trim/byseriespente_final/%s_h%i.RDS",
+    new_f = sprintf("data_simul_quarter/byseriespente_final/%s_h%i.RDS",
                     gsub(".RDS", "",basename(s)),h)
     print(new_f)
     MM_h = MM[[sprintf("h=%i", h)]]
@@ -56,20 +55,16 @@ for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
       data <- readRDS(s)
       last_est = data[[length(data)]]
       pente_d2 = zoo::na.locf(moving_average(MM_h$pente[[sprintf("d=%i",2)]], -h) * last_est)
-      pente_d3 = zoo::na.locf(moving_average(MM_h$pente[[sprintf("d=%i",3)]], -h) * last_est)
       courbure_d2 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",2)]], -h) * last_est)
-      courbure_d3 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",3)]], -h) * last_est)
-      
+
       info <- lapply(data, function(x){
         sigma2 <- var_estimator(x, MM_h[["henderson"]])
         list("LC" = list(
           `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), h)),
-          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), h)),
           `sigma2` = sigma2
         ),
         "QL" = list(
           `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), h)),
-          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), h)),
           `sigma2` = sigma2
         )
         )

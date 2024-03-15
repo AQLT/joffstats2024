@@ -1,17 +1,17 @@
-if(!dir.exists("results_simul_trim"))
-  dir.create("results_simul_trim")
-if(!dir.exists("results_simul_trim/ner_neigh"))
-  dir.create("results_simul_trim/ner_neigh")
+if(!dir.exists("results_simul_quarter"))
+  dir.create("results_simul_quarter")
+if(!dir.exists("results_simul_quarter/ner_neigh"))
+  dir.create("results_simul_quarter/ner_neigh")
 library(rjd3filters)
 library(AQLThesis)
 library(future)
 library(forecast)
 plan(multisession)
 
-list_series <- list.files("data_simul_trim/byseries", full.names = TRUE)
-l = 13
+list_series <- list.files("data_simul_quarter/byseries", full.names = TRUE)
+l = 5
 filter <- lapply(6:0, function(i){
-  fst_filter(lags = 13-i-1, leads = i)
+  fst_filter(lags = 5-i-1, leads = i)
 })
 hend_ner_nb <-finite_filters(filter[[1]], filter[-1])
 s = list_series[1]
@@ -25,15 +25,15 @@ for(s in list_series){
     print(s)
     data <- readRDS(s)
     data_info <- readRDS(sub("byseries", "byseriesinfo", s))
-    nom_f_s <- sprintf("results_simul_trim/ner_neigh/%s.RDS",
+    nom_f_s <- sprintf("results_simul_quarter/ner_neigh/%s.RDS",
                        name_file)
     nom_f_s_tp <- 
-      sprintf("results_simul_trim/ner_neigh/%s_tp.RDS",
+      sprintf("results_simul_quarter/ner_neigh/%s_tp.RDS",
               name_file)
     
-    nom_f_s_rev_fe <- sprintf("results_simul_trim/ner_neigh/%s_fe_rev.RDS",
+    nom_f_s_rev_fe <- sprintf("results_simul_quarter/ner_neigh/%s_fe_rev.RDS",
                               name_file)
-    nom_f_s_rev_ce <- sprintf("results_simul_trim/ner_neigh/%s_ce_rev.RDS",
+    nom_f_s_rev_ce <- sprintf("results_simul_quarter/ner_neigh/%s_ce_rev.RDS",
                               name_file)
     
     if(all(file.exists(nom_f_s_tp),

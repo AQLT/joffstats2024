@@ -5,34 +5,34 @@ library(ggplot2)
 library(scales)
 library(latex2exp)
 
-tp_lp <- merge(readRDS("results_simul_trim/compile_tp_norev/troughs_lp.RDS"),
-                   readRDS("results_simul_trim/compile_tp_norev/peaks_lp.RDS"),
+tp_lp <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_lp.RDS"),
+                   readRDS("results_simul_quarter/compile_tp_norev/peaks_lp.RDS"),
                    by=c("series","kernel", "method")) %>%
   select_var()
 
-tp_lic_final <- merge(readRDS("results_simul_trim/compile_tp_norev/troughs_localic_final.RDS"),
-                          readRDS("results_simul_trim/compile_tp_norev/peaks_localic_final.RDS"),
+tp_lic_final <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_localic_final.RDS"),
+                          readRDS("results_simul_quarter/compile_tp_norev/peaks_localic_final.RDS"),
                           by=c("series", "kernel", "h", "degree", "method"))  %>%
   dplyr::filter(degree == "d2", h == "h6") %>%
   select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
   select(!c(degree, h))
-tp_lic_daf_trunc <- merge(readRDS("results_simul_trim/compile_tp_norev/troughs_localic_daf_trunc.RDS"),
-                              readRDS("results_simul_trim/compile_tp_norev/peaks_localic_daf_trunc.RDS"),
+tp_lic_daf_trunc <- merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_localic_daf_trunc.RDS"),
+                              readRDS("results_simul_quarter/compile_tp_norev/peaks_localic_daf_trunc.RDS"),
                               by=c("series", "kernel", "h", "degree", "method")) %>%
   dplyr::filter(degree == "d2", h == "h6") %>%
   select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
   select(!c(degree, h))
 
 tp_arima <-
-  merge(readRDS("results_simul_trim/compile_tp_norev/troughs_arima.RDS"),
-        readRDS("results_simul_trim/compile_tp_norev/peaks_arima.RDS"),
+  merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_arima.RDS"),
+        readRDS("results_simul_quarter/compile_tp_norev/peaks_arima.RDS"),
         by=c("series","kernel", "method", "ny")) %>%
   select_var() %>% 
   mutate(method = ifelse(ny == "All", method, paste0(method,"_ny",ny))) %>% 
   mutate(ny = NULL)
 tp_ner_neigh <-
-  merge(readRDS("results_simul_trim/compile_tp_norev/troughs_ner_neigh.RDS"),
-        readRDS("results_simul_trim/compile_tp_norev/peaks_ner_neigh.RDS"),
+  merge(readRDS("results_simul_quarter/compile_tp_norev/troughs_ner_neigh.RDS"),
+        readRDS("results_simul_quarter/compile_tp_norev/peaks_ner_neigh.RDS"),
         by=c("series","kernel", "method")) %>%
   select_var()
 

@@ -1,6 +1,6 @@
 library(AQLThesis)
 load_simul <- function(x){
-  data <- readRDS(sprintf("data_simul_trim/byseries/%s.RDS", x))
+  data <- readRDS(sprintf("data_simul_quarter/byseries/%s.RDS", x))
   data <- data[[length(data)]]
   data
 }

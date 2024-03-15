@@ -1,16 +1,16 @@
-if(!dir.exists("results_simul_trim"))
-  dir.create("results_simul_trim")
-if(!dir.exists("results_simul_trim/arima"))
-  dir.create("results_simul_trim/arima")
+if(!dir.exists("results_simul_quarter"))
+  dir.create("results_simul_quarter")
+if(!dir.exists("results_simul_quarter/arima"))
+  dir.create("results_simul_quarter/arima")
 library(rjd3filters)
 library(AQLThesis)
 library(future)
 library(forecast)
 plan(multisession)
 
-list_series <- list.files("data_simul_trim/byseries", full.names = TRUE)
+list_series <- list.files("data_simul_quarter/byseries", full.names = TRUE)
 s = list_series[1]
-l = 13
+l = 5
 henderson <- lp_filter(horizon = (l - 1) / 2)@sfilter
 fs <- list()
 i <- 0
@@ -22,15 +22,15 @@ for(s in list_series){
     print(s)
     data <- readRDS(s)
     data_info <- readRDS(sub("byseries", "byseriesinfo", s))
-    nom_f_s <- sprintf("results_simul_trim/arima/%s.RDS",
+    nom_f_s <- sprintf("results_simul_quarter/arima/%s.RDS",
                        name_file)
     nom_f_s_tp <- 
-      sprintf("results_simul_trim/arima/%s_tp.RDS",
+      sprintf("results_simul_quarter/arima/%s_tp.RDS",
               name_file)
     
-    nom_f_s_rev_fe <- sprintf("results_simul_trim/arima/%s_fe_rev.RDS",
+    nom_f_s_rev_fe <- sprintf("results_simul_quarter/arima/%s_fe_rev.RDS",
                               name_file)
-    nom_f_s_rev_ce <- sprintf("results_simul_trim/arima/%s_ce_rev.RDS",
+    nom_f_s_rev_ce <- sprintf("results_simul_quarter/arima/%s_ce_rev.RDS",
                               name_file)
     
     if(all(file.exists(nom_f_s_tp),

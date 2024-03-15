@@ -2,10 +2,10 @@ library(dplyr)
 library(AQLThesis)
 
 length_info <- 
-  sapply(list.files(path = "data_simul_trim/byseriesinfo",full.names = TRUE), 
+  sapply(list.files(path = "data_simul_quarter/byseriesinfo",full.names = TRUE), 
          function(f){
            info <- readRDS(f)
-           13
+           5
          })
 length_info <- data.frame(series = gsub(".RDS", "", basename(names(length_info))),
                           length = as.numeric(length_info))

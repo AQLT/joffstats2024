@@ -1,7 +1,7 @@
 library(AQLThesis)
 library(rjd3filters)
-if(!dir.exists("data_simul_trim/byseriespente_daf"))
-  dir.create("data_simul_trim/byseriespente_daf")
+if(!dir.exists("data_simul_quarter/byseriespente_daf"))
+  dir.create("data_simul_quarter/byseriespente_daf")
 
 # Dans ce programme, pour paramétrer les méthodes LC et QL :
 # 1. On prend les MM asymétriques d'estimation de la pente et polynôme degré 2 et on fait une estimation en temps réel
@@ -48,12 +48,12 @@ MM = list(pente = list(
 MM = lapply(MM, function(x){
   lapply(x, finite_filters, first_to_last = TRUE)
 })
-s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
+s = list.files("data_simul_quarter/byseries",full.names = TRUE)[1]
 d = 2
 h=2
 hend_filter = lp_filter(horizon = h)@sfilter
-for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
-  new_f = sprintf("data_simul_trim/byseriespente_daf/%s.RDS",
+for(s in list.files("data_simul_quarter/byseries",full.names = TRUE)){
+  new_f = sprintf("data_simul_quarter/byseriespente_daf/%s.RDS",
                   gsub(".RDS", "",basename(s)))
   print(new_f)
   if(!file.exists(new_f)){

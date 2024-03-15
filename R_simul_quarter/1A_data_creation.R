@@ -1,11 +1,12 @@
-if(!dir.exists("data_simul_trim"))
-  dir.create("data_simul_trim")
-if(!dir.exists("data_simul_trim/byseries"))
-  dir.create("data_simul_trim/byseries")
-if(!dir.exists("data_simul_trim/byseriesinfo"))
-  dir.create("data_simul_trim/byseriesinfo")
+if(!dir.exists("data_simul_quarter"))
+  dir.create("data_simul_quarter")
+if(!dir.exists("data_simul_quarter/byseries"))
+  dir.create("data_simul_quarter/byseries")
+if(!dir.exists("data_simul_quarter/byseriesinfo"))
+  dir.create("data_simul_quarter/byseriesinfo")
 
 library(AQLThesis)
+library(ggplot2)
 set.seed(100)
 start = 1960
 frequency = 4
@@ -42,14 +43,14 @@ forecast::autoplot(do.call(cbind, lapply(series_q[c(2,5,8)],`[`, ,"tc")))  +
 tp = turning_points(series_q[[1]][,"cycle"])
 first_date = time(series_q[[9]][,"cycle"])[25]
 tp = lapply(tp, function(x)x[x>=first_date])
-saveRDS(tp, "data_simul_trim/tp_simul1.RDS")
+saveRDS(tp, "data_simul_quarter/tp_simul1.RDS")
 
 for(nom_series in names(series_q)){
-  all_series <- lapply(time[-(1:24)], function(i){
+  all_series <- lapply(time[-(1:8)], function(i){
     ts(series_q[[nom_series]][1:i,"tc"], start = start, frequency = frequency)
   })
   names(all_series) <- sapply(all_series, function(x) time(x)[length(x)])
-  saveRDS(all_series, file = sprintf("data_simul_trim/byseries/%s.RDS", nom_series))
+  saveRDS(all_series, file = sprintf("data_simul_quarter/byseries/%s.RDS", nom_series))
 }
 
 
@@ -58,8 +59,8 @@ plan(multisession)
 
 fs <- list()
 i <- 0
-s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
-for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
+s = list.files("data_simul_quarter/byseries",full.names = TRUE)[1]
+for(s in list.files("data_simul_quarter/byseries",full.names = TRUE)){
   i <- i+1
   print(s)
   fs[[i]] <- future({
@@ -73,7 +74,7 @@ for(s in list.files("data_simul_trim/byseries",full.names = TRUE)){
       res[-1] <- res[-1] / 3
       res
     })
-    saveRDS(info, sprintf("data_simul_trim/byseriesinfo/%s", basename(s)))
+    saveRDS(info, sprintf("data_simul_quarter/byseriesinfo/%s", basename(s)))
     s
   })
 }
@@ -84,9 +85,9 @@ last_icr_m <- do.call(rbind, lapply(lapply(list.files("data_simul/byseriesinfo",
                                   function(x) x[[length(x)]]))
 rownames(last_icr_m) <- list.files("data_simul/byseriesinfo",full.names = FALSE)
 round(last_icr_m,1)
-last_icr_q <- do.call(rbind, lapply(lapply(list.files("data_simul_trim/byseriesinfo",full.names = TRUE), readRDS),
+last_icr_q <- do.call(rbind, lapply(lapply(list.files("data_simul_quarter/byseriesinfo",full.names = TRUE), readRDS),
                                   function(x) x[[length(x)]]))
-rownames(last_icr_q) <- list.files("data_simul_trim/byseriesinfo",full.names = FALSE)
+rownames(last_icr_q) <- list.files("data_simul_quarter/byseriesinfo",full.names = FALSE)
 round(last_icr_q,1)
 
 

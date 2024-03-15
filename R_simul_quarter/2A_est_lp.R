@@ -1,13 +1,13 @@
-if(!dir.exists("results_simul_trim"))
-  dir.create("results_simul_trim")
-if(!dir.exists("results_simul_trim/lp"))
-  dir.create("results_simul_trim/lp")
+if(!dir.exists("results_simul_quarter"))
+  dir.create("results_simul_quarter")
+if(!dir.exists("results_simul_quarter/lp"))
+  dir.create("results_simul_quarter/lp")
 library(rjd3filters)
 library(AQLThesis)
 library(future)
 plan(multisession)
 
-list_series <- list.files("data_simul_trim/byseries", full.names = TRUE)
+list_series <- list.files("data_simul_quarter/byseries", full.names = TRUE)
 list_kernel <- c("Henderson", "Uniform", "Biweight", "Triweight", "Tricube",
                  "Gaussian", "Triangular", "Parabolic")
 
@@ -23,18 +23,18 @@ for(kernel in list_kernel){
       print(name_file)
       data <- readRDS(s)
       data_info <- readRDS(sub("byseries", "byseriesinfo", s))
-      nom_f_s <- sprintf("results_simul_trim/lp/%s_%s_%s.RDS",
+      nom_f_s <- sprintf("results_simul_quarter/lp/%s_%s_%s.RDS",
                          name_file,
                          tolower(kernel), tolower(method))
       nom_f_s_tp <- 
-        sprintf("results_simul_trim/lp/%s_%s_%s_tp.RDS",
+        sprintf("results_simul_quarter/lp/%s_%s_%s_tp.RDS",
                 name_file,
                 tolower(kernel), tolower(method))
       
-      nom_f_s_rev_fe <- sprintf("results_simul_trim/lp/%s_%s_%s_fe_rev.RDS",
+      nom_f_s_rev_fe <- sprintf("results_simul_quarter/lp/%s_%s_%s_fe_rev.RDS",
                                 name_file,
                                 tolower(kernel), tolower(method))
-      nom_f_s_rev_ce <- sprintf("results_simul_trim/lp/%s_%s_%s_ce_rev.RDS",
+      nom_f_s_rev_ce <- sprintf("results_simul_quarter/lp/%s_%s_%s_ce_rev.RDS",
                                 name_file,
                                 tolower(kernel), tolower(method))
       
@@ -48,11 +48,12 @@ for(kernel in list_kernel){
         print(s)
         series_s <- lapply(names(data), function(nom_d){
           x <- data[[nom_d]]
-          l = 13
+          l = 5
           icr = data_info[[nom_d]][sprintf("icr-%s", l)]
           lp_coef = lp_filter(horizon = (l-1)/2,
                               kernel = kernel,
                               endpoints = method,
+                              degree = 2,
                               ic = icr)
           rjd3filters::filter(x, lp_coef)
         })

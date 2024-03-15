@@ -1,7 +1,7 @@
-if(!dir.exists("results_simul_trim"))
-  dir.create("results_simul_trim")
-if(!dir.exists("results_simul_trim/localic_daf_trunc"))
-  dir.create("results_simul_trim/localic_daf_trunc")
+if(!dir.exists("results_simul_quarter"))
+  dir.create("results_simul_quarter")
+if(!dir.exists("results_simul_quarter/localic_daf_trunc"))
+  dir.create("results_simul_quarter/localic_daf_trunc")
 library(rjd3filters)
 library(AQLThesis)
 library(future)
@@ -9,11 +9,11 @@ plan(multisession)
 
 kernel = "Henderson"
 method = "LC"
-s = list.files("data_simul_trim/byseries",full.names = TRUE)[1]
+s = list.files("data_simul_quarter/byseries",full.names = TRUE)[1]
 
 d = 2
-h = 3
-lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
+h = 2
+lp_filter2 <- function(icr, method = "LC", h = 2, kernel = "Henderson"){
   all_coef = lapply(as.numeric(icr), function(ic){
     lp_filter(horizon = h,
               kernel = kernel,
@@ -32,27 +32,27 @@ j <- 1
 reload <- FALSE
 for (method in c("LC","QL")){
   print(method)
-  for(s in list.files("data_simul_trim/byseries", full.names = TRUE)){
-    for(d in 2:3){
+  for(s in list.files("data_simul_quarter/byseries", full.names = TRUE)){
+    for(d in 2){
       name_file <- gsub(".RDS$", "", basename(s))
       print(name_file)
       data <- readRDS(s)
       complement = sprintf("_d%i", d)
       
-      nom_f_s <- sprintf("results_simul_trim/localic_daf_trunc/%s_%s%s.RDS",
+      nom_f_s <- sprintf("results_simul_quarter/localic_daf_trunc/%s_%s%s.RDS",
                          name_file, tolower(method), complement)
       nom_f_s_tp <- 
-        sprintf("results_simul_trim/localic_daf_trunc/%s_%s%s_tp.RDS",
+        sprintf("results_simul_quarter/localic_daf_trunc/%s_%s%s_tp.RDS",
                 name_file,
                 tolower(method), complement)
       
-      nom_f_s_rev_fe <- sprintf("results_simul_trim/localic_daf_trunc/%s_%s%s_fe_rev.RDS",
+      nom_f_s_rev_fe <- sprintf("results_simul_quarter/localic_daf_trunc/%s_%s%s_fe_rev.RDS",
                                 name_file,
                                 tolower(method), complement)
-      nom_f_s_rev_ce <- sprintf("results_simul_trim/localic_daf_trunc/%s_%s%s_ce_rev.RDS",
+      nom_f_s_rev_ce <- sprintf("results_simul_quarter/localic_daf_trunc/%s_%s%s_ce_rev.RDS",
                                 name_file,
                                 tolower(method), complement)
-      data_info <- readRDS(sprintf("data_simul_trim/byseriespente_daf/%s.RDS",
+      data_info <- readRDS(sprintf("data_simul_quarter/byseriespente_daf/%s.RDS",
                                    gsub(".RDS", "",basename(s))))
       
       if(all(file.exists(nom_f_s_tp),
@@ -68,7 +68,7 @@ for (method in c("LC","QL")){
           data_t = data_info[[nom_d]][[method]]
           ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
           icr = 2/(sqrt(pi) * ratio)
-          icr[abs(icr) > 12] <- 12
+          icr[abs(icr) > 12/3] <- 12/3
           lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
           rjd3filters::filter(x, lp_coef)
         })
