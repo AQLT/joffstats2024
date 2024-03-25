@@ -9,7 +9,7 @@ set.seed(100)
 start = 1960
 frequency = 12
 time = seq_along(seq(start, 2019+11/12, by = 1/12))
-series = list(
+series_mens = list(
   highvariability1 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.40,lambda = 72,rho = 0.5),
   highvariability2 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.40,lambda = 72,rho = 0.7),
   highvariability3 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.40,lambda = 72,rho = 1),
@@ -19,17 +19,17 @@ series = list(
   lowvariability1 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 3),
   lowvariability2 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 3.5),
   lowvariability3 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.20,lambda = 72,rho = 4)
-              )
-series = lapply(series,ts, start = start, frequency = frequency)
+)
+series_mens = lapply(series_mens,ts, start = start, frequency = frequency)
 
-tp = turning_points(series[[9]][,"cycle"])
-first_date = time(series[[9]][,"cycle"])[25]
+tp = turning_points(series_mens[[1]][,"cycle"])
+first_date = time(series_mens[[9]][,"cycle"])[25]
 tp = lapply(tp, function(x)x[x>=first_date])
 saveRDS(tp, "data_simul/tp_simul1.RDS")
 
-for(nom_series in names(series)){
+for(nom_series in names(series_mens)){
   all_series <- lapply(time[-(1:24)], function(i){
-    ts(series[[nom_series]][1:i,"tc"], start = start, frequency = frequency)
+    ts(series_mens[[nom_series]][1:i,"tc"], start = start, frequency = frequency)
   })
   names(all_series) <- sapply(all_series, function(x) time(x)[length(x)])
   saveRDS(all_series, file = sprintf("data_simul/byseries/%s.RDS", nom_series))
@@ -49,7 +49,6 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
   fs[[i]] <- future({
     data <- readRDS(s)
     info <- lapply(data, function(x){
-        x = data[[5]]
       res = rjd3x11plus::select_trend_filter(x)
       res = c(res[c("length", "icr")],
               rjd3x11plus::select_trend_filter(x, length = 9)[1], 
@@ -64,7 +63,7 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
 vs <- lapply(fs, value)
 
 last_icr <- do.call(rbind, lapply(lapply(list.files("data_simul/byseriesinfo",full.names = TRUE), readRDS),
-                                   function(x) x[[length(x)]]))
+                                  function(x) x[[length(x)]]))
 rownames(last_icr) <- list.files("data_simul/byseriesinfo",full.names = FALSE)
 round(last_icr,1)
 

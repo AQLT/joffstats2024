@@ -19,7 +19,7 @@ p <- ggplot(data = dataGraph,
   scale_x_continuous(breaks = scales::pretty_breaks(n = 10),
   ) +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 12),
-                     labels = function(x) format(x, decimal.mark = ",")) +
+                     labels = function(x) format(x, decimal.mark = ".")) +
   theme_bw() +theme(legend.background = element_rect(fill = alpha('gray99', 0.4),
                                                      colour = "gray80", linetype = "solid"),
                     legend.justification = c(0,0),
@@ -27,8 +27,8 @@ p <- ggplot(data = dataGraph,
                     legend.key = element_blank(),
                     legend.title = element_blank())
 
-ggMultisave("img/simulations/simul_data",
-            plot = p,
-            width = 8, height = 4)
+ggsave("img/simulations/simul_data.pdf",
+       plot = p,
+       width = 8, height = 4)
 
 

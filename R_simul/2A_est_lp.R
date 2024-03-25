@@ -9,7 +9,7 @@ plan(multisession)
 
 list_series <- list.files("data_simul/byseries", full.names = TRUE)
 list_kernel <- c("Henderson", "Uniform", "Biweight", "Triweight", "Tricube",
-                 "Gaussian", "Triangular", "Parabolic")[1]
+                 "Gaussian", "Triangular", "Parabolic")
 
 fs <- list()
 j <- 1
@@ -54,7 +54,10 @@ for(kernel in list_kernel){
                               kernel = kernel,
                               endpoints = method,
                               ic = icr)
-          rjd3filters::filter(x, lp_coef)
+          res <- rjd3filters::filter(x, lp_coef)
+          
+          res[1:((l-1)/2)] <- NA
+          res
         })
         names(series_s) <- names(data)
         

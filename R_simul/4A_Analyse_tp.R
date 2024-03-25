@@ -30,7 +30,6 @@ tp_arima <-
   select_var() %>% 
   mutate(method = ifelse(ny == "All", method, paste0(method,"_ny",ny))) %>% 
   mutate(ny = NULL)
-tp_arima$method %>% unique() %>% dput()
 tp_ner_neigh <-
   merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh.RDS"),
         readRDS("results_simul/compile_tp_norev/peaks_ner_neigh.RDS"),
@@ -58,22 +57,6 @@ all_tp <- rbind(tp_lp,
                               ordered = TRUE),
          kernel = tolower(kernel))
 
-
-# Graphique sur le dephasage
-format_table_tp <- function(x){
-  x %>%
-    tidyr::pivot_longer(
-      cols = starts_with("x"),
-      names_to = "name",
-      values_to = "value"
-    )%>% dplyr::filter(kernel == "henderson") %>%
-    unique_series_pivot() %>%
-    mutate(variability = recode(variability,
-                                lowvariability = "Low variability",
-                                mediumvariability = "Medium  variability",
-                                highvariability = "High variability")) %>%
-    na.omit()
-}
 data_tp <- all_tp %>% format_table_tp()
 
 
@@ -84,7 +67,6 @@ legende <- c(lc = "LC", ql = "QL",
              ql_localic_final = "QL loc. param.\n(final estimates)",
              ql_localic = "QL loc.\nparam.",
              auto_arima = "ARIMA")
-data_tp
 p <- ggplot(data_tp %>% 
               filter(method %in%
                        names(legende)) ,aes(x=method, y = value))+
@@ -99,6 +81,18 @@ p
 ggsave("img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
+
+legende <- c(lc = "LC", ql = "QL",
+             cq = "CQ", daf = "DAF",
+             nearest_neighbour = "Nearest neighbour")
+p <- ggplot(data_tp %>% 
+              filter(method %in%
+                       names(legende)) ,aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende)
+p
 
 legende <-
   c(
@@ -125,3 +119,24 @@ p <- ggplot(data_tp %>%
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende) 
 p
+
+kernels <- c("henderson", "biweight", "gaussian", "parabolic", "triangular", 
+            "tricube", "triweight", "uniform")
+
+
+data_tp_kernel <- tp_lp %>%
+  mutate(kernel = factor(kernel, kernels,
+                         ordered = TRUE),
+         variability = factor(variability,
+                              levels = c("lowvariability","mediumvariability","highvariability"),
+                              ordered = TRUE)) %>% 
+  format_table_tp(kernel = kernels)
+p_kernel <- ggplot(data_tp_kernel %>% filter(method == "lc"),
+            aes(x=kernel, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL)
+p_kernel
+
+all.equal(tp_lp %>% filter(kernel == "henderson") %>% select(!kernel),
+          tp_lp %>% filter(kernel == "biweight")%>% select(!kernel))

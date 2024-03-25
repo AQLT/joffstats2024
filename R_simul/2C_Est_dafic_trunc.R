@@ -12,7 +12,7 @@ method = "LC"
 s = list.files("data_simul/byseries",full.names = TRUE)[1]
 
 d = 2
-h = 3
+h = 6
 lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
   all_coef = lapply(as.numeric(icr), function(ic){
     lp_filter(horizon = h,
@@ -30,6 +30,7 @@ lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
 fs <- list()
 j <- 1
 reload <- FALSE
+l <- 6
 for (method in c("LC","QL")){
   print(method)
   for(s in list.files("data_simul/byseries", full.names = TRUE)){
@@ -70,7 +71,10 @@ for (method in c("LC","QL")){
           icr = 2/(sqrt(pi) * ratio)
           icr[abs(icr) > 12] <- 12
           lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
-          rjd3filters::filter(x, lp_coef)
+          res <- rjd3filters::filter(x, lp_coef)
+          
+          res[1:h] <- NA
+          res
         })
         names(series_s) <- names(data)
         

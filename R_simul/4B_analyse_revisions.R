@@ -20,6 +20,10 @@ for (crit in c("ce", "fe")) {
                                 suff)) %>%
         select(!c(degree, h))
     }
+    if (method == "arima") {
+      data <- data  %>% dplyr::filter(ny == "All") %>% 
+        select(!c(ny))
+    }
     data <- data %>% select(!kernel)
     assign(sprintf("rev_%s_%s", crit, method), data)
   }
@@ -35,33 +39,6 @@ for (crit in c("ce", "fe")) {
 }
 
 x = all_rev_fe
-normalise_rev <- function(x, ref = "lc", suff = "^(rev|X)"){
-  ref = x[(x$method == "lc"),grep(suff,colnames(x)) ]
-  for(m in unique(x$method)){
-    if(nrow(x[x$method == m,grep(suff,colnames(x))]) > 0){
-      x[x$method == m,grep(suff,colnames(x))] <-
-        x[x$method == m,grep(suff,colnames(x))] / ref
-    }
-  }
-  x
-}
-summarise_ref <- function(x, normalise = FALSE){
-  if(normalise){
-    x = x %>% normalise_rev()
-    digits = 1
-  } else{
-    digits = 2
-  }
-  x %>%
-    group_by(variability, method) %>%
-    summarise(across(
-      .cols = where(is.numeric),
-      .fns = list(Mean = \(x) round(mean(x),digits)),
-      .names = "{col}"
-    )) %>%
-    select(!c(rev.q6:rev.q10, length)) %>%
-    data.frame()
-}
 rev_tot = rbind(all_rev_fe %>% summarise_ref(),
                 all_rev_ce %>% summarise_ref())
 rev_rel = rbind(all_rev_fe %>% summarise_ref(normalise = TRUE),

@@ -29,7 +29,7 @@ for (method in c("LC","QL")){
   print(method)
   for(s in list.files("data_simul/byseries", full.names = TRUE)){
     for(d in 2:3){
-      for(h in 6) {
+      for(h in 3:6) {
         name_file <- gsub(".RDS$", "", basename(s))
         print(name_file)
         data <- readRDS(s)
@@ -65,7 +65,10 @@ for (method in c("LC","QL")){
             ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
             icr = 2/(sqrt(pi) * ratio)
             lp_coef = lp_filter2(icr = icr, method = method, h = h, kernel = kernel)
-            rjd3filters::filter(x, lp_coef)
+            res <- rjd3filters::filter(x, lp_coef)
+            
+            res[1:h] <- NA
+            res
           })
           names(series_s) <- names(data)
           

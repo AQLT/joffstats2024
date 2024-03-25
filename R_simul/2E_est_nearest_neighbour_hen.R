@@ -1,7 +1,7 @@
 if(!dir.exists("results_simul"))
   dir.create("results_simul")
-if(!dir.exists("results_simul/ner_neigh"))
-  dir.create("results_simul/ner_neigh")
+if(!dir.exists("results_simul/ner_neigh_hend"))
+  dir.create("results_simul/ner_neigh_hend")
 library(rjd3filters)
 library(AQLThesis)
 library(future)
@@ -25,15 +25,15 @@ for(s in list_series){
     print(s)
     data <- readRDS(s)
     data_info <- readRDS(sub("byseries", "byseriesinfo", s))
-    nom_f_s <- sprintf("results_simul/ner_neigh/%s.RDS",
+    nom_f_s <- sprintf("results_simul/ner_neigh_hend/%s.RDS",
                        name_file)
     nom_f_s_tp <- 
-      sprintf("results_simul/ner_neigh/%s_tp.RDS",
+      sprintf("results_simul/ner_neigh_hend/%s_tp.RDS",
               name_file)
     
-    nom_f_s_rev_fe <- sprintf("results_simul/ner_neigh/%s_fe_rev.RDS",
+    nom_f_s_rev_fe <- sprintf("results_simul/ner_neigh_hend/%s_fe_rev.RDS",
                               name_file)
-    nom_f_s_rev_ce <- sprintf("results_simul/ner_neigh/%s_ce_rev.RDS",
+    nom_f_s_rev_ce <- sprintf("results_simul/ner_neigh_hend/%s_ce_rev.RDS",
                               name_file)
     
     if(all(file.exists(nom_f_s_tp),
