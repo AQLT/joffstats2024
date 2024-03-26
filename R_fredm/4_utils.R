@@ -111,9 +111,7 @@ extract_est_data <- function(method = "lc", kernel = "henderson", nb_est = 10,
          end = last_date)
 }
 
-get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/",
-                       fst_weights = "weight235",
-                       fst_degree = 2) {
+get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
   tp_lp <- merge(readRDS(sprintf("%stroughs_lp.RDS", dossier)),
                  readRDS(sprintf("%speaks_lp.RDS", dossier)),
                  by=c("series","kernel", "method")) %>%
@@ -158,9 +156,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/",
 }
 
 
-get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
-                          fst_weights = "weight235",
-                          fst_degree = 2){
+get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6){
   s <- sprintf("data_fredm/byseries/%s.RDS", series)
   tp_date <- as.numeric(tp_keep)
   data <- readRDS(s)
@@ -397,9 +393,7 @@ get_all_plots_prevs <- function(data_prevs,
                                 all_tp,
                                 all_tp_rev = NULL,
                                 tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)],
-                                dossier = "results_fredm/compile_tp_norev/",
-                                fst_weights = "weight235",
-                                fst_degree = 2) {
+                                dossier = "results_fredm/compile_tp_norev/") {
   tp_keep_col <- paste0("X", tp_keep)
   column_to_remove <- grep(tp_keep_col,
                            grep("^X", colnames(all_tp),value = TRUE),
