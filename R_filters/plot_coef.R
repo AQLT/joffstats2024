@@ -53,3 +53,45 @@ ggsave("img/filters_used/musgrave.pdf",
        width = 8, height = 4.5,
        plot = p)
 
+
+h_filter <- lp_filter(horizon = 6)@sfilter
+nn_ma <- list(
+  henderson = finite_filters(h_filter, lapply(5:0, function(i){
+    fst_filter(lags = 13-i-1, leads = i)
+  })),
+  `d=2` = finite_filters(h_filter, lapply(1:6, function(i){
+    lp_filter(horizon=6+i, endpoints = "DAF", degree = 2)[,2*i+1]
+  })),
+  `d=3` = finite_filters(h_filter, lapply(1:6, function(i){
+    lp_filter(horizon=6+i, endpoints = "DAF", degree = 3)[,2*i+1]
+  }))
+)
+x <- nn_ma[["henderson"]]
+p <- ggplot_coef(x, q = c(0:6)) / (
+  ggplot_gain(x, q = c(0:6)) +
+    ggplot2::scale_y_continuous(
+      "Gain",
+      breaks = seq(0, 1, by = 0.2))+
+    ggplot2::guides(colour = "none") +
+    ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
+    ggplot2::labs(y = "Phase shift") +
+    ggplot2::guides(colour = "none"))
+p
+ggsave("img/filters_used/nn_henderson.pdf",
+       width = 8, height = 4.5,
+       plot = p)
+
+x <- nn_ma[["d=2"]]
+p <- ggplot_coef(x, q = c(0:6)) / (
+  ggplot_gain(x, q = c(0:6)) +
+    ggplot2::scale_y_continuous(
+      "Gain",
+      breaks = seq(0, 1, by = 0.2))+
+    ggplot2::guides(colour = "none") +
+    ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
+    ggplot2::labs(y = "Phase shift") +
+    ggplot2::guides(colour = "none"))
+p
+ggsave("img/filters_used/nn_lp_d2.pdf",
+       width = 8, height = 4.5,
+       plot = p)

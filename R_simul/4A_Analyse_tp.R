@@ -23,6 +23,27 @@ tp_lic_daf_trunc <- merge(readRDS("results_simul/compile_tp_norev/troughs_locali
   select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
   select(!c(degree, h))
 
+tp_lp_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_lp_nn.RDS"),
+                  readRDS("results_simul/compile_tp_norev/peaks_lp_nn.RDS"),
+                  by=c("series","kernel", "method")) %>%
+  select_var() %>% 
+  mutate(method = sprintf("%s_nn", method))
+
+tp_lic_final_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_final_nn.RDS"),
+                      readRDS("results_simul/compile_tp_norev/peaks_localic_final_nn.RDS"),
+                      by=c("series", "kernel", "h", "degree", "method"))  %>%
+  dplyr::filter(degree == "d2", h == "h6") %>%
+  select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
+  select(!c(degree, h)) %>% 
+  mutate(method = sprintf("%s_localic", method))
+tp_lic_daf_trunc_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_daf_trunc_nn.RDS"),
+                          readRDS("results_simul/compile_tp_norev/peaks_localic_daf_trunc_nn.RDS"),
+                          by=c("series", "kernel", "h", "degree", "method")) %>%
+  dplyr::filter(degree == "d2", h == "h6") %>%
+  select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
+  select(!c(degree, h))%>%
+  mutate(method = sprintf("%s_localic", method))
+
 tp_arima <-
   merge(readRDS("results_simul/compile_tp_norev/troughs_arima.RDS"),
         readRDS("results_simul/compile_tp_norev/peaks_arima.RDS"),
@@ -36,31 +57,31 @@ tp_ner_neigh_hend <-
         by=c("series","kernel", "method")) %>%
   select_var()
 
-tp_ner_neigh_lp <-
-  merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh_lp.RDS"),
-        readRDS("results_simul/compile_tp_norev/peaks_ner_neigh_lp.RDS"),
-        by=c("series","kernel", "method", "degree")) %>%
-  mutate(method = sprintf("%s_%s", method, degree)) %>%
-  select_var()%>%
-  select(!c(degree))
 
-order_methods  <- c("lc", "lc_localic_final", "lc_localic",
-  "ql", "ql_localic_final", "ql_localic",
-  "cq","daf", 
+order_methods  <- c(
+  "lc", "lc_nn",
+  "lc_localic_final", "lc_localic_final_nn",
+  "lc_localic", "lc_localic_nn",
+  "ql", "ql_nn",
+  "ql_localic_final", "ql_localic_final_nn",
+  "ql_localic", "ql_localic_nn",
+  "cq", "cq_nn",
+  "daf", "daf_nn",
   "auto_arima_ny2", "auto_arima_ny4", "auto_arima_ny6",
   "auto_arima_ny8", "auto_arima_ny10", "auto_arima_ny12", 
   "auto_arima_ny14", "auto_arima_ny16", "auto_arima_ny18",
   "auto_arima_ny20", "auto_arima_ny25", "auto_arima_ny30",
   "auto_arima",
-  "nearest_neighbour_henderson",
-  "nearest_neighbour_lp_d2", "nearest_neighbour_lp_d3")
+  "nearest_neighbour_henderson")
 all_tp <- rbind(
   tp_lp,
   tp_lic_final,
   tp_lic_daf_trunc,
   tp_arima,
   tp_ner_neigh_hend,
-  tp_ner_neigh_lp) %>%
+  tp_lp_nn,
+  tp_lic_final_nn,
+  tp_lic_daf_trunc_nn) %>%
   mutate(method = factor(method, order_methods,
                          ordered = TRUE),
          variability = factor(variability,
@@ -93,11 +114,22 @@ ggsave("img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
 
-legende <- c(lc = "LC", ql = "QL",
+legende <- c(lc = "LC",
+             ql = "QL",
              cq = "CQ", daf = "DAF",
              nearest_neighbour_henderson = "NN Henderson",
              nearest_neighbour_lp_d2 = "NN lp d=2",
              nearest_neighbour_lp_d3 = "NN lp d=3")
+
+legende <- c(
+  lc = "LC", lc_nn = "LC NN",
+  lc_localic_final = "LC loc. param.\n(final estimates)",
+  lc_localic = "LC loc.\nparam.",
+  ql = "QL",
+  ql_localic_final = "QL loc. param.\n(final estimates)",
+  ql_localic = "QL loc.\nparam.",
+  cq = "CQ",
+  daf = "DAF")
 
 p <- ggplot(data_tp %>% 
               filter(method %in%
