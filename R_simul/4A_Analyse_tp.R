@@ -30,11 +30,19 @@ tp_arima <-
   select_var() %>% 
   mutate(method = ifelse(ny == "All", method, paste0(method,"_ny",ny))) %>% 
   mutate(ny = NULL)
-tp_ner_neigh <-
-  merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh.RDS"),
-        readRDS("results_simul/compile_tp_norev/peaks_ner_neigh.RDS"),
+tp_ner_neigh_hend <-
+  merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh_hend.RDS"),
+        readRDS("results_simul/compile_tp_norev/peaks_ner_neigh_hend.RDS"),
         by=c("series","kernel", "method")) %>%
   select_var()
+
+tp_ner_neigh_lp <-
+  merge(readRDS("results_simul/compile_tp_norev/troughs_ner_neigh_lp.RDS"),
+        readRDS("results_simul/compile_tp_norev/peaks_ner_neigh_lp.RDS"),
+        by=c("series","kernel", "method", "degree")) %>%
+  mutate(method = sprintf("%s_%s", method, degree)) %>%
+  select_var()%>%
+  select(!c(degree))
 
 order_methods  <- c("lc", "lc_localic_final", "lc_localic",
   "ql", "ql_localic_final", "ql_localic",
@@ -44,12 +52,15 @@ order_methods  <- c("lc", "lc_localic_final", "lc_localic",
   "auto_arima_ny14", "auto_arima_ny16", "auto_arima_ny18",
   "auto_arima_ny20", "auto_arima_ny25", "auto_arima_ny30",
   "auto_arima",
-  "nearest_neighbour")
-all_tp <- rbind(tp_lp,
-                tp_lic_final,
-                tp_lic_daf_trunc,
-                tp_arima,
-                tp_ner_neigh) %>%
+  "nearest_neighbour_henderson",
+  "nearest_neighbour_lp_d2", "nearest_neighbour_lp_d3")
+all_tp <- rbind(
+  tp_lp,
+  tp_lic_final,
+  tp_lic_daf_trunc,
+  tp_arima,
+  tp_ner_neigh_hend,
+  tp_ner_neigh_lp) %>%
   mutate(method = factor(method, order_methods,
                          ordered = TRUE),
          variability = factor(variability,
@@ -84,7 +95,10 @@ ggsave("img/simulations/phase_shift_simul.pdf",
 
 legende <- c(lc = "LC", ql = "QL",
              cq = "CQ", daf = "DAF",
-             nearest_neighbour = "Nearest neighbour")
+             nearest_neighbour_henderson = "NN Henderson",
+             nearest_neighbour_lp_d2 = "NN lp d=2",
+             nearest_neighbour_lp_d3 = "NN lp d=3")
+
 p <- ggplot(data_tp %>% 
               filter(method %in%
                        names(legende)) ,aes(x=method, y = value))+

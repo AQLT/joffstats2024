@@ -27,7 +27,7 @@ for(s in list_series){
   for(d in 2:3){
     name_file <- gsub(".RDS$", "", basename(s))
     print(name_file)
-    fs[[i]] <- future({
+    fs[[i]] <- ({
       print(s)
       data <- readRDS(s)
       data_info <- readRDS(sub("byseries", "byseriesinfo", s))
