@@ -81,17 +81,29 @@ ggsave("img/filters_used/nn_henderson.pdf",
        width = 8, height = 4.5,
        plot = p)
 
-x <- nn_ma[["d=2"]]
-p <- ggplot_coef(x, q = c(0:6)) / (
-  ggplot_gain(x, q = c(0:6)) +
-    ggplot2::scale_y_continuous(
-      "Gain",
-      breaks = seq(0, 1, by = 0.2))+
-    ggplot2::guides(colour = "none") +
-    ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
-    ggplot2::labs(y = "Phase shift") +
-    ggplot2::guides(colour = "none"))
-p
-ggsave("img/filters_used/nn_lp_d2.pdf",
-       width = 8, height = 4.5,
-       plot = p)
+h_filter <- lp_filter(horizon = 6, kernel = "Henderson")@sfilter
+all_filters <- lapply(c("LC", "QL", "CQ", "DAF"), function(endpoints){
+  finite_filters(h_filter, lapply(1:6, function(i){
+    lp_filter(horizon=6+i, endpoints = endpoints,
+              kernel = "Henderson",
+              ic = 3.5)[,2*i+1]
+  }))
+})
+names(all_filters) <- c("LC", "QL", "CQ", "DAF")
+for(i in names(all_filters)){
+  print(i)
+  x <- all_filters[[i]]
+  p <- ggplot_coef(x, q = c(0:6)) / (
+    ggplot_gain(x, q = c(0:6)) +
+      ggplot2::scale_y_continuous(
+        "Gain",
+        breaks = seq(0, 1, by = 0.2))+
+      ggplot2::guides(colour = "none") +
+      ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
+      ggplot2::labs(y = "Phase shift") +
+      ggplot2::guides(colour = "none"))
+  p
+  ggsave(sprintf("img/filters_used/%s_nn.pdf",tolower(i)),
+         width = 8, height = 4.5,
+         plot = p)
+}
