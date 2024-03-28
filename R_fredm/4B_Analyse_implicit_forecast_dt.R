@@ -21,11 +21,11 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              all_tp_rev = all_tp_rev,
                              tp_keep = tp_keep,
                              dossier = "results_fredm/compile_tp_norev/")
-wrap_plots(plots,ncol = 3)
+wrap_plots(plots,ncol = 3) & scale_color_grey()
 
 ggsave("img/nber/ce16ov_fev2001_prev_imp_lp.pdf",
-            plot = wrap_plots(plots, ncol = 3),
-            width = 8, height = 8)
+       plot = wrap_plots(plots, ncol = 3) & scale_color_grey(),
+       width = 8, height = 8)
 
 series <- "CE16OV"
 tp_keep <- "2020.25"
@@ -37,10 +37,14 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              all_tp_rev = all_tp_rev,
                              tp_keep = tp_keep,
                              dossier = "results_fredm/compile_tp_norev/")
-wrap_plots(plots,ncol = 3)
+wrap_plots(plots,ncol = 3) & 
+  scale_color_grey() & 
+  labs(subtitle = NULL)
 
 ggsave("img/nber/ce16ov_covid_prev_imp_lp.pdf",
-       plot = wrap_plots(plots, ncol = 3),
+       plot = wrap_plots(plots, ncol = 3) & 
+         scale_color_grey() & 
+         labs(subtitle = NULL),
        width = 8, height = 8)
 
 
@@ -62,5 +66,5 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
 wrap_plots(plots, ncol = 3)
 
 ggsave("img/nber/retailx_nov2007_prev_imp_lp.pdf",
-            plot = wrap_plots(plots, ncol = 3),
-            width = 8, height = 8)
+       plot = wrap_plots(plots, ncol = 3),
+       width = 8, height = 8)

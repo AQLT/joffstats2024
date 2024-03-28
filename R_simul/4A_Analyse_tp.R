@@ -35,14 +35,14 @@ tp_lic_final_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic
   dplyr::filter(degree == "d2", h == "h6") %>%
   select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
   select(!c(degree, h)) %>% 
-  mutate(method = sprintf("%s_localic", method))
+  mutate(method = sprintf("%s_nn", method))
 tp_lic_daf_trunc_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_daf_trunc_nn.RDS"),
                           readRDS("results_simul/compile_tp_norev/peaks_localic_daf_trunc_nn.RDS"),
                           by=c("series", "kernel", "h", "degree", "method")) %>%
   dplyr::filter(degree == "d2", h == "h6") %>%
   select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
-  select(!c(degree, h))%>%
-  mutate(method = sprintf("%s_localic", method))
+  select(!c(degree, h)) %>%
+  mutate(method = sprintf("%s_nn", method))
 
 tp_arima <-
   merge(readRDS("results_simul/compile_tp_norev/troughs_arima.RDS"),
@@ -99,9 +99,9 @@ legende <- c(lc = "LC", ql = "QL",
              ql_localic_final = "QL loc. param.\n(final estimates)",
              ql_localic = "QL loc.\nparam.",
              auto_arima = "ARIMA")
-p <- ggplot(data_tp %>% 
+p <- ggplot(all_tp %>% 
               filter(method %in%
-                       names(legende)) ,aes(x=method, y = value))+
+                       names(legende))  %>% format_table_tp() ,aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
@@ -109,27 +109,19 @@ p <- ggplot(data_tp %>%
   theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
 p
 
-
 ggsave("img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
-
-legende <- c(lc = "LC",
-             ql = "QL",
-             cq = "CQ", daf = "DAF",
-             nearest_neighbour_henderson = "NN Henderson",
-             nearest_neighbour_lp_d2 = "NN lp d=2",
-             nearest_neighbour_lp_d3 = "NN lp d=3")
-
 legende <- c(
-  lc = "LC", lc_nn = "LC NN",
-  lc_localic_final = "LC loc. param.\n(final estimates)",
-  lc_localic = "LC loc.\nparam.",
-  ql = "QL",
-  ql_localic_final = "QL loc. param.\n(final estimates)",
-  ql_localic = "QL loc.\nparam.",
-  cq = "CQ",
-  daf = "DAF")
+  lc = "LC", lc_nn = "LC\n(nearest neighbors)",
+  # lc_localic_final = "LC loc. param.\n(final estimates)", lc_localic_final_nn = "LC loc. param.\n(final estimates) NN",
+  # lc_localic = "LC loc.\nparam.", lc_localic_nn = "LC loc.\nparam. NN",
+  ql = "QL", ql_nn = "QL\n(nearest neighbors)",
+  # ql_localic_final = "QL loc. param.\n(final estimates)", ql_localic_final_nn = "QL loc. param.\n(final estimates) NN",
+  # ql_localic = "QL loc.\nparam.", ql_localic_nn = "QL loc.\nparam. NN",
+  cq = "CQ", cq_nn = "CQ\n(nearest neighbors)",
+  daf = "DAF", daf_nn = "DAF\n(nearest neighbors)"
+  )
 
 p <- ggplot(data_tp %>% 
               filter(method %in%
@@ -140,7 +132,35 @@ p <- ggplot(data_tp %>%
   scale_x_discrete(labels = legende)
 p
 
-legende <-
+ggsave("img/simulations/phase_shift_simul_nn_lp.pdf",
+       plot = p,
+       width = 10, height = 6)
+
+legende <- c(
+  # lc = "LC", lc_nn = "LC NN",
+  lc_localic_final = "LC loc. param.\n(final estimates)", lc_localic_final_nn = "LC loc. param.\n(final estimates)\n(nearest neighbors)",
+  lc_localic = "LC loc.\nparam.", lc_localic_nn = "LC loc.\nparam.\n(nearest neighbors)",
+  # ql = "QL", ql_nn = "QL NN",
+  ql_localic_final = "QL loc. param.\n(final estimates)", ql_localic_final_nn = "QL loc. param.\n(final estimates)\n(nearest neighbors)",
+  ql_localic = "QL loc.\nparam.", ql_localic_nn = "QL loc.\nparam.\n(nearest neighbors)"
+  # cq = "CQ", cq_nn = "CQ NN",
+  # daf = "DAF", daf_nn = "DAF NN"
+)
+
+p <- ggplot(data_tp %>% 
+              filter(method %in%
+                       names(legende)) ,aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende)
+p
+
+ggsave("img/simulations/phase_shift_simul_nn_lp_localparam.pdf",
+       plot = p,
+       width = 10, height = 6)
+
+ legende <-
   c(
     "auto_arima_ny2" = "2 years",
     "auto_arima_ny4" = "4 years",
@@ -165,11 +185,12 @@ p <- ggplot(data_tp %>%
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende) 
 p
+ggsave("img/simulations/phase_shift_simul_arima_length.pdf",
+       plot = p,
+       width = 10, height = 6)
 
 kernels <- c("henderson", "biweight", "gaussian", "parabolic", "triangular", 
             "tricube", "triweight", "uniform")
-
-
 data_tp_kernel <- tp_lp %>%
   mutate(kernel = factor(kernel, kernels,
                          ordered = TRUE),
@@ -184,5 +205,7 @@ p_kernel <- ggplot(data_tp_kernel %>% filter(method == "lc"),
   labs(y="Phase shift", x = NULL)
 p_kernel
 
-all.equal(tp_lp %>% filter(kernel == "henderson") %>% select(!kernel),
-          tp_lp %>% filter(kernel == "biweight")%>% select(!kernel))
+ggsave("img/simulations/phase_shift_kernel.pdf",
+       plot = p_kernel,
+       width = 10, height = 6)
+

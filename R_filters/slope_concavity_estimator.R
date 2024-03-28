@@ -1,6 +1,7 @@
 library(rjd3filters)
 library(ggplot2)
 library(patchwork)
+library(ggdemetra3)
 h <- 6
 q <- 6
 X_gen <- function(d = 1, p = 6, q = p){

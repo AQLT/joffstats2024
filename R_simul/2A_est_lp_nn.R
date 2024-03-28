@@ -11,6 +11,16 @@ list_series <- list.files("data_simul/byseries", full.names = TRUE)
 list_kernel <- c("Henderson", "Uniform", "Biweight", "Triweight", "Tricube",
                  "Gaussian", "Triangular", "Parabolic")[1]
 
+h_filter <- lp_filter(horizon = 6, kernel = kernel)@sfilter
+lp_filter2_nn <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
+  rfilters = lapply(seq_along(icr), function(i){
+    lp_filter(horizon=h+i, 
+              endpoints = method,
+              kernel = kernel,
+              ic = icr[i])[,2*i+1]
+  })
+  finite_filters(h_filter, rfilters = rfilters)
+}
 fs <- list()
 j <- 1
 reload <- FALSE
