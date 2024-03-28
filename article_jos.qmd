@@ -878,6 +878,39 @@ img <- sprintf("img/nber/%s_%s_prev_imp_%s.%s",
 knitr::include_graphics(img)
 ```
 
+# Discussion
+## Outliers and COVID-19
+
+Graph + simulations
+
+Enfin, dans cet article et dans ceux associés aux méthodes étudiées, les filtres asymétriques sont appliqués et comparés sur des séries déjà désaisonnalisées ou sans saisonnalité (séries simulées). 
+Les révisions et donc le déphasage sont limités à 6 mois (lorsque le filtre symétrique est de 13 termes) et cela a l'avantage d'isoler les impacts des différents filtres des autres processus inhérents à la désaisonnalisation.
+Il y a toutefois deux inconvénients à cette simplification :
+
+1. D'une part, l'estimation de la série désaisonnalisée dépend de la méthode utilisée pour extraire la tendance-cycle.
+Le choix de la méthode utilisée pour l'estimation de la tendance-cycle peut donc avoir un impact bien au-delà de 6 mois.
+
+2. D'autre part, les moyennes mobiles étant des opérateurs linéaires, ils sont sensibles à la présence de points atypiques.
+L'application directe des méthodes peut donc conduire à des estimations biaisées, du fait de leur présence, alors que les méthodes de désaisonnalisation (comme la méthode X-13ARIMA) ont un module de correction des points atypiques.
+Par ailleurs, comme notamment montré par @dagum1996new, le filtre symétrique final utilisé par X-13ARIMA pour extraire la tendance-cycle (et donc celui indirectement utilisé lorsqu'on applique les méthodes sur les séries désaisonnalisées) laisse passer environ 72 % des cycles de 9 ou 10 mois (généralement associés à du bruit plutôt qu'à la tendance-cycle).
+Les filtres asymétriques finaux amplifient même les cycles de 9 ou 10 mois.
+Cela peut avoir pour conséquence l'introduction d'ondulations indésirables, c'est-à-dire la détection de faux points de retournement.
+Ce problème est réduit par la correction des points atypiques (ces cycles étant considérés comme de l'irrégulier). 
+C'est ainsi que le *Nonlinear Dagum Filter* (NLDF) a été développé et consiste à :
+
+    a. appliquer l'algorithme de correction des points atypiques de X-13ARIMA sur la série désaisonnalisée, puis de la prolonger par un modèle ARIMA ;
+    
+    b. effectuer une nouvelle correction des points atypiques en utilisant un seuil bien plus strict et appliquer ensuite le filtre symétrique de 13 termes. 
+    En supposant une distribution normale cela revient à modifier 48 % des valeurs de l'irrégulier.   
+
+    Les *cascade linear filter* (CLF), notamment étudiés dans @dagumBianconcini2023, correspondent à une approximation des NLDF en utilisant un filtre de 13 termes et lorsque les prévisions sont obtenus à partir d'un modèle ARIMA(0,1,1) où $\theta=0,40.$
+    
+Une piste d'étude serait alors d'étudier plus précisément l'effet des points atypiques sur l'estimation de la tendance-cycle et la détection des points de retournement, mais aussi d'explorer de nouveaux types de filtres asymétriques fondés sur des méthodes robustes (comme les régressions locales robustes, les médianes mobiles, etc.).
+ 
+
+## Other frequencies
+
+
 
 # Conclusion
 
