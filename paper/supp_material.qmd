@@ -52,6 +52,14 @@ img <- sprintf("img/filters_used/%s.%s", tolower("DAF"), "pdf")
 knitr::include_graphics(img)
 ```
 
+\newpage
+
+# Impact of the span used to detect the ARIMA model
+
+# Quarterly data
+
+# Nearest neighbour bandwidth
+
 
 ```{r, out.width="100%"}
 #| label: fig-graphs-coef-lc-nn
@@ -81,8 +89,6 @@ knitr::include_graphics(img)
 img <- sprintf("img/filters_used/%s_nn.%s", tolower("DAF"), "pdf")
 knitr::include_graphics(img)
 ```
-
-\newpage
 
 <!-- # R code example {#ann-ex-r} -->
 

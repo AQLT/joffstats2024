@@ -1,7 +1,6 @@
 ---
 title: "Response to referee"
 format: pdf
-editor: visual
 ---
 
 # Associated Editor
@@ -79,30 +78,30 @@ smoothing?
 
 Minor points
 
-• Section 1.1. It would perhaps be useful to provide the expression
+- Section 1.1. It would perhaps be useful to provide the expression
 of the phase angle, $\varphi(\omega)$ in terms of the real and imaginary part of
 the transfer function of the linear filter.
-• Section 1.1. The symbol p for the period is already in use from the
+- Section 1.1. The symbol p for the period is already in use from the
 previous section, where it denotes the bandwidth and number of
 past observations used by the filter.
-• Page 4. The definition of the high-pass component (oscillations
+- Page 4. The definition of the high-pass component (oscillations
 in the frequency range from $\pi/6$ to $\pi$ as undesirable oscillations is
 controversial.
-• Figure 1. In the caption, the ration $I/C$ was never defined before.
+- Figure 1. In the caption, the ration $I/C$ was never defined before.
 The description of the three panels should be better explained in
 the main text.
-• Section 1.2 makes a reference to X-11 and X-13-ARIMA. The author
+- Section 1.2 makes a reference to X-11 and X-13-ARIMA. The author
 assumes that the reader is knowledgeable about seasonal adjustment
 methods. Perhaps the authors should state that their
 intent is to separate the trend-cycle component from the ’noise’
 component.
-• Page 7, line 38. ’which extends’ is repeated twice.
-• Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts
+- Page 7, line 38. ’which extends’ is repeated twice.
+- Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts
 induced by $w_0$, etc.? The forecasts are obtained from an assumed
 polynomial trend model?
-• Table 1. Some criteria are labelled as Guggemos, not referenced in
+- Table 1. Some criteria are labelled as Guggemos, not referenced in
 the main text.
-• Figures 6-7. The labels of the time axes and the months are in
+- Figures 6-7. The labels of the time axes and the months are in
 French.
 
 # Referee 2
@@ -110,6 +109,8 @@ French.
 > The author simulates time series of length 60 years to illustrate the methodology at the end of the series.  It may be worth considering (in addition) shorter series.  Another thought is that the ARIMA model being used to extend the series appears to be modeled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
 
 > The author avoids numbering the Introduction and Conclusion; numbering both (and adjusting the numbering of the other sections accordingly) may be better.
+
+Those sections are now numbered
 
 > Adding the appropriate items for both R and X-13ARIMA-SEATS to the References may be warranted.  In addition, in the text, it would probably be preferable to use R (the letter itself) instead of the R icon.
 
@@ -141,6 +142,14 @@ proposed procedure to high-frequency data. If modifications or considerations ar
 necessary for such data, it should be discussed to provide a comprehensive
 understanding of the methodology.
 
+> 8.  Consideration of Different Series Periodicity
+> It would be beneficial if the authors could address the suggestion of considering series
+with different periodicities in the real data application. Discussing how the proposed
+methodology performs when applied to series with various frequencies would add
+depth to the study.
+
+
+
 > 5.  Clarity on Phase Shift Computation (Page 20)
 > A clearer explanation of how the phase shift is computed on page 20 would enhance the
 paper's overall clarity. The authors should specify the method used for determining the
@@ -157,19 +166,18 @@ better understand the performance of the filters/methods.
 recommend that the authors provide a more detailed description or explanation of the
 results to improve comprehension.
 
-> 8.  Consideration of Different Series Periodicity
-> It would be beneficial if the authors could address the suggestion of considering series
-with different periodicities in the real data application. Discussing how the proposed
-methodology performs when applied to series with various frequencies would add
-depth to the study.
 
 
 # Referee 4
 
 1) The paper lacks in describing the contribution from the beginning. I had to read the paper a couple of times to clearly identify the contribution. I found the contribution of the paper clearly stated on page 16, but I think I should come before in the text.
+
 2) The paper omits to consider the Covid19 period and how this influences the trend
 and cycle decomposition. I understand that this is not the main focus of the paper,
 but at least the authors should address this problem in word and possible solution
 to address it, e.g. outlier correction, robust distributions, etc.
-3) I think a quote from other works can be removed from the paper. For example, I
+
+> 3) I think a quote from other works can be removed from the paper. For example, I
 would remove the quote in point 2) of page 7.
+
+Removed
