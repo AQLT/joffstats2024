@@ -135,7 +135,7 @@
 \newcommand\Norm{\mathcal{N}}
 \newcommand\R{\mathds{R}}
 \newcommand\Z{\mathds{Z}}
-\newcommand{\determinant}[1]{\Determinant\left(#1\right)}
+\newcommand\transp[1]{{#1}^T}
 %\newcommand\C{\mathds{C}}
 %\newcommand\Z{\mathds{Z}}
 
@@ -216,10 +216,6 @@ frametitle={%
 \usepackage{makecell}
 \usepackage{xcolor}
 \makeatletter
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
 \ifdefined\contentsname
@@ -255,28 +251,18 @@ frametitle={%
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \makeatother
 \makeatletter
+\makeatother
+\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
-\makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
-\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
 \makeatother
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 \usepackage[]{biblatex}
 \addbibresource{biblio.bib}
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -295,11 +281,9 @@ of local polynomial regression filters}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, interior hidden, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, breakable, frame hidden]}{\end{tcolorbox}}\fi
 
 \setstretch{2}
-\hypertarget{abstract}{%
-\section*{Abstract}\label{abstract}}
+\section*{Abstract}\label{abstract}
 \addcontentsline{toc}{section}{Abstract}
 
 This paper studies and compares real-time estimates of the trend cycle
@@ -322,9 +306,7 @@ R statistical software.
 
 JEL Classification: E32, E37.
 
-\hypertarget{introduction}{%
-\section*{Introduction}\label{introduction}}
-\addcontentsline{toc}{section}{Introduction}
+\section{Introduction}\label{introduction}
 
 Analysis of the economic cycle, and in particular the early detection of
 turning points in a series, is a major topic in the analysis of economic
@@ -373,9 +355,9 @@ on a parameter that is generally estimated over the whole series using
 assumptions that may be wrong locally. The aim of this study is to
 propose extensions to the \textcite{proietti2008} class of filters in
 order to take these shortcomings into account. The extensions have been
-implemented in the \faIcon{r-project} \texttt{rjd3filters} package
-(available at \url{https://github.com/rjdemetra/rjd3filters}) and are
-therefore easily reusable.
+implemented in the R \texttt{rjd3filters} package (available at
+\url{https://github.com/rjdemetra/rjd3filters}) and are therefore easily
+reusable.
 
 In Section~\ref{sec-propMM}, we describe the general properties of
 moving averages and the associated quality criteria. This allows us to
@@ -385,8 +367,7 @@ extensions proposed in this article (Section~\ref{sec-nonparamreg}). In
 a final section (Section~\ref{sec-comparison}), all these methods are
 compared empirically on simulated and real series.
 
-\hypertarget{sec-propMM}{%
-\section{Some properties on moving averages}\label{sec-propMM}}
+\section{Some properties on moving averages}\label{sec-propMM}
 
 Lots of papers describe the definition and the properties of moving
 averages and linear filters, see for example \textcite{ch12HBSA}. In
@@ -395,7 +376,7 @@ next sections.
 
 Let \(p\) et \(f\) two integers, a moving average
 \(M_{\boldsymbol\theta}\) or \(M\) is defined by a set of coefficients
-\(\boldsymbol\theta=\begin{pmatrix}\theta_{-p}\\\vdots\\\theta_{f}\end{pmatrix}\)
+\(\boldsymbol\theta=\transp{\begin{pmatrix}\theta_{-p}&\cdots&\theta_{f}\end{pmatrix}}\)
 such as for all time series \(X_t\): \[
 M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}.
 \]
@@ -410,8 +391,7 @@ M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}.
   case, the quantity \(h=p=f\) is called the \emph{bandwidth}.
 \end{itemize}
 
-\hypertarget{subsec:gain-deph}{%
-\subsection{Gain and phase shift functions}\label{subsec:gain-deph}}
+\subsection{Gain and phase shift functions}\label{subsec:gain-deph}
 
 To interpret the notions of gain and phase shift, it is useful to
 illustrate the effects of moving averages on harmonic series
@@ -492,15 +472,16 @@ date.
 \caption{\label{fig-graphsmusgrave}Coefficients, gain and phase shift
 function for the Musgrave filter in real time with \(I/C=3.5\).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/musgrave.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/musgrave.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
-\hypertarget{desirable-properties-of-a-moving-average}{%
 \subsection{Desirable properties of a moving
-average}\label{desirable-properties-of-a-moving-average}}
+average}\label{desirable-properties-of-a-moving-average}
 
 To decompose a time series into a seasonal component, a trend-cycle and
 the irregular, the X-11 decomposition algorithm (used in X-13ARIMA) uses
@@ -514,8 +495,7 @@ y_t=TC_t+I_t.
 trend-cycle (\(M_{\boldsymbol\theta} (TC_t)\simeq TC_t\)) and minimise
 noise (\(M_{\boldsymbol\theta} (I_t)\simeq 0\)).
 
-\hypertarget{trend-preservation}{%
-\subsubsection{Trend preservation}\label{trend-preservation}}
+\subsubsection{Trend preservation}\label{trend-preservation}
 
 Trend-cycles are generally modelled by local polynomial trends (see
 Section~\ref{sec-nonparamreg}). In order to best preserve the
@@ -555,8 +535,7 @@ We have the following properties for the moving average
   then it also preserves polynomials of degree \(2d+1\).
 \end{itemize}
 
-\hypertarget{noise-reduction}{%
-\subsubsection{Noise reduction}\label{noise-reduction}}
+\subsubsection{Noise reduction}\label{noise-reduction}
 
 All time series are affected by noise, which can blur the extraction of
 trends and cycles. This is why we try to reduce this noise (by reducing
@@ -572,13 +551,11 @@ variables with \(\E{\varepsilon_t}=0\), \(\V{\varepsilon_t}=\sigma^2\):
 \sigma^2\sum_{k=-p}^{+f} \theta_k^2.
 \]
 
-\hypertarget{sec-mmasym}{%
 \subsection{Real-time estimation and asymmetric moving
-average}\label{sec-mmasym}}
+average}\label{sec-mmasym}
 
-\hypertarget{sec-mmetprev}{%
 \subsubsection{Asymmetric moving averages and
-forecasts}\label{sec-mmetprev}}
+forecasts}\label{sec-mmetprev}
 
 For symmetric filters, the phase shift function is equal to zero (modulo
 \(\pi\)). So there is no delay in detecting turning points. However,
@@ -673,9 +650,8 @@ interested in the performance of multi-step ahead forecasting. This is
 why it may be necessary to define alternative criteria for judging the
 quality of asymmetric moving averages.
 
-\hypertarget{subsec:crit-qual}{%
 \subsubsection{Quality indicators for asymmetric moving
-averages}\label{subsec:crit-qual}}
+averages}\label{subsec:crit-qual}
 
 For asymmetric filters, most of the criteria come from those defined by
 \textcite{ch15HBSA} and \textcite{trilemmaWMR2019} to build asymmetric
@@ -688,19 +664,23 @@ based on an optimisation problem involving three criteria:
 \emph{Timeliness} (\(T_g\)). Fidelity can be directly linked to the
 reduction in variance created by the filter, and timeliness to the
 notion of phase shift, which again we want to be low. This method can be
-used in\faIcon{r-project} with the function
-\texttt{rjd3filters::fst\_filter()}.
+used inR with the function \texttt{rjd3filters::fst\_filter()}.
 
 \textcite{trilemmaWMR2019} propose an approach based on the
 decomposition of the mean squared error between the symmetric and the
 asymmetric filter in four quantities: \emph{Accuracy} (\(A_w\)),
 \emph{Timeliness} (\(T_w\)), \emph{Smoothness} (\(S_w\)) and
 \emph{Residual} (\(R_w\)). A simplified version of this method can be
-used in \faIcon{r-project} with the function
-\texttt{rjd3filters::dfa\_filter()}.
+used in R with the function \texttt{rjd3filters::dfa\_filter()}.
 
-\begin{table}[!h]
+\begin{table}
+
 \caption{\label{tab-QC} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3,5$.}
+
+\centering{
+
+[!h]
+
 {\centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{ccc}
@@ -726,11 +706,13 @@ $R_w$ & Residual (Wildi) & $8\int_{\omega_1}^{\pi} \rho_{s}(\omega)\rho_{\boldsy
 \textit{$\rho_s$ and $\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.}
 
 \textit{$h$ is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\frac{1}{2(1-\cos(x))}$).}
-\end{table}
 
-\hypertarget{sec-nonparamreg}{%
+}
+
+\end{table}%
+
 \section{Non-parametric regression and local polynomial
-regression}\label{sec-nonparamreg}}
+regression}\label{sec-nonparamreg}
 
 Many trend-cycle extraction methods are based on non-parametric
 regressions, which are particularly flexible because they do not assume
@@ -741,16 +723,15 @@ assuming that there exists a function \(\mu\), to be estimated, such
 that \(y_i=\mu(x_i)+\varepsilon_i\) with \(\varepsilon_i\) an error
 term. According to Taylor's theorem, for any point \(x_0\), if \(\mu\)
 is differentiable \(d\) times, then:
-\begin{equation}\protect\hypertarget{eq-taylor}{}{
+\begin{equation}\phantomsection\label{eq-taylor}{
 \forall x \::\:\mu(x) = \mu(x_0) + \mu'(x_0)(x-x_0)+\dots +
 \frac{\mu^{(d)}(x_0)}{d!}(x-x_0)^d+R_d(x),
-}\label{eq-taylor}\end{equation} where \(R_d\) is a negligible residual
-term in the neighbourhood of \(x_0\). In a neighbourhood \(h(x_0)\)
-around \(x_0\), \(\mu\) can be approximated by a polynomial of degree
-\(d\). The quantity \(h(x_0)\) is called the \emph{bandwidth}. If
-\(\varepsilon_i\) is white noise, then we can estimate by least squares
-\(\mu(x_0)\) using the observations which are in
-\(\left[x_0-h(x_0),x_0+h(x_0)\right]\).
+}\end{equation} where \(R_d\) is a negligible residual term in the
+neighbourhood of \(x_0\). In a neighbourhood \(h(x_0)\) around \(x_0\),
+\(\mu\) can be approximated by a polynomial of degree \(d\). The
+quantity \(h(x_0)\) is called the \emph{bandwidth}. If \(\varepsilon_i\)
+is white noise, then we can estimate by least squares \(\mu(x_0)\) using
+the observations which are in \(\left[x_0-h(x_0),x_0+h(x_0)\right]\).
 
 In practice, this means assuming that the trend is locally polynomial.
 Various estimation methods can be used to derive symmetrical and
@@ -764,12 +745,11 @@ Finally, \textcite{dagumbianconcini2008} propose a similar modelling of
 the trend-cycle but using the theory of Hilbert spaces with reproducing
 kernels for estimation, which has the particular advantage of
 facilitating the calculation of different moving averages at different
-time frequencies. This method can be used in\faIcon{r-project} with the
-function \texttt{rjd3filters::rkhs\_filter()}.
+time frequencies. This method can be used inR with the function
+\texttt{rjd3filters::rkhs\_filter()}.
 
-\hypertarget{symmetric-moving-averages-and-local-polynomial-regression}{%
 \subsection{Symmetric moving averages and local polynomial
-regression}\label{symmetric-moving-averages-and-local-polynomial-regression}}
+regression}\label{symmetric-moving-averages-and-local-polynomial-regression}
 
 Using \textcite{proietti2008}'s notation, we assume that our time series
 \(y_t\) can be decomposed into \[
@@ -826,14 +806,15 @@ S(\hat{\beta}_{0},\dots,\hat{\beta}_{d})=\sum_{j=-h}^{h}\kappa_{j}(y_{t+j}-\hat{
 \(\boldsymbol K=diag(\kappa_{-h},\dots,\kappa_{h})\), the estimate of
 \(\boldsymbol \beta\) can be written as
 \(\hat{\boldsymbol\beta}=(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol X'\boldsymbol K\boldsymbol y.\)
-With \(\boldsymbol e_1=\begin{pmatrix}1 \\0 \\\vdots\\0 \end{pmatrix}\),
+With
+\(\boldsymbol e_1=\transp{\begin{pmatrix}1 &0 &\cdots&0 \end{pmatrix}}\),
 the estimate of the trend is:
-\begin{equation}\protect\hypertarget{eq-mmsym}{}{
+\begin{equation}\phantomsection\label{eq-mmsym}{
 \hat{m}_{t}=\boldsymbol e_{1}\hat{\boldsymbol \beta}=\boldsymbol \theta'\boldsymbol y=\sum_{j=-h}^{h}\theta_{j}y_{t-j}\text{ with }\boldsymbol \theta=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{1}.
-}\label{eq-mmsym}\end{equation} To conclude, the estimate of the trend
-\(\hat{m}_{t}\) can be obtained applying the symmetric filter
-\(\boldsymbol \theta\) to \(y_t\) (\(\boldsymbol \theta\) is symmetric
-due to the symmetry of the kernel weights \(\kappa_j\)). Moreover,
+}\end{equation} To conclude, the estimate of the trend \(\hat{m}_{t}\)
+can be obtained applying the symmetric filter \(\boldsymbol \theta\) to
+\(y_t\) (\(\boldsymbol \theta\) is symmetric due to the symmetry of the
+kernel weights \(\kappa_j\)). Moreover,
 \(\boldsymbol X'\boldsymbol \theta=\boldsymbol e_{1}\) so: \[
 \sum_{j=-h}^{h}\theta_{j}=1,\quad\forall r\in\left\llbracket 1,d\right\rrbracket:\sum_{j=-h}^{h}j^{r}\theta_{j}=0.
 \] Hence, the filter \(\boldsymbol w\) preserve deterministic polynomial
@@ -868,9 +849,8 @@ In this paper we will use the Henderson kernel: \[
 \left[1-\frac{j^2}{(h+3)^2}\right].
 \] However, several other kernels are available in \texttt{rjd3filters}.
 
-\hypertarget{sec-lppasymf}{%
 \subsection{Asymmetric moving averages and local polynomial
-regression}\label{sec-lppasymf}}
+regression}\label{sec-lppasymf}
 
 As mentioned in Section~\ref{sec-mmetprev}, for real-time estimation,
 several approaches can be used:
@@ -906,21 +886,20 @@ generalisation of \textcite{musgrave1964set}'s asymmetric filters (used
 in the X-13ARIMA seasonal adjustment algorithm).
 
 The initial series is modelled here as:
-\begin{equation}\protect\hypertarget{eq-lpgeneralmodel}{}{
+\begin{equation}\phantomsection\label{eq-lpgeneralmodel}{
 \boldsymbol y=\boldsymbol U \boldsymbol \gamma+\boldsymbol Z\boldsymbol \delta+\boldsymbol \varepsilon,\quad
 \boldsymbol \varepsilon\sim\mathcal{N}(0,\boldsymbol D).
-}\label{eq-lpgeneralmodel}\end{equation} where
-\([\boldsymbol U,\boldsymbol Z]\) is of full rank and forms a subset of
-the columns of \(X\). The objective is to find a filter
-\(\boldsymbol v\) that minimises the mean square error of revision (to
-the symmetric filter \(\boldsymbol \theta\)) under certain constraints.
-These constraints are represented by the matrix
-\(\boldsymbol U=\begin{pmatrix}\boldsymbol U_{p}\\\boldsymbol U_{f}\end{pmatrix}\):
+}\end{equation} where \([\boldsymbol U,\boldsymbol Z]\) is of full rank
+and forms a subset of the columns of \(X\). The objective is to find a
+filter \(\boldsymbol v\) that minimises the mean square error of
+revision (to the symmetric filter \(\boldsymbol \theta\)) under certain
+constraints. These constraints are represented by the matrix
+\(\boldsymbol U=\transp{\begin{pmatrix} \transp{\boldsymbol U_{p}}& \transp{\boldsymbol U_{f}}\end{pmatrix}}\):
 \(\boldsymbol U_p'\boldsymbol v=\boldsymbol U'\boldsymbol \theta\) (with
 \(\boldsymbol U_p\) the matrix \((h+q+1)\times (d+1)\) which contains
 the observations of the matrix \(U\) known during estimation by the
 asymmetric filter). The problem is equivalent to finding \(v\) which
-minimises: \begin{equation}\protect\hypertarget{eq-lppasym}{}{
+minimises: \begin{equation}\phantomsection\label{eq-lppasym}{
 \varphi(\boldsymbol v)=
 \underbrace{
   \underbrace{(\boldsymbol v-\boldsymbol \theta_{p})'\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_{p})+
@@ -928,15 +907,15 @@ minimises: \begin{equation}\protect\hypertarget{eq-lppasym}{}{
   \underbrace{[\boldsymbol \delta'(\boldsymbol Z_{p}'\boldsymbol v-\boldsymbol Z'\boldsymbol \theta)]^{2}}_{bias^2}
 }_\text{mean square revision error}+
 \underbrace{2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)}_{\text{constraints}}.
-}\label{eq-lppasym}\end{equation} where \(\boldsymbol l\) is a vector of
-Lagrange multipliers.
+}\end{equation} where \(\boldsymbol l\) is a vector of Lagrange
+multipliers.
 
 When \(\boldsymbol U=\boldsymbol X\), the constraint is equivalent to
 preserving polynomials of degree \(d\): we find asymmetric direct
 filters (DAF) when \(\boldsymbol D=\boldsymbol K^{-1}\).
 
-When \(\boldsymbol U=\begin{pmatrix}1\\\vdots\\1\end{pmatrix}\),
-\(\boldsymbol Z=\begin{pmatrix}-h\\\vdots\\+h\end{pmatrix}\),
+When \(\boldsymbol U=\transp{\begin{pmatrix}1&\cdots&1\end{pmatrix}}\),
+\(\boldsymbol Z=\transp{\begin{pmatrix}-h&\cdots&+h\end{pmatrix}}\),
 \(\boldsymbol \delta=\delta_1\), \(\boldsymbol D=\sigma^2\boldsymbol I\)
 and when the symmetric filter is the Henderson filter, we find the
 asymmetric Musgrave filters (using the Henderson kernel). This filter
@@ -1008,8 +987,14 @@ Indeed, to identify a turning point at date \(t\), it is necessary to
 have knowledge of at least two points after the given date to confirm
 the reversal in trend.
 
-\begin{table}[!h]
+\begin{table}
+
 \caption{\label{tab-criteriaLp} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3,5$.}
+
+\centering{
+
+[!h]
+
 \centering
 \begin{tabular}[t]{cccccccccccc}
 \toprule
@@ -1037,11 +1022,13 @@ Method & $b_c$ & $b_l$ & $b_q$ & $F_g$ & $S_g$ & $T_g \times 10^{-3}$ & $A_w$ & 
 \end{tabular}
 
 \textit{Note: With $EQM_w=A_w + S_w + T_w + R_w$.}
-\end{table}
 
-\hypertarget{sec-lptimeliness}{%
+}
+
+\end{table}%
+
 \subsection{Extension with the timeliness
-criterion}\label{sec-lptimeliness}}
+criterion}\label{sec-lptimeliness}
 
 One drawback of the previous method is the lack of control over the
 phase shift. However, it is possible to improve the modelling by
@@ -1052,7 +1039,7 @@ coded in Java and integrated into \texttt{rjd3filters}.
 Using the same notation as in Section~\ref{sec-lppasymf},
 \(\boldsymbol\theta\) represents the symmetric filter and
 \(\boldsymbol v\) the asymmetric filter. With
-\(\boldsymbol\theta=\begin{pmatrix}\boldsymbol\theta_p\\\boldsymbol\theta_f\end{pmatrix}\)
+\(\boldsymbol\theta=\transp{\begin{pmatrix}\transp{\boldsymbol\theta_p}&\transp{\boldsymbol\theta_f}\end{pmatrix}}\)
 and \(\boldsymbol\theta_p\) of the same length of \(\boldsymbol v\), and
 \(\boldsymbol g=\boldsymbol v-\boldsymbol \theta_p\), the timeliness
 criterion can be expressed as: \[
@@ -1084,8 +1071,7 @@ criterion. With \(\alpha_T=0\) we find \(\varphi(\boldsymbol v)\). This
 extension therefore makes it possible to find all the symmetric and
 asymmetric filters presented in the previous section but also
 generalizes the approach of \textcite{GrayThomson1996}. This extension
-is implemented in the \faIcon{r-project} function
-\texttt{rjd3filters::lp\_filter()}.
+is implemented in the R function \texttt{rjd3filters::lp\_filter()}.
 
 One drawback is that \(T_g(\boldsymbol v)\) is not normalized: the
 weight \(\alpha_T\) has no economic sense. It is then difficult to
@@ -1099,9 +1085,8 @@ cross-validation and then use this weight with a local parameterisation
 of the ratio \(\lvert\delta/\sigma\rvert\) (as in
 Section~\ref{sec-localic}).
 
-\hypertarget{sec-localic}{%
 \subsection{Local parameterisation of asymmetric
-filters}\label{sec-localic}}
+filters}\label{sec-localic}
 
 Asymmetric filters are usually parameterised globally:
 \(\lvert\delta/\sigma\rvert\) estimated on all the data using the
@@ -1158,11 +1143,13 @@ the growth after the turning point for the LC method:
 \caption{\label{fig-mmpenteconcac}Moving averages used for real-time
 estimation of slope and concavity.}
 
-{\centering \includegraphics[width=0.9\textwidth,height=\textheight]{img/filters_used/mm_penteconcavite.pdf}
+\centering{
+
+\includegraphics[width=0.9\textwidth,height=\textheight]{img/filters_used/mm_penteconcavite.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 In the empirical applications of Section~\ref{sec-comparison}, the final
 local parameterisation is obtained by estimating \(\delta\) using all
@@ -1188,47 +1175,42 @@ there is much more variance in the estimate of \(|\delta_1/\sigma|\) in
 the real-time estimate. This will lead to another source of revisions in
 the intermediate estimates.
 
-\begin{figure}
+\begin{figure}[H]
 
 \caption{\label{fig-mmpenteconcac-ex}Comparison of the estimates of
 \(|\delta_1/\sigma|\) with a local estimator and global estimator (with
 IC ratio) on a simulated series, the vertical lines being the simulated
-turning points.}\begin{minipage}[t]{\linewidth}
+turning points.}
+
+\begin{minipage}{\linewidth}
+
 \subcaption{\label{fig-mmpenteconcac-ex-1}Symmetric moving average used
 for \(\hat \delta_1\).}
 
-{\centering 
+\centering{
 
-\raisebox{-\height}{
-
-\includegraphics{img/filters_used/mm_penteconcavite_ex.pdf}
-
-}
+\includegraphics[width=0.9\textwidth,height=\textheight]{img/filters_used/mm_penteconcavite_ex.pdf}
 
 }
 
 \end{minipage}%
 \newline
-\begin{minipage}[t]{\linewidth}
+\begin{minipage}{\linewidth}
+
 \subcaption{\label{fig-mmpenteconcac-ex-2}Asymmetric moving average
 using two futur points (\(q=2\)) used for \(\hat \delta_1\).}
 
-{\centering 
+\centering{
 
-\raisebox{-\height}{
-
-\includegraphics{img/filters_used/mm_penteconcavite_ex2.pdf}
-
-}
+\includegraphics[width=0.9\textwidth,height=\textheight]{img/filters_used/mm_penteconcavite_ex2.pdf}
 
 }
 
 \end{minipage}%
 
-\end{figure}
+\end{figure}%
 
-\hypertarget{sec-comparison}{%
-\section{Comparison of different methods}\label{sec-comparison}}
+\section{Comparison of different methods}\label{sec-comparison}
 
 The different methods are compared on simulated and real data.
 
@@ -1244,11 +1226,9 @@ to revisions (between two consecutive estimates and in relation to the
 final estimate) and the number of periods required to detect turning
 points.
 
-\hypertarget{simulated-series}{%
-\subsection{Simulated series}\label{simulated-series}}
+\subsection{Simulated series}\label{simulated-series}
 
-\hypertarget{methodology}{%
-\subsubsection{Methodology}\label{methodology}}
+\subsubsection{Methodology}\label{methodology}
 
 Following a methodology close to that of \textcite{DarneDagum2009}, nine
 monthly series are simulated between January 1960 and December 2020 with
@@ -1296,11 +1276,13 @@ ratios (see Figure~\ref{fig-graphs-data-simul}):
 \(\rho = 2.0\)) and high variability (\(\sigma_e^2=0.4\) and
 \(\rho = 1.0\)).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/simulations/simul_data.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/simulations/simul_data.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 For each series and each date, the trend-cycle is estimated using the
 different methods presented in this report. Three quality criteria are
@@ -1365,8 +1347,7 @@ also calculated:
   \]
 \end{enumerate}
 
-\hypertarget{comparison}{%
-\subsection{Comparison}\label{comparison}}
+\subsection{Comparison}\label{comparison}
 
 Excluding for the moment the local parameterisations of the polynomial
 filters, the linear-constant polynomial filter (LC) seems to give the
@@ -1389,11 +1370,13 @@ slightly improved only with the LC filter.
 \caption{\label{fig-graphstpsimul}Distribution of phase shifts on
 simulated series.}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/simulations/phase_shift_simul.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/simulations/phase_shift_simul.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 In terms of revisions, the variability of the series has little effect
 on the respective performances of the different methods, but it does
@@ -1421,9 +1404,15 @@ slightly larger revisions between consecutive estimates, particularly
 between the fourth and fifth estimates (as might be expected, as
 highlighted in Section~\ref{sec-mmetprev}).
 
-\begin{table}[!h]
+\begin{table}
+
 \caption{\label{tab-simulrev} Average of the relative deviations of the revisions for the different
 filters on simulated series with medium variability.}
+
+\centering{
+
+[!h]
+
 \centering
 \begin{tabular}{ccccccc}
 \toprule
@@ -1455,10 +1444,12 @@ Method & $q=0$ & $q=1$ & $q=2$ & $q=3$ & $q=4$ & $q=5$\\
 \hspace{1em}ARIMA & 0.21 & 0.13 & 0.02 & 0.02 & 0.25 & 0.01\\
 \bottomrule
 \end{tabular}
-\end{table}
 
-\hypertarget{real-series}{%
-\subsection{Real series}\label{real-series}}
+}
+
+\end{table}%
+
+\subsection{Real series}\label{real-series}
 
 The differences between the methods are also illustrated using an
 example from the FRED-MD database (\textcite{fredmd}) containing
@@ -1497,11 +1488,13 @@ variability in the intermediate estimates, especially in February 2001.
 \caption{\label{fig-ce16ovlp}Successive estimates of the trend-cycle in
 US employment (in logarithms).}
 
-{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_lp.pdf}
+\centering{
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_lp.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 The quality of the intermediate estimates can also be analysed using the
 implicit forecasts of the different methods
@@ -1519,15 +1512,15 @@ forecasts.
 successive estimates of the trend-cycle in US employment (in logarithms)
 using local polynomial methods.}
 
-{\centering \includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_prev_imp_lp.pdf}
+\centering{
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{img/nber/ce16ov_fev2001_prev_imp_lp.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
-\hypertarget{conclusion}{%
-\section*{Conclusion}\label{conclusion}}
-\addcontentsline{toc}{section}{Conclusion}
+\section{Conclusion}\label{conclusion}
 
 For business cycle analysis, most statisticians use trend-cycle
 extraction methods, either directly or indirectly. They are used, for
@@ -1535,12 +1528,12 @@ example, to reduce the noise of an indicator in order to improve its
 analysis, and models, such as forecasting models, usually use seasonally
 adjusted series based on these methods.
 
-This paper presents the \faIcon{r-project} package \texttt{rjd3filters},
-which implements a several methods to build moving average for real-time
-trend-cycle estimation. It also offers various functions for the
-theoretical analysis of moving averages (gain functions, phase shift,
-quality criteria, etc.) and judging the quality of the latest estimates
-(for example with implicit forecasts). It also makes it easy to combine
+This paper presents the R package \texttt{rjd3filters}, which implements
+a several methods to build moving average for real-time trend-cycle
+estimation. It also offers various functions for the theoretical
+analysis of moving averages (gain functions, phase shift, quality
+criteria, etc.) and judging the quality of the latest estimates (for
+example with implicit forecasts). It also makes it easy to combine
 moving averages and also to integrate custom moving averages into the
 X-11 seasonal adjustment algorithm (with the
 \texttt{rjd3filters::x11plus\_trend()} function). \texttt{rjd3filters}
@@ -1599,8 +1592,7 @@ regressions or moving medians).
 
 \newpage
 
-\hypertarget{references}{%
-\section*{References}\label{references}}
+\section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
 \printbibliography[heading=none]
@@ -1608,60 +1600,65 @@ regressions or moving medians).
 \appendix
 \newpage
 
-\hypertarget{sec-an-cof}{%
-\section{Coefficients, gain and phase shift
-functions}\label{sec-an-cof}}
+\section{Coefficients, gain and phase shift functions}\label{sec-an-cof}
 
 \begin{figure}[H]
 
 \caption{\label{fig-graphs-coef-lc}Coefficients, gain and phase shift
 functions for the Linear-Constant (LC) filter with \(I/C=3.5\).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/lc.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/lc.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 \begin{figure}[H]
 
 \caption{\label{fig-graphs-coef-ql}Coefficients, gain and phase shift
 functions for the Quadratic-Linear (QL) filter with \(I/C=3.5\).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/ql.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/ql.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 \begin{figure}[H]
 
 \caption{\label{fig-graphs-coef-cq}Coefficients, gain and phase shift
 functions for the Cubic-Quadratic (CQ) filter with \(I/C=3.5\).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/cq.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/cq.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
 \begin{figure}[H]
 
 \caption{\label{fig-graphs-coef-daf}Coefficients, gain and phase shift
 functions for the direct asymmetric filter (DAF).}
 
-{\centering \includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/daf.pdf}
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{img/filters_used/daf.pdf}
 
 }
 
-\end{figure}
+\end{figure}%
 
-\hypertarget{ann-ex-r}{%
-\section{R code example}\label{ann-ex-r}}
+\section{R code example}\label{ann-ex-r}
 
-In this appendix we present the \faIcon{r-project} code that can be used
-to estimate trend-cycle components for the US Employment with local
-polynomial filters.
+In this appendix we present the R code that can be used to estimate
+trend-cycle components for the US Employment with local polynomial
+filters.
 
 \begin{Shaded}
 \begin{Highlighting}[]

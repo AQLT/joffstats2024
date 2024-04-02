@@ -109,7 +109,7 @@ p <- ggplot(all_tp %>%
   theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
 p
 
-ggsave("img/simulations/phase_shift_simul.pdf",
+ggsave("paper/img/simulations/phase_shift_simul.pdf",
             plot = p,
             width = 10, height = 6)
 legende <- c(
@@ -132,7 +132,7 @@ p <- ggplot(data_tp %>%
   scale_x_discrete(labels = legende)
 p
 
-ggsave("img/simulations/phase_shift_simul_nn_lp.pdf",
+ggsave("paper/img/simulations/phase_shift_simul_nn_lp.pdf",
        plot = p,
        width = 10, height = 6)
 
@@ -156,7 +156,7 @@ p <- ggplot(data_tp %>%
   scale_x_discrete(labels = legende)
 p
 
-ggsave("img/simulations/phase_shift_simul_nn_lp_localparam.pdf",
+ggsave("paper/img/simulations/phase_shift_simul_nn_lp_localparam.pdf",
        plot = p,
        width = 10, height = 6)
 
@@ -185,7 +185,7 @@ p <- ggplot(data_tp %>%
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende) 
 p
-ggsave("img/simulations/phase_shift_simul_arima_length.pdf",
+ggsave("paper/img/simulations/phase_shift_simul_arima_length.pdf",
        plot = p,
        width = 10, height = 6)
 
@@ -205,7 +205,7 @@ p_kernel <- ggplot(data_tp_kernel %>% filter(method == "lc"),
   labs(y="Phase shift", x = NULL)
 p_kernel
 
-ggsave("img/simulations/phase_shift_kernel.pdf",
+ggsave("paper/img/simulations/phase_shift_kernel.pdf",
        plot = p_kernel,
        width = 10, height = 6)
 

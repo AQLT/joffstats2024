@@ -32,7 +32,7 @@ for(i in names(all_filters)){
       ggplot2::labs(y = "Phase shift") +
       ggplot2::guides(colour = "none"))
   p
-  ggsave(sprintf("img/filters_used/%s.pdf",tolower(i)),
+  ggsave(sprintf("paper/img/filters_used/%s.pdf",tolower(i)),
               width = 8, height = 4.5,
               plot = p)
 }
@@ -49,7 +49,7 @@ p <- (ggplot_coef(x, q=0) + ggplot2::guides(colour = "none") )/ (
 )
 p
 
-ggsave("img/filters_used/musgrave.pdf",
+ggsave("paper/img/filters_used/musgrave.pdf",
        width = 8, height = 4.5,
        plot = p)
 
@@ -77,7 +77,7 @@ p <- ggplot_coef(x, q = c(0:6)) / (
     ggplot2::labs(y = "Phase shift") +
     ggplot2::guides(colour = "none"))
 p
-ggsave("img/filters_used/nn_henderson.pdf",
+ggsave("paper/img/filters_used/nn_henderson.pdf",
        width = 8, height = 4.5,
        plot = p)
 
@@ -103,7 +103,7 @@ for(i in names(all_filters)){
       ggplot2::labs(y = "Phase shift") +
       ggplot2::guides(colour = "none"))
   p
-  ggsave(sprintf("img/filters_used/%s_nn.pdf",tolower(i)),
+  ggsave(sprintf("paper/img/filters_used/%s_nn.pdf",tolower(i)),
          width = 8, height = 4.5,
          plot = p)
 }

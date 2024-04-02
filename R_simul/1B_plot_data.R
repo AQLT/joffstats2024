@@ -27,7 +27,7 @@ p <- ggplot(data = dataGraph,
                     legend.key = element_blank(),
                     legend.title = element_blank())
 
-ggsave("img/simulations/simul_data.pdf",
+ggsave("paper/img/simulations/simul_data.pdf",
        plot = p,
        width = 8, height = 4)
 

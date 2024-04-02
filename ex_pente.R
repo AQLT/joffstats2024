@@ -84,7 +84,7 @@ p <- autoplot(data[,c(1,2)]) +
   )
 
 p
-ggsave("img/filters_used/mm_penteconcavite_ex.pdf",
+ggsave("paper/img/filters_used/mm_penteconcavite_ex.pdf",
             plot = p,
             width = 7,height = 2)
 
@@ -109,6 +109,6 @@ p2 <- autoplot(data[,c(1,3)]) +
   )
 p2
 
-ggsave("img/filters_used/mm_penteconcavite_ex2.pdf",
+ggsave("paper/img/filters_used/mm_penteconcavite_ex2.pdf",
        plot = p2,
        width = 7,height = 2)

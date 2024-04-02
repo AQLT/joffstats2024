@@ -23,7 +23,7 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              dossier = "results_fredm/compile_tp_norev/")
 wrap_plots(plots,ncol = 3) & scale_color_grey()
 
-ggsave("img/nber/ce16ov_fev2001_prev_imp_lp.pdf",
+ggsave("paper/img/nber/ce16ov_fev2001_prev_imp_lp.pdf",
        plot = wrap_plots(plots, ncol = 3) & scale_color_grey(),
        width = 8, height = 8)
 
@@ -41,7 +41,7 @@ wrap_plots(plots,ncol = 3) &
   scale_color_grey() & 
   labs(subtitle = NULL)
 
-ggsave("img/nber/ce16ov_covid_prev_imp_lp.pdf",
+ggsave("paper/img/nber/ce16ov_covid_prev_imp_lp.pdf",
        plot = wrap_plots(plots, ncol = 3) & 
          scale_color_grey() & 
          labs(subtitle = NULL),
@@ -65,6 +65,6 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              fst_degree = fst_degree)
 wrap_plots(plots, ncol = 3)
 
-ggsave("img/nber/retailx_nov2007_prev_imp_lp.pdf",
+ggsave("paper/img/nber/retailx_nov2007_prev_imp_lp.pdf",
        plot = wrap_plots(plots, ncol = 3),
        width = 8, height = 8)

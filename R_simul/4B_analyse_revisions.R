@@ -60,4 +60,4 @@ rev_table <- rev_tot %>% dplyr::filter(variability == "mediumvariability")%>%
     sprintf("$q=%s$", gsub("rev.q","",x))
   }) %>%
   rename(`Method` = method)
-saveRDS(rev_table, file = "data/simulations_revisions.RDS")
+saveRDS(rev_table, file = "paper/data/simulations_revisions.RDS")

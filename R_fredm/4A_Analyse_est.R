@@ -15,7 +15,7 @@ all_plots <- get_all_plots(all_tp,
                            nb_est = 8)
 wrap_plots(all_plots, ncol = 3) & scale_color_grey()
 
-ggsave("img/nber/ce16ov_fev2001_lp.pdf",
+ggsave("paper/img/nber/ce16ov_fev2001_lp.pdf",
        plot = wrap_plots(all_plots, ncol = 3) & scale_color_grey(),
        width = 8, height = 8)
 
@@ -25,7 +25,7 @@ all_plots <- get_all_plots(all_tp,
                            nb_est = 8)
 wrap_plots(all_plots, ncol = 3) & scale_color_grey()
 
-ggsave("img/nber/ce16ov_covid_lp.pdf",
+ggsave("paper/img/nber/ce16ov_covid_lp.pdf",
        plot = wrap_plots(all_plots, ncol = 3) & scale_color_grey(),
        width = 8, height = 8)
 
@@ -37,7 +37,7 @@ all_plots <- get_all_plots(all_tp,
                            nb_est = 8)
 wrap_plots(all_plots, ncol = 3) & scale_color_grey()
 
-ggsave("img/nber/retailx_nov2007_lp.pdf",
+ggsave("paper/img/nber/retailx_nov2007_lp.pdf",
        plot = wrap_plots(all_plots, ncol = 3) & scale_color_grey(),
        width = 8, height = 8)
 

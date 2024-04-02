@@ -61,4 +61,4 @@ rev_table <- rev_tot %>% dplyr::filter(variability == "mediumvariability")%>%
   }) %>%
   rename(`Method` = method)
 rev_table
-saveRDS(rev_table, file = "data/simulations_revisions_q.RDS")
+saveRDS(rev_table, file = "paper/data/simulations_revisions_q.RDS")
