@@ -5,103 +5,115 @@ format: pdf
 
 # Associated Editor
 
-1. Page 3, line 46: you say that it is "equivalently defined" and then provide the conjugate,
-writing $e^{i\omega k}$ instead of $e^{-i\omega k}$. "Equivalence" implies something akin to equality, so I would soften this to "alternatively", since the two expressions are not equal.
+> 1. Page 3, line 46: you say that it is "equivalently defined" and then provide the conjugate, writing $e^{i\omega k}$ instead of $e^{-i\omega k}$.  
+> "Equivalence" implies something akin to equality, so I would soften this to "alternatively", since the two expressions are not equal. 
 
-2. Page 5, line 53: replace "have" with "design", I think, because you are constructing these
-filters, right?
+*It was corrected.*
 
-3. Section 1.2.1: these results are well-known; the derivatives of the frequency response function
-at $\omega = 0$ yield the conditions. So the results could be stated with references, and the
-derivations omitted, and this subsection compactified.
 
-4. Page 7, line 40: why say the series is extended by one year? The extensions are for as many
-years as needed by the particular filters (typically, half their length in years).
+> 2. Page 5, line 53: replace "have" with "design", I think, because you are constructing these filters, right?
 
-5. Page 8, line 10: omit the $\forall q$ since you have stated this qualification in the previous line.
+*Indeed, it was corrected.*
 
-6. Table 1: I repeat the referees here. The table needs more explication in the text. What is $\omega_1$? Define $\nabla$, Guggemos, etc.
+> 3. Section 1.2.1: these results are well-known; the derivatives of the frequency response function 
+> at $\omega = 0$ yield the conditions. So the results could be stated with references, and the 
+> derivations omitted, and this subsection compactified. 
 
-7. Page 13, equation (4): it is hard to understand what $\theta_f$ and $\theta_p$ are, and what 
-$\gamma$ and $\delta$ are.
-Add more explanation to the text.
+> 4. Page 7, line 40: why say the series is extended by one year? The extensions are for as many 
+> years as needed by the particular filters (typically, half their length in years). 
 
-8. Page 15, line 36: should be "same length as $v$"
+> 5. Page 8, line 10: omit the $\forall q$ since you have stated this qualification in the previous line. 
 
-9. Page 15, line 40: I couldn't find the matrix $T$ defined. How is it connected to timeliness?
-That is, when you display the entries of the matrix T, you need to make a connection between
-those values and the concept of timeliness.
+> 6. Table 1: I repeat the referees here. The table needs more explication in the text. What is $\omega_1$? Define $\nabla$, Guggemos, etc. 
 
-10. Page 15, line 53: I don't see why $v$ in this equation should be defined through the case bracket;
-everything starting with "with" could be moved to the following text.
+*The section 1.3.2 was removed: it's not central to the paper, and it would have made the reading more cumbersome to go into the details of the notations. Table 2 has also been removed *
 
-11. Page 17, lines 53-55: This discussion needs more clarity; it seems a bit terse.
+> 7. Page 13, equation (4): it is hard to understand what $\theta_f$ and $\theta_p$ are, and what $\gamma$ and $\delta$ are. 
+> Add more explanation to the text. 
 
-12. Appendix B: rather than typing out the R code, it would be better to have the files available
-as supplementary material. (Or possibly put in a github repo and provide the links in the
-text.)
+> 8. Page 15, line 36: should be "same length as $v$" 
+
+> 9. Page 15, line 40: I couldn't find the matrix $T$ defined. How is it connected to timeliness? 
+> That is, when you display the entries of the matrix T, you need to make a connection between 
+> those values and the concept of timeliness. 
+
+> 10. Page 15, line 53: I don't see why $v$ in this equation should be defined through the case bracket; 
+> everything starting with "with" could be moved to the following text. 
+
+> 11. Page 17, lines 53-55: This discussion needs more clarity; it seems a bit terse. 
+
+> 12. Appendix B: rather than typing out the R code, it would be better to have the files available 
+> as supplementary material. (Or possibly put in a github repo and provide the links in the 
+> text.) 
 
 # Referee 1
 
-The authors should provide a clear definition of trend-cycle, $TC_t$,
-and irregular, $I_t$. In other words, how is the decomposition
-$y_t =TC_t+I_t$ identified? In section 1 they seem to hint at the interpretation
-of $TC_t$ as the low-pass component of yt with cutoff frequency
-$\pi/6$ (and correspondingly they interpret $I_t$ as the high-pass component).
-This point should be clarified, I think.
-Related questions are: are $y_t$ and its components stochastic or deterministic?
-The treatment in section 1.2.1 suggests that $TC_t$ is
-an unknown possibly nonlinear deterministic function of time.
-The variance inflation factor $\sum_k \theta_k^2$ implies that $I_t$ is white noise.
+> 1. The authors should provide a clear definition of trend-cycle, $TC_t$, 
+> and irregular, $I_t$. In other words, how is the decomposition 
+> $y_t =TC_t+I_t$ identified? In section 1 they seem to hint at the interpretation 
+> of $TC_t$ as the low-pass component of yt with cutoff frequency 
+> $\pi/6$ (and correspondingly they interpret $I_t$ as the high-pass component). 
+> This point should be clarified, I think. 
+> Related questions are: are $y_t$ and its components stochastic or deterministic? 
+> The treatment in section 1.2.1 suggests that $TC_t$ is 
+> an unknown possibly nonlinear deterministic function of time. 
+> The variance inflation factor $\sum_k \theta_k^2$ implies that $I_t$ is white noise. 
 
-2. The idea of minimizing the noise component ($M_\theta(I_t)\simeq 0$) is not
-very formal. Do you mean that the unconditional variance is minimized?
-Or the long run variance?
+> 2. The idea of minimizing the noise component ($M_\theta(I_t)\simeq 0$) is not
+> very formal. Do you mean that the unconditional variance is minimized?
+> Or the long run variance?
 
-3. A definition of turning point would also be needed. Are these ’regular’
+> 3. A definition of turning point would also be needed. Are these ’regular’
 points at which the slope of the trend changes sign? Or changepoints?
 
-4. The notation should be unified: why not writing $TC_t = \mu(t)$ and
-in section 2 using $t$ instead of $x$? The observation index i hould
-be replaced by $t$, as in section 2.1. Similarly, why not using ϵt
-directly and start section 1.2 by stating that you assume that yt is
-generated as $y_t = \mu(t) + \varepsilon_t$, etc.
-Secondly, you should clarify the meaning of (3), where you set
-$\mu(t) = u'_t\gamma + z'_t\delta$ (also you assume that the noise component has possibly a non-scalar covariance matrix, do you need the matrix
-$D$ for later treatment?
-5. You should state that you assume a fixed bandwidth. A nearest
-neighbour bandwidth should be interesting to consider: as such
-it would contribute more to the reduction of the variance at the
-expenses of the phase shift.
-6. Is the phase shift related to the notion of bias in local polynomial
+> 4. The notation should be unified: why not writing $TC_t = \mu(t)$ and
+> in section 2 using $t$ instead of $x$? The observation index i hould
+> be replaced by $t$, as in section 2.1. Similarly, why not using ϵt
+> directly and start section 1.2 by stating that you assume that yt is
+> generated as $y_t = \mu(t) + \varepsilon_t$, etc.
+> Secondly, you should clarify the meaning of (3), where you set
+> $\mu(t) = u'_t\gamma + z'_t\delta$ (also you assume that the noise component has possibly a non-scalar covariance matrix, do you need the matrix $D$ for later treatment?
+
+> 5. You should state that you assume a fixed bandwidth. 
+A nearest neighbour bandwidth should be interesting to consider: as such it would contribute more to the reduction of the variance at the expenses of the phase shift.
+
+> 6. Is the phase shift related to the notion of bias in local polynomial
 smoothing?
 
 Minor points
 
-- Section 1.1. It would perhaps be useful to provide the expression
+> - Section 1.1. It would perhaps be useful to provide the expression
 of the phase angle, $\varphi(\omega)$ in terms of the real and imaginary part of
 the transfer function of the linear filter.
-- Section 1.1. The symbol p for the period is already in use from the
+
+> - Section 1.1. The symbol $p$ for the period is already in use from the
 previous section, where it denotes the bandwidth and number of
 past observations used by the filter.
-- Page 4. The definition of the high-pass component (oscillations
+
+> - Page 4. The definition of the high-pass component (oscillations
 in the frequency range from $\pi/6$ to $\pi$ as undesirable oscillations is
 controversial.
-- Figure 1. In the caption, the ration $I/C$ was never defined before.
+
+> - Figure 1. In the caption, the ration $I/C$ was never defined before.
 The description of the three panels should be better explained in
 the main text.
-- Section 1.2 makes a reference to X-11 and X-13-ARIMA. The author
+
+> - Section 1.2 makes a reference to X-11 and X-13-ARIMA. The author
 assumes that the reader is knowledgeable about seasonal adjustment
 methods. Perhaps the authors should state that their
 intent is to separate the trend-cycle component from the ’noise’
 component.
-- Page 7, line 38. ’which extends’ is repeated twice.
-- Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts
-induced by $w_0$, etc.? The forecasts are obtained from an assumed
-polynomial trend model?
-- Table 1. Some criteria are labelled as Guggemos, not referenced in
-the main text.
-- Figures 6-7. The labels of the time axes and the months are in
+
+> - Page 7, line 38. ’which extends’ is repeated twice.
+
+> - Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts induced by $w_0$, etc.? 
+The forecasts are obtained from an assumed polynomial trend model?
+
+> - Table 1. Some criteria are labelled as Guggemos, not referenced in the main text.
+
+*The section 1.3.2 was removed: it's not central to the paper, and it would have made the reading more cumbersome to go into the details of the notations. Table 2 has also been removed *
+
+> - Figures 6-7. The labels of the time axes and the months are in
 French.
 
 # Referee 2
@@ -110,9 +122,11 @@ French.
 
 > The author avoids numbering the Introduction and Conclusion; numbering both (and adjusting the numbering of the other sections accordingly) may be better.
 
-Those sections are now numbered
+*Those sections are now numbered*
 
 > Adding the appropriate items for both R and X-13ARIMA-SEATS to the References may be warranted.  In addition, in the text, it would probably be preferable to use R (the letter itself) instead of the R icon.
+
+
 
 > Some of the important results appear in the tables and figures, but the accompanying discussion in the text should still be fleshed out more.  In addition, in Figures 2-4 and 6-7 (and the figures in the supplement), the lines can be distinguished by color, but it may be helpful to find some way to keep them distinguishable without the benefit of color.  It might be the case that there is too much information to display neatly in some of these.
 
@@ -142,14 +156,6 @@ proposed procedure to high-frequency data. If modifications or considerations ar
 necessary for such data, it should be discussed to provide a comprehensive
 understanding of the methodology.
 
-> 8.  Consideration of Different Series Periodicity
-> It would be beneficial if the authors could address the suggestion of considering series
-with different periodicities in the real data application. Discussing how the proposed
-methodology performs when applied to series with various frequencies would add
-depth to the study.
-
-
-
 > 5.  Clarity on Phase Shift Computation (Page 20)
 > A clearer explanation of how the phase shift is computed on page 20 would enhance the
 paper's overall clarity. The authors should specify the method used for determining the
@@ -167,6 +173,17 @@ recommend that the authors provide a more detailed description or explanation of
 results to improve comprehension.
 
 
+> 8.  Consideration of Different Series Periodicity
+> It would be beneficial if the authors could address the suggestion of considering series
+with different periodicities in the real data application. Discussing how the proposed
+methodology performs when applied to series with various frequencies would add
+depth to the study.
+
+
+
+
+
+
 
 # Referee 4
 
@@ -180,4 +197,4 @@ to address it, e.g. outlier correction, robust distributions, etc.
 > 3) I think a quote from other works can be removed from the paper. For example, I
 would remove the quote in point 2) of page 7.
 
-Removed
+*The quote was removed*

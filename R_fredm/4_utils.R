@@ -357,7 +357,7 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
   if (!is.null(all_tp_rev)) {
     all_tp_rev_plot <-
       all_tp_rev %>% dplyr::filter(series %in% !!series) %>%
-      mutate(subtitle = sprintf("\n(1rst detection in %i months)",
+      mutate(subtitle = sprintf("\n(1st detection in %i months)",
                                 round(.data[[tp_keep_col]]))
       )
     all_tp_plot[, "subtitle"] <-
@@ -415,7 +415,7 @@ get_all_plots_prevs <- function(data_prevs,
   if (!is.null(all_tp_rev)) {
     all_tp_rev_plot <-
       all_tp_rev %>% dplyr::filter(series %in% !!series) %>%
-      mutate(subtitle = sprintf("\n(1rst detection in %i months)",
+      mutate(subtitle = sprintf("\n(1st detection in %i months)",
                                 round(.data[[tp_keep_col]]))
       )
     all_tp_plot[, "subtitle"] <-

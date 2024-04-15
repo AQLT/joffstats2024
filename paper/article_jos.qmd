@@ -203,7 +203,7 @@ Several approaches can be used for real-time estimation:
 
 2. Apply symmetric filters to extended forecast series.
 This method seems to date back to @deforest1877adjustment, which also suggests modelling a polynomial trend of degree three or less at the end of the period.
-This is also the approach used in the X-13ARIMA seasonal adjustment method, which extends the series by one year with an ARIMA model.
+A similar approach is used in the X-13ARIMA seasonal adjustment method: the series is extend by one year (by default) with an ARIMA model to minimise the revisions associated to asymmetric filters
 
 Ultimately, the second method is equivalent to using asymmetric moving averages, since forecasts are linear combinations of the past. 
 
@@ -249,88 +249,62 @@ Furthermore, since the coefficients of the symmetric filter (and therefore the w
 This is why it may be necessary to define alternative criteria for judging the quality of asymmetric moving averages.
 
 
-### Quality indicators for asymmetric moving averages {#subsec:crit-qual}
+<!-- ### Quality indicators for asymmetric moving averages {#subsec:crit-qual} -->
 
-For asymmetric filters, most of the criteria come from those defined by @ch15HBSA and @trilemmaWMR2019 to build asymmetric filters. 
-They are summarised in Table\ \ref{tab-QC} and can be calculated using the `rjd3filters::diagnostic_matrix()` function.
+<!-- For asymmetric filters, most of the criteria come from those defined by @ch15HBSA and @trilemmaWMR2019 to build asymmetric filters.  -->
+<!-- They are summarised in @tbl-qc and can be calculated using the `rjd3filters::diagnostic_matrix()` function. -->
 
-@ch15HBSA propose a general approach to derive linear filters, based on an optimisation problem involving three criteria: *Fidelity* ($F_g$), *Smoothness* ($S_g$) and *Timeliness* ($T_g$).
-Fidelity can be directly linked to the reduction in variance created by the filter, and timeliness to the notion of phase shift, which again we want to be low. 
-This method can be used in R with the function `rjd3filters::fst_filter()`.
+<!-- @ch15HBSA propose a general approach to derive linear filters, based on an optimisation problem involving three criteria: *Fidelity* ($F_g$), *Smoothness* ($S_g$) and *Timeliness* ($T_g$). -->
+<!-- Fidelity can be directly linked to the reduction in variance created by the filter, and timeliness to the notion of phase shift, which again we want to be low.  -->
+<!-- This method can be used in R with the function `rjd3filters::fst_filter()`. -->
 
-@trilemmaWMR2019 propose an approach based on the decomposition of the mean squared error between the symmetric and the asymmetric filter in four quantities: *Accuracy* ($A_w$), *Timeliness* ($T_w$), *Smoothness* ($S_w$) and *Residual* ($R_w$).
-A simplified version of this method can be used in R with the function `rjd3filters::dfa_filter()`.
+<!-- @trilemmaWMR2019 propose an approach based on the decomposition of the mean squared error between the symmetric and the asymmetric filter in four quantities: *Accuracy* ($A_w$), *Timeliness* ($T_w$), *Smoothness* ($S_w$) and *Residual* ($R_w$). -->
+<!-- A simplified version of this method can be used in R with the function `rjd3filters::dfa_filter()`. -->
 
-```{r, include=FALSE}
-title <- "Quality criteria for a moving average $\\boldsymbol\\theta=(\\theta_k)_{-p\\leq k\\leq f}$ defined by a gain function $\\rho_{\\boldsymbol\\theta}$ and a phase shift function $\\varphi_{\\boldsymbol\\theta}$."
-footnotes <- c("$X_g$ criteria from Grun-Rehomme, Guggemos, and Ladiray (2018) and $X_w$ criteria from Wildi and McElroy (2019).",
-               "$\\rho_s$ and  $\\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.",
-               "$h$ e is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\\frac{1}{2(1-\\cos(x))}$)."
-)
-```
+<!-- ```{r, include=FALSE} -->
+<!-- title <- "Quality criteria for a moving average $\\boldsymbol\\theta=(\\theta_k)_{-p\\leq k\\leq f}$ defined by a gain function $\\rho_{\\boldsymbol\\theta}$ and a phase shift function $\\varphi_{\\boldsymbol\\theta}$." -->
+<!-- footnotes <- c("$X_g$ criteria from Grun-Rehomme, Guggemos, and Ladiray (2018) and $X_w$ criteria from Wildi and McElroy (2019).", -->
+<!--                "$\\rho_s$ and  $\\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.", -->
+<!--                "$h$ e is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\\frac{1}{2(1-\\cos(x))}$)." -->
+<!-- ) -->
+<!-- ``` -->
 
+<!-- ::: {#tbl-qc} -->
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- criteria_mm <- data.frame(Sigle = c("b_c", "b_l", "b_q", -->
+<!--                                     "F_g", "S_g", "T_g", -->
+<!--                                     "A_w", "T_w", "S_w", "R_w"), -->
+<!--                           Description = c(sprintf("%s bias", c("Constant", "Linear", "Quadratic")), -->
+<!--                                           sprintf("%s (Grun-Rehomme et al)", -->
+<!--                                                   c("Variance reduction / Fidelity", "Smoothness", "Timeliness")), -->
+<!--                                           sprintf("%s (Wildi and McElroy)",c("Accuracy", "Timeliness", "Smoothness", "Residual"))), -->
+<!--                           Formule = c("\\sum_{k=-p}^{+f}\\theta_{k}-1", -->
+<!--                                       "\\sum_{k=-p}^{+f}k\\theta_{k}", -->
+<!--                                       "\\sum_{k=-p}^{+f}k^{2}\\theta_{k}", -->
+<!--                                       "\\sum_{k=-p}^{+f}\\theta_{k}^{2}", -->
+<!--                                       "\\sum_{j}(\\nabla^{3}\\theta_{j})^{2}", -->
+<!--                                       "\\int_{0}^{\\omega_1}\\rho_{\\boldsymbol\\theta}(\\omega)\\sin(\\varphi_{\\boldsymbol\\theta}(\\omega))^{2}\\ud\\omega", -->
+<!--                                       "2\\int_0^{\\omega_1}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega", -->
+<!--                                       "8\\int_0^{\\omega_1} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega", -->
+<!--                                       "2\\int_{\\omega_1}^{\\pi}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega", -->
+<!--                                       "8\\int_{\\omega_1}^{\\pi} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega")) -->
+<!-- criteria_mm[,1] <- sprintf("$%s$", criteria_mm[,1]) -->
+<!-- criteria_mm[,3] <- sprintf("$%s$", criteria_mm[,3]) -->
 
-```{r, echo = FALSE, fig.note = footnotes}
-#| label: tab-QC
-#| eval: false
-criteria_mm <- data.frame(Sigle = c("b_c", "b_l", "b_q",
-                                    "F_g", "S_g", "T_g",
-                                    "A_w", "T_w", "S_w", "R_w"),
-                          Description = c(sprintf("%s bias", c("Constant", "Linear", "Quadratic")),
-                                          sprintf("%s (Guggemos)",
-                                                  c("Variance reduction / Fidelity", "Smoothness", "Timeliness")),
-                                          sprintf("%s (Wildi)",c("Accuracy", "Timeliness", "Smoothness", "Residual"))),
-                          Formule = c("\\sum_{k=-p}^{+f}\\theta_{k}-1",
-                                      "\\sum_{k=-p}^{+f}k\\theta_{k}",
-                                      "\\sum_{k=-p}^{+f}k^{2}\\theta_{k}",
-                                      "\\sum_{k=-p}^{+f}\\theta_{k}^{2}",
-                                      "\\sum_{j}(\\nabla^{3}\\theta_{j})^{2}",
-                                      "\\int_{0}^{\\omega_1}\\rho_{\\boldsymbol\\theta}(\\omega)\\sin(\\varphi_{\\boldsymbol\\theta}(\\omega))^{2}\\ud\\omega",
-                                      "2\\int_0^{\\omega_1}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega",
-                                      "8\\int_0^{\\omega_1} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega",
-                                      "2\\int_{\\omega_1}^{\\pi}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega",
-                                      "8\\int_{\\omega_1}^{\\pi} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega"))
-criteria_mm[,1] <- sprintf("$%s$", criteria_mm[,1])
-criteria_mm[,3] <- sprintf("$%s$", criteria_mm[,3])
-library(kableExtra)
+<!-- criteria_mm %>% -->
+<!--   kbl(align = "c", booktabs = T, row.names = FALSE, -->
+<!--         escape = FALSE,caption = title)  %>% -->
+<!-- kable_styling(latex_options = "scale_down")  -->
+<!--     # add_footnote_kable(stop_centering = TRUE) -->
+<!-- ``` -->
 
-criteria_mm %>%
-  kbl(align = "c", booktabs = T, row.names = FALSE,
-        escape = FALSE,caption = title)  %>%
-kable_styling(latex_options = "scale_down") 
-    # add_footnote_kable(stop_centering = TRUE)
-```
+<!-- *Note: $X_g$ criteria from Grun-Rehomme et al (2018) and $X_w$ criteria from Wildi and McElroy (2019).* -->
+<!-- *$\rho_s$ and $\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.* -->
+<!-- *$h$ is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\frac{1}{2(1-\cos(x))}$).* -->
 
-```{=tex}
-\begin{table}[!h]
-\caption{\label{tab-QC} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.55$.}
-{\centering
-\resizebox{\linewidth}{!}{
-\begin{tabular}[t]{ccc}
-\toprule
-Code & Description & Formula\\
-\midrule
-$b_c$ & Constant bias & $\sum_{k=-p}^{+f}\theta_{k}-1$\\
-$b_l$ & Linear bias & $\sum_{k=-p}^{+f}k\theta_{k}$\\
-$b_q$ & Quadratic bias & $\sum_{k=-p}^{+f}k^{2}\theta_{k}$\\
-$F_g$ & Variance reduction / Fidelity (Guggemos) & $\sum_{k=-p}^{+f}\theta_{k}^{2}$\\
-$S_g$ & Smoothness (Guggemos) & $\sum_{j}(\nabla^{3}\theta_{j})^{2}$\\
-\addlinespace
-$T_g$ & Timeliness (Guggemos) & $\int_{0}^{\omega_1}\rho_{\boldsymbol\theta}(\omega)\sin(\varphi_{\boldsymbol\theta}(\omega))^{2}\ud\omega$\\
-$A_w$ & Accuracy (Wildi) & $2\int_0^{\omega_1}\left(\rho_{s}(\omega)-\rho_{\boldsymbol\theta}(\omega)\right)^{2}h(\omega)\ud\omega$\\
-$T_w$ & Timeliness (Wildi) & $8\int_0^{\omega_1} \rho_{s}(\omega)\rho_{\boldsymbol\theta}(\omega)\sin^{2}\left(\frac{\varphi_s(\omega)-\varphi_{\boldsymbol\theta}(\omega)}{2}\right)h(\omega)\ud\omega$\\
-$S_w$ & Smoothness (Wildi) & $2\int_{\omega_1}^{\pi}\left(\rho_{s}(\omega)-\rho_{\boldsymbol\theta}(\omega)\right)^{2}h(\omega)\ud\omega$\\
-$R_w$ & Residual (Wildi) & $8\int_{\omega_1}^{\pi} \rho_{s}(\omega)\rho_{\boldsymbol\theta}(\omega)\sin^{2}\left(\frac{\varphi_s(\omega)-\varphi_{\boldsymbol\theta}(\omega)}{2}\right)h(\omega)\ud\omega$\\
-\bottomrule
-\end{tabular}}}
-
-\textit{Note: $X_g$ criteria from Grun-Rehomme et al (2018) and $X_w$ criteria from Wildi and McElroy (2019).}
-
-\textit{$\rho_s$ and $\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.}
-
-\textit{$h$ is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\frac{1}{2(1-\cos(x))}$).}
-\end{table}
-```
+<!-- Quality criteria for a moving average $\boldsymbol\theta=(\theta_k)_{-p\leq k\leq f}$ defined by a gain function $\rho_{\boldsymbol\theta}$ and a phase shift function $\varphi_{\boldsymbol\theta}$. -->
+<!-- ::: -->
 
 
 # Non-parametric regression and local polynomial regression {#sec-nonparamreg}
@@ -341,7 +315,7 @@ More specifically, consider a set of points $(x_i,y_i)_{1\leq i\leq n}$.
 Non-parametric regression involves assuming that there exists a function $\mu$, to be estimated, such that $y_i=\mu(x_i)+\varepsilon_i$ with $\varepsilon_i$ an error term.
 According to Taylor's theorem, for any point $x_0$, if $\mu$ is differentiable $d$ times, then:
 $$
-\forall x \::\:\mu(x) = \mu(x_0) + \mu'(x_0)(x-x_0)+\dots +
+\forall t \::\:TC_t = \mu(x_0) + \mu'(x_0)(x-x_0)+\dots +
 \frac{\mu^{(d)}(x_0)}{d!}(x-x_0)^d+R_d(x),
 $$ {#eq-taylor}
 where $R_d$ is a negligible residual term in the neighbourhood of $x_0$. 
@@ -503,75 +477,72 @@ We obtain Musgrave filters when the Henderson kernel is used and the Henderson f
 
 Appendix [-@sec-an-cof] shows the coefficients, gain and phase shift functions of the four asymmetric filters.
 
-Table\ \ref{tab-criteriaLp} compares the quality criteria of the different methods using the Henderson filter and $h=6$ (a symmetric filter with 13 terms). 
-For real-time filters ($q=0$), a more complex asymmetric filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance. 
-This result varies as $q$ increases: for $q=2$, the QL filter has greater timeliness than the LC filter. 
-This surprising result highlights the fact that the phase shift is not controlled by @proietti2008's approach.
+<!-- Table\ \ref{tab-criteriaLp} compares the quality criteria of the different methods using the Henderson filter and $h=6$ (a symmetric filter with 13 terms).  -->
+<!-- For real-time filters ($q=0$), a more complex asymmetric filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance.  -->
+<!-- This result varies as $q$ increases: for $q=2$, the QL filter has greater timeliness than the LC filter.  -->
+<!-- This surprising result highlights the fact that the phase shift is not controlled by @proietti2008's approach. -->
 
-In terms of revision ($A_w+S_w+T_w+R_w$), the LC and QL filters consistently outperform the CQ and DAF filters. 
+<!-- In terms of revision ($A_w+S_w+T_w+R_w$), the LC and QL filters consistently outperform the CQ and DAF filters.  -->
 
-These theoretical properties are consistent with the empirical results observed in @sec-comparison. Revisions are more important for the CQ and DAF filters, which leads to greater variability in estimations and a longer delay in detecting turning points. 
-The globally parametrised QL filter (with $R$ fixed for all asymmetric filters) may result in later detection of turning points than the LC filter.
-Indeed, to identify a turning point at date $t$, it is necessary to have knowledge of at least two points after the given date to confirm the reversal in trend.
-
-
-
-```{r echo = FALSE}
-#| label: tab-criteraLp
-#| eval: false
-#| tab-cap: 
-title <- "Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.5$."
-
-lp_diagnostics <- readRDS("data/lp_diagnostics_henderson.RDS")
-lp_diagnostics[,"$ EQM_w $"] <- rowSums(lp_diagnostics[,grep("_w", colnames(lp_diagnostics), fixed = TRUE)])
-colnames(lp_diagnostics) <- gsub(" ?\\$ ?","$",colnames(lp_diagnostics))
-lp_diagnostics[,1] <- gsub(" ?\\$ ?","$",lp_diagnostics[,1])
-groupement <- table(lp_diagnostics[,1])
-lp_diagnostics[,-(1:2)] <- round(lp_diagnostics[,-(1:2)],2)
-lp_diagnostics[,-1] %>%
-  kable(format.args = list(digits = 2,
-                           decimal.mark = "."), align = "c", booktabs = T, row.names = FALSE,
-        escape = FALSE,caption = title,format = "latex") %>%
-  kable_styling(latex_options=c(#"striped",
-      "hold_position")) %>%
-  pack_rows(index = groupement, escape = FALSE) %>%
-  footnote("With $EQM_w=A_w + S_w + T_w + R_w$.")
-```
+<!-- These theoretical properties are consistent with the empirical results observed in @sec-comparison. Revisions are more important for the CQ and DAF filters, which leads to greater variability in estimations and a longer delay in detecting turning points.  -->
+<!-- The globally parametrised QL filter (with $R$ fixed for all asymmetric filters) may result in later detection of turning points than the LC filter. -->
+<!-- Indeed, to identify a turning point at date $t$, it is necessary to have knowledge of at least two points after the given date to confirm the reversal in trend. -->
 
 
+<!-- ::: {#tbl-criteraLp} -->
+<!-- ```{r echo = FALSE} -->
+<!-- #| echo: false -->
+<!-- lp_diagnostics <- readRDS("data/lp_diagnostics_henderson.RDS") -->
+<!-- lp_diagnostics[,"$ EQM_w $"] <- rowSums(lp_diagnostics[,grep("_w", colnames(lp_diagnostics), fixed = TRUE)]) -->
+<!-- colnames(lp_diagnostics) <- gsub(" ?\\$ ?","$",colnames(lp_diagnostics)) -->
+<!-- lp_diagnostics[,1] <- gsub(" ?\\$ ?","$",lp_diagnostics[,1]) -->
+<!-- groupement <- table(lp_diagnostics[,1]) -->
+<!-- lp_diagnostics[,-(1:2)] <- round(lp_diagnostics[,-(1:2)],2) -->
+<!-- lp_diagnostics[,-1] %>% -->
+<!--   kable(format.args = list(digits = 2, -->
+<!--                            decimal.mark = "."), align = "c", booktabs = T, row.names = FALSE, -->
+<!--         escape = FALSE,caption = title,format = "latex") %>% -->
+<!--   kable_styling(latex_options=c(#"striped", -->
+<!--       "hold_position")) %>% -->
+<!--   pack_rows(index = groupement, escape = FALSE) %>% -->
+<!--   footnote("With $EQM_w=A_w + S_w + T_w + R_w$.") -->
+<!-- ``` -->
 
-```{=tex}
-\begin{table}[!h]
-\caption{\label{tab-criteriaLp} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.55$.}
-\centering
-\begin{tabular}[t]{cccccccccccc}
-\toprule
-Method & $b_c$ & $b_l$ & $b_q$ & $F_g$ & $S_g$ & $T_g \times 10^{-3}$ & $A_w$ & $S_w$ & $T_w$ & $R_w$ & $EQM_w$\\
-\midrule
-\addlinespace[0.3em]
-\multicolumn{12}{l}{\textbf{$q=0$}}\\
-\hspace{1em}LC & 0 & -0.41 & -2.16 & 0.39 & 1.27 & 30.34 & 0.10 & 0.49 & 0.41 & 0.55 & 1.54\\
-\hspace{1em}QL & 0 & 0.00 & -0.47 & 0.71 & 5.15 & 0.05 & 0.07 & 1.89 & 0.00 & 0.11 & 2.07\\
-\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.91 & 11.94 & 0.01 & 0.02 & 2.23 & 0.00 & 0.10 & 2.35\\
-\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.94 & 14.20 & 0.00 & 0.01 & 2.18 & 0.00 & 0.10 & 2.29\\
-\addlinespace[0.3em]
-\multicolumn{12}{l}{\textbf{$q=1$}}\\
-\hspace{1em}LC & 0 & -0.12 & -0.52 & 0.27 & 0.43 & 4.80 & 0.01 & 0.12 & 0.06 & 0.11 & 0.30\\
-\hspace{1em}QL & 0 & 0.00 & -0.06 & 0.29 & 0.71 & 0.69 & 0.00 & 0.19 & 0.01 & 0.04 & 0.25\\
-\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.57 & 0.16 & 0.02 & 0.58 & 0.00 & 0.06 & 0.66\\
-\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.41 & 0.37 & 0.06 & 0.02 & 0.76 & 0.00 & 0.06 & 0.84\\
-\addlinespace[0.3em]
-\multicolumn{12}{l}{\textbf{$q=2$}}\\
-\hspace{1em}LC & 0 & 0.00 & 1.08 & 0.20 & 0.08 & 0.35 & 0.01 & 0.01 & 0.00 & 0.01 & 0.04\\
-\hspace{1em}QL & 0 & 0.00 & 0.03 & 0.22 & 0.05 & 2.08 & 0.00 & 0.01 & 0.02 & 0.07 & 0.10\\
-\hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.66 & 0.13 & 0.02 & 0.56 & 0.00 & 0.06 & 0.64\\
-\hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.40 & 0.77 & 0.02 & 0.02 & 0.68 & 0.00 & 0.05 & 0.74\\
-\bottomrule
-\end{tabular}
+<!-- Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.5$. -->
+<!-- ::: -->
 
-\textit{Note: With $EQM_w=A_w + S_w + T_w + R_w$.}
-\end{table}
-```
+<!-- ```{=tex} -->
+<!-- \begin{table}[!h] -->
+<!-- \caption{\label{tab-criteriaLp} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.55$.} -->
+<!-- \centering -->
+<!-- \begin{tabular}[t]{cccccccccccc} -->
+<!-- \toprule -->
+<!-- Method & $b_c$ & $b_l$ & $b_q$ & $F_g$ & $S_g$ & $T_g \times 10^{-3}$ & $A_w$ & $S_w$ & $T_w$ & $R_w$ & $EQM_w$\\ -->
+<!-- \midrule -->
+<!-- \addlinespace[0.3em] -->
+<!-- \multicolumn{12}{l}{\textbf{$q=0$}}\\ -->
+<!-- \hspace{1em}LC & 0 & -0.41 & -2.16 & 0.39 & 1.27 & 30.34 & 0.10 & 0.49 & 0.41 & 0.55 & 1.54\\ -->
+<!-- \hspace{1em}QL & 0 & 0.00 & -0.47 & 0.71 & 5.15 & 0.05 & 0.07 & 1.89 & 0.00 & 0.11 & 2.07\\ -->
+<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.91 & 11.94 & 0.01 & 0.02 & 2.23 & 0.00 & 0.10 & 2.35\\ -->
+<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.94 & 14.20 & 0.00 & 0.01 & 2.18 & 0.00 & 0.10 & 2.29\\ -->
+<!-- \addlinespace[0.3em] -->
+<!-- \multicolumn{12}{l}{\textbf{$q=1$}}\\ -->
+<!-- \hspace{1em}LC & 0 & -0.12 & -0.52 & 0.27 & 0.43 & 4.80 & 0.01 & 0.12 & 0.06 & 0.11 & 0.30\\ -->
+<!-- \hspace{1em}QL & 0 & 0.00 & -0.06 & 0.29 & 0.71 & 0.69 & 0.00 & 0.19 & 0.01 & 0.04 & 0.25\\ -->
+<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.57 & 0.16 & 0.02 & 0.58 & 0.00 & 0.06 & 0.66\\ -->
+<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.41 & 0.37 & 0.06 & 0.02 & 0.76 & 0.00 & 0.06 & 0.84\\ -->
+<!-- \addlinespace[0.3em] -->
+<!-- \multicolumn{12}{l}{\textbf{$q=2$}}\\ -->
+<!-- \hspace{1em}LC & 0 & 0.00 & 1.08 & 0.20 & 0.08 & 0.35 & 0.01 & 0.01 & 0.00 & 0.01 & 0.04\\ -->
+<!-- \hspace{1em}QL & 0 & 0.00 & 0.03 & 0.22 & 0.05 & 2.08 & 0.00 & 0.01 & 0.02 & 0.07 & 0.10\\ -->
+<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.66 & 0.13 & 0.02 & 0.56 & 0.00 & 0.06 & 0.64\\ -->
+<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.40 & 0.77 & 0.02 & 0.02 & 0.68 & 0.00 & 0.05 & 0.74\\ -->
+<!-- \bottomrule -->
+<!-- \end{tabular} -->
+
+<!-- \textit{Note: With $EQM_w=A_w + S_w + T_w + R_w$.} -->
+<!-- \end{table} -->
+<!-- ``` -->
 
 
 ## Extension with the timeliness criterion {#sec-lptimeliness}
@@ -718,7 +689,7 @@ This is the case at date  $t$ when $y_{t-3}\leq y_{t-2}\leq y_{t-1}>y_t\geq y_{t
   Finally, relatively few turning points are detected at the right date with the final estimate.
   With the 13-term Henderson filter, 18 are correctly detected in series with low variability (out of 57 possible), 11 in series with medium variability and 12 in series with high variability.
     
-2. Computation of two revision criteria: the average of the relative deviations between the $q$^th^ estimate and the last estimate $MAE_{fe}(q)$ and the average of the relative deviations between the $q$^th^ estimate and the $q+1$^th^ estimate $MAE_{ce}(q)$.
+2. The average of the relative deviations between to the last estimate (comparison of the $q$^th^ estimate and the last estimate):
 $$
 MAE_{fe}(q)=\mathbb E\left[
 \left|\frac{
@@ -726,8 +697,10 @@ y_{t|t+q} -  y_{t|last}
 }{
  y_{t|last}
 }\right|
-\right]
-\quad\text{and}\quad
+\right].
+$$
+3. The average of the relative deviations between two consecutive estimates (the $q$^th^ estimate and the $q+1$^th^ estimate):
+$$
 MAE_{ce}(q)=\mathbb E\left[
 \left|\frac{
 y_{t|t+q} - y_{t|t+q+1}
@@ -981,14 +954,4 @@ knitr::include_graphics(img)
 #| fig-cap: Coefficients, gain and phase shift functions for the direct asymmetric filter (DAF).
 img <- sprintf("img/filters_used/%s.%s", tolower("DAF"), "pdf")
 knitr::include_graphics(img)
-```
-
-# R code example {#sec-ann-ex-r}
-
-In this appendix we present the R code that can be used to estimate trend-cycle components for the US Employment with local polynomial filters.
-
-```{r, eval=FALSE, echo=TRUE}
-#| eval: false
-#| echo: true
-#| file: R_ex.R
 ```
