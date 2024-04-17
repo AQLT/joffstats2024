@@ -15,6 +15,10 @@ format:
       - left = 2.5cm
       - right = 2.5cm
     cite-method: biblatex
+crossref:
+  tbl-prefix: table
+  fig-prefix: figure
+  sec-prefix: section
 linestretch: 2
 echo: false
 tbl-cap-location: top
@@ -57,12 +61,12 @@ By construction, trend-cycle extraction methods are closely related to seasonal 
 
 A moving average, or linear filter, is a statistical method that consists of applying a rolling weighted mean to a times series: for each date $t$ it computes a weighted mean of $p$ past points and $q$ future points where $p,q\geq0$ depends on the moving average.
 Moving averages are ubiquitous in business cycle extraction and seasonal adjustment methods.
-For example, the X-13ARIMA seasonal adjustment method uses several moving averages to estimate the main components of a time series. 
+For example, the X-11 decomposition method (used in X-13ARIMA-SEATS) uses several moving averages to estimate the main components of a time series. 
 Symmetric filters are applied to the center of the series, but when it comes to estimate the most recent points, all of these methods must rely on asymmetric filters. 
-For trend-cycle extraction, the most popular symmetric filter is the @henderson1916note moving average, which is used in the X-13ARIMA seasonal adjustment algorithm. 
+For trend-cycle extraction, the most popular symmetric filter is the @henderson1916note moving average, which is used in the X-11 seasonal adjustment algorithm. 
  
 However, for real-time estimates, due to the lack of future observations, all these methods must rely on asymmetric filters to estimate the most recent points. 
-For example, for trend-cycle extraction, X-13ARIMA uses Henderson's symmetric filter and @musgrave1964set's asymmetric filters on an extended series using an ARIMA model.
+For example, for trend-cycle extraction, X-11 uses Henderson's symmetric filter and @musgrave1964set's asymmetric filters on an extended series using an ARIMA model.
 Since the predicted values are linear combinations of past values, this amounts to applying asymmetric averages at the end of the series.
 
 If the classic asymmetric moving averages have good properties regarding the future revisions induced by the process (see for example @pierce1980SA), they create, by construction, phase shifts that impact the real-time estimation of turning points, introducing time delay in the detection.
@@ -74,7 +78,7 @@ However, these methods have two drawbacks.
 Firstly, the phase shift (i.e. the delay in detecting turning points) is not directly controlled.
 Secondly, asymmetric filters depend on a parameter that is generally estimated over the whole series using assumptions that may be wrong locally.
 The aim of this study is to propose extensions to the @proietti2008 class of filters in order to take these shortcomings into account.
-The extensions have been implemented in the R `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and are therefore easily reusable.
+The extensions have been implemented in the R `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and can therefore be easily used.
 
 In @sec-propMM, we describe the general properties of moving averages and the associated quality criteria.
 This allows us to understand the foundations behind the construction of moving averages from local polynomial regressions, as well as those behind the two extensions proposed in this article (@sec-nonparamreg).
@@ -112,7 +116,14 @@ $$
 \Gamma_{\boldsymbol\theta}(\omega) = \rho_{\boldsymbol\theta}(\omega)\e^{i\varphi_{\boldsymbol\theta}(\omega)},
 $$
 where  $\rho_{\boldsymbol\theta}(\omega)=G_{\boldsymbol\theta}(\omega)=\lvert\Gamma_{\boldsymbol\theta}(\omega)\rvert$ is the *gain* or *amplitude* function and $\varphi_{\boldsymbol\theta}(\omega)$ is the *phase shift* or *time shift* function.
-This function is sometimes represented as $\phi_{\boldsymbol\theta}(\omega)=\frac{\varphi_{\boldsymbol\theta}(\omega)}{\omega}$ to measure the phase shift in number of periods.
+We this have:
+\begin{align*}
+\rho_{\boldsymbol\theta}(\omega) &=\sqrt{\left(\sum_{k=-p}^{+f}\theta_k\cos(\omega k)\right)^2+
+\left(\sum_{k=-p}^{+f}\theta_k\sin(\omega k)\right)^2} \\
+\tan \varphi_{\boldsymbol\theta}(\omega) &=- \frac{\sum_{k=-p}^{+f}\theta_k\sin(\omega k)}{\sum_{k=-p}^{+f}\theta_k\cos(\omega k)} \text{ if }\sum_{k=-p}^{+f}\theta_k\cos(\omega k) \ne 0 \\
+&= 0 \text{ if }\sum_{k=-p}^{+f}\theta_k\cos(\omega k) = 0.
+\end{align*}
+The phase shift is sometimes represented as $\phi_{\boldsymbol\theta}(\omega)=\frac{\varphi_{\boldsymbol\theta}(\omega)}{\omega}$ to measure it in number of periods.
 For all symmetric moving averages we have $\varphi_{\boldsymbol\theta}(\omega)\equiv 0 \;(modulo\;{\pi})$. 
 
 To sum up, applying a moving average to a harmonic times series ($X_t=\e^{-i\omega t}$) affects it in in two different ways:
@@ -149,7 +160,7 @@ knitr::include_graphics(img)
 
 ## Desirable properties of a moving average
 
-To decompose a time series into a seasonal component, a trend-cycle and the irregular, the X-11 decomposition algorithm (used in X-13ARIMA) uses a succession of moving averages, all with specific constraints.
+To decompose a time series into a seasonal component, a trend-cycle and the irregular, the X-11 decomposition algorithm (used in X-13ARIMA-SEATS) uses a succession of moving averages, all with specific constraints.
 
 In our case, we assume that our initial series $y_t$ is seasonally adjusted and can be written as the sum of a trend-cycle, $TC_t$, and an irregular component, $I_t$:
 $$
@@ -169,7 +180,7 @@ For the moving average $M_{\boldsymbol\theta}$, it can be shown that:
 $$
 \sum_{k=-p}^{+f}\theta_k=1
  \text{ and }
-\forall j \in \left\llbracket 1,d\right\rrbracket:\:
+\forall j \in \left\{1,2,\dots,d\right\}:\:
 \sum_{k=-p}^{+f}k^j\theta_k=0.
 $$
 - If $M_{\boldsymbol\theta}$ is symmetric ($p=f$ and $\theta_{-k} = \theta_k$) and preserves polynomials of degree $2d$ then it also preserves polynomials of degree $2d+1$.
@@ -203,26 +214,32 @@ Several approaches can be used for real-time estimation:
 
 2. Apply symmetric filters to extended forecast series.
 This method seems to date back to @deforest1877adjustment, which also suggests modelling a polynomial trend of degree three or less at the end of the period.
-A similar approach is used in the X-13ARIMA seasonal adjustment method: the series is extend by one year (by default) with an ARIMA model to minimise the revisions associated to asymmetric filters
+A similar approach is used in the X-13ARIMA-SEATS seasonal adjustment method: the series is extend by one year (by default) with an ARIMA model to minimise the revisions associated to asymmetric filters
 
 Ultimately, the second method is equivalent to using asymmetric moving averages, since forecasts are linear combinations of the past. 
 
 Conversely, the implicit forecasts of an asymmetric moving average can be deduced from a reference symmetric moving average. 
 This allows us to judge the quality of real-time estimates of the trend-cycle and to anticipate future revisions when forecasts are far from expected evolutions.\
-Let us denote $v=(v_{-h},\dots, v_{h})$ the reference symmetric moving average and $w^0,\dots w^{h-1}$ a sequence of asymmetric moving averages, of order $h+1$ to $2h$ used to estimate the last $h$ points with, for convention, $w_t^q=0$ for $t>q$.
-This means that $w^0=(w_{-h}^0,\dots, w_{0}^0)$ is used for estimation in real time (when no points are known in the future), $w^1=(w_{-h}^1,\dots, w_{1}^1)$ for estimation of the penultimate point (when only one point is known in the future), and so on.
-Let also note $y_{-h},\dots,y_{0}$ the observed series studied and $y_{1}^*,\dots y_h^*$ the implicit forecast induced by $w^0,\dots w^{h-1}$.
-This means that for all $q$ we have:
+Let us denote $\boldsymbol v=(v_{-h},\dots, v_{h})$ the reference symmetric moving average (used to compute the final estimates) and $\boldsymbol w^0,\dots, \boldsymbol w^{h-1}$ a sequence of asymmetric moving averages used for the intermediate estimates. 
+$\boldsymbol w^0=(w_{-h}^0, \dots, w_{0}^0)$ is used for estimation in real time estimate (when 0 point in the future is known), $\boldsymbol w^1=(w_{-h}^1, \dots, w_{0}^1, w_{1}^1)$ is used for estimation of the penultimate point (when only 1 in the future is known), and so on.
+Let $y_{t-h},\dots,y_{t}$ be the observed series during the last $h$ periods (for which asymmetric moving averages are used to get the intermediate trend-cycle estimates for the dates $t-h$ to $h$). 
+The implicit forecast $y_{t+1}^*,\dots y_{t+h}^*$ induced by $w^0,\dots w^{h-1}$ are the forecasts of the series $y_t$ for which the estimates of the symmetric filter applied to the extended series $\boldsymbol y^* = (y_{t-h}, \dots, y_t, y_{t+1}^*,\dots y_{t+h}^*)$ produce the same estimates as the asymmetric filter applied to the series $\boldsymbol y^*$.
+This means:
+\begin{align*}
+\underbrace{\sum_{i=-h}^0 v_iy_{ti} + \sum_{i=1}^h v_iy_{t+i}^*}_{\text{smoothing by }\boldsymbol v\text{ of the extended series}} &=
+\underbrace{\sum_{i=-h}^0 w_i^0y_{t+i}}_{\text{smoothing by }\boldsymbol w^0\text{ using }0\text{ points after }t} \\
+&=
+\underbrace{\sum_{i=-h}^0 w_i^1y_{t+i} + w_1^1y_{t+1}^*}_{\text{smoothing by }\boldsymbol w^1\text{ using }1\text{ points after }t} \\
+&= \underbrace{\sum_{i=-h}^0 w_i^2y_{t+i} + \sum_{i=1}{2}w_i^2y_{t+i}^*}_{\text{smoothing by }\boldsymbol w^2\text{ using }2\text{ points after }t} \\
+&= \cdots \\
+&=\underbrace{\sum_{i=-h}^0 w_i^{h-1}y_{t+i} + \sum_{i=1}^{h-1} w_i^{h-1}y_{t+i}^*}_{\text{smoothing by }\boldsymbol w^{h-1}\text{ using }h-1\text{ points after }t}
+\end{align*}
+For any integer $q$ between 0 and $h-1$, using for convention $w_t^q=0$ if $t>q$ we then have:
 $$
-\underbrace{\sum_{i=-h}^0 v_iy_i + \sum_{i=1}^h v_iy_i^*}_{\text{smoothing by }v\text{ of the extended series}}
-=\underbrace{\sum_{i=-h}^0 w_i^qy_i + \sum_{i=1}^h w_i^qy_i^*}_{\text{smoothing by }w^q\text{ of the extended series}}.
-$$
-This is equivalent to:
-$$
-\quad \sum_{i=1}^h (v_i- w_i^q) y_i^*
+\sum_{i=1}^h (v_i- w_i^q) y_i^*
 =\sum_{i=-h}^0 (w_i^q-v_i)y_i.
 $$
-To sum up, in matrix form, this is equivalent to solving:
+In matrix form, this is equivalent to solving:
 $$
 \scriptstyle
 \begin{pmatrix}
@@ -339,7 +356,7 @@ $$
 where $\mu_t$ is the trend and $\varepsilon_{t}\overset{i.i.d}{\sim}\mathcal{N}(0,\sigma^{2})$ is the noise (the series is therefore seasonally adjusted).
 Within a neighbourhood $h$ of $t$, the local trend $\mu_t$ is approximated by a polynomial of degree $d$, such that $\mu_t\simeq m_{t}$ with:
 $$
-\forall j\in\left\llbracket -h,h\right\rrbracket:\:
+\forall j\in\left\{-h,-h+1,\dots,h\right\}:\:
 y_{t+j}=m_{t+j}+\varepsilon_{t+j},\quad m_{t+j}=\sum_{i=0}^{d}\beta_{i}j^{i}.
 $$
 The problem of trend extraction is equivalent to estimating $m_t=\beta_0$ (the constant in the previous formula). 
@@ -375,22 +392,22 @@ y_{t+h}
 \varepsilon_{t+(h-1)}\\
 \varepsilon_{t+h}
 \end{pmatrix}}_{\boldsymbol \varepsilon}.
-$$
+$$ {#eq-lpp}
 
-To estimate $\boldsymbol \beta$ we need at least $d+1$ observations (thus $2h\geq d$) and the estimation is made by weighted least squares (WLS), which is equivalent to minimising the following objective function:
+Since $d+1$ parameters are estimated with $\boldsymbol \beta$, we need at least $2h+1$ observations (thus $2h\geq d$) and the estimation is made by weighted least squares (WLS), which is equivalent to minimising the following objective function:
 $$
 S(\hat{\beta}_{0},\dots,\hat{\beta}_{d})=\sum_{j=-h}^{h}\kappa_{j}(y_{t+j}-\hat{\beta}_{0}-\hat{\beta}_{1}j-\dots-\hat{\beta}_{d}j^{d})^{2}.
 $$
 where $\kappa_j$ is a set of weights called a *kernel*.
-We have $\kappa_j\geq 0:\kappa_{-j}=\kappa_j$, and with $\boldsymbol K=diag(\kappa_{-h},\dots,\kappa_{h})$, the estimate of $\boldsymbol \beta$ can be written as $\hat{\boldsymbol\beta}=(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol X'\boldsymbol K\boldsymbol y.$
+We have $\kappa_j\geq 0:\kappa_{-j}=\kappa_j$, and with $\boldsymbol K=diag(\kappa_{-h},\dots,\kappa_{h})$, the estimate of $\boldsymbol \beta$ can be written as $\hat{\boldsymbol\beta}=(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\transp{\boldsymbol X}\boldsymbol K\boldsymbol y.$
 With $\boldsymbol e_1=\transp{\begin{pmatrix}1 &0 &\cdots&0 \end{pmatrix}}$, the estimate of the trend is:
 $$
-\hat{m}_{t}=\boldsymbol e_{1}\hat{\boldsymbol \beta}=\boldsymbol \theta'\boldsymbol y=\sum_{j=-h}^{h}\theta_{j}y_{t-j}\text{ with }\boldsymbol \theta=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{1}.
+\hat{m}_{t}=\boldsymbol e_{1}\hat{\boldsymbol \beta}=\transp{\boldsymbol \theta}\boldsymbol y=\sum_{j=-h}^{h}\theta_{j}y_{t-j}\text{ with }\boldsymbol \theta=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{1}.
 $$ {#eq-mmsym}
 To conclude, the estimate of the trend $\hat{m}_{t}$ can be obtained applying the symmetric filter $\boldsymbol \theta$ to $y_t$ ($\boldsymbol \theta$ is symmetric due to the symmetry of the kernel weights $\kappa_j$).
-Moreover, $\boldsymbol X'\boldsymbol \theta=\boldsymbol e_{1}$ so:
+Moreover, since $\transp{\boldsymbol X}\boldsymbol \theta=\boldsymbol e_{1}$ we have:
 $$
-\sum_{j=-h}^{h}\theta_{j}=1,\quad\forall r\in\left\llbracket 1,d\right\rrbracket:\sum_{j=-h}^{h}j^{r}\theta_{j}=0.
+\sum_{j=-h}^{h}\theta_{j}=1,\quad\forall r\in\left\{1,2,\dots,d\right\}:\sum_{j=-h}^{h}j^{r}\theta_{j}=0.
 $$
 Hence, the filter $\boldsymbol w$ preserves deterministic polynomials of order $d$.
 
@@ -415,9 +432,9 @@ However, several other kernels are available in `rjd3filters`.
 
 As mentioned in @sec-mmetprev, for real-time estimation, several approaches can be used:
 
-1. Apply symmetric filters to the series extended by forecasting $\hat{y}_{n+l\mid n},l\in\left\llbracket 1,h\right\rrbracket$.
+1. Apply symmetric filters to the series extended by forecasting $\hat{y}_{n+l\mid n},l\in\left\{1,2,\dots,h\right\}$.
 
-2. Build an asymmetric filter by local polynomial approximation on the available observations ($y_{t}$ for $t\in\left\llbracket n-h,n\right\rrbracket$).
+2. Build an asymmetric filter by local polynomial approximation on the available observations ($y_{t}$ for $t\in\left\{n-h,n-h+1,\dots,n\right\}$).
 
 3. Build asymmetric filters that minimise the mean squared error of revision under polynomial trend reproduction constraints.
 
@@ -428,25 +445,26 @@ This method is used for real-time estimation in the STL seasonal adjustment meth
 Although DAF filter estimates are unbiased, this is at the cost of greater variance in the estimates. 
 
 To solve the problem of the variance of real-time filter estimates, @proietti2008 propose a general method for constructing asymmetric filters that allows a bias-variance trade-off.
-This is a generalisation of @musgrave1964set's asymmetric filters (used in the X-13ARIMA seasonal adjustment algorithm).
+This is a generalisation of @musgrave1964set's asymmetric filters (used in the X-11 seasonal adjustment algorithm).
 
-The initial series is modelled here as:
+Rewriting @eq-lpp:
 $$
-\boldsymbol y=\boldsymbol U \boldsymbol \gamma+\boldsymbol Z\boldsymbol \delta+\boldsymbol \varepsilon,\quad
+\boldsymbol y=\begin{pmatrix}\boldsymbol U &\boldsymbol Z\end{pmatrix}
+\begin{pmatrix}\boldsymbol \gamma \\ \boldsymbol \delta\end{pmatrix}+\boldsymbol \varepsilon,\quad
 \boldsymbol \varepsilon\sim\mathcal{N}(0,\boldsymbol D).
 $$ {#eq-lpgeneralmodel}
-where $[\boldsymbol U,\boldsymbol Z]$ is of full rank and forms a subset of the columns of $X$.
+where $[\boldsymbol U,\boldsymbol Z]$ is of full rank and forms a subset of the columns of $X$ and the variance of the error is defined as $\boldsymbol D = \sigma^2\boldsymbol K^{-1}$ to directly take into account the weights associated to the observations.
 The objective is to find a filter $\boldsymbol v$ that minimises the mean square error of revision (to the symmetric filter $\boldsymbol \theta$) under certain constraints.
-These constraints are represented by the matrix $\boldsymbol U=\transp{\begin{pmatrix} \transp{\boldsymbol U_{p}}& \transp{\boldsymbol U_{f}}\end{pmatrix}}$: $\boldsymbol U_p'\boldsymbol v=\boldsymbol U'\boldsymbol \theta$ (with $\boldsymbol U_p$ the $(h+q+1)\times (d+1)$ matrix which contains the observations of the matrix $U$ known during estimation by the asymmetric filter).
+These constraints are represented by the matrix $\boldsymbol U=\transp{\begin{pmatrix} \transp{\boldsymbol U_{p}}& \transp{\boldsymbol U_{f}}\end{pmatrix}}$: $\transp{\boldsymbol U_p}\boldsymbol v=\transp{\boldsymbol U}\boldsymbol \theta$ (with $\boldsymbol U_p$ the $(h+q+1)\times (d+1)$ matrix which contains the observations of the matrix $U$ known during estimation by the asymmetric filter).
 The problem is equivalent to finding $v$ which minimises:
 $$
 \varphi(\boldsymbol v)=
 \underbrace{
-  \underbrace{(\boldsymbol v-\boldsymbol \theta_{p})'\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_{p})+
-  \boldsymbol \theta_{f}'\boldsymbol D_{f}\boldsymbol \theta_{f}}_\text{revision error variance}+
-  \underbrace{[\boldsymbol \delta'(\boldsymbol Z_{p}'\boldsymbol v-\boldsymbol Z'\boldsymbol \theta)]^{2}}_{bias^2}
+  \underbrace{\transp{(\boldsymbol v-\boldsymbol \theta_{p})}\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_{p})+
+  \transp{\boldsymbol \theta_{f}}\boldsymbol D_{f}\boldsymbol \theta_{f}}_\text{revision error variance}+
+  \underbrace{[\transp{\boldsymbol \delta}(\transp{\boldsymbol Z_{p}}\boldsymbol v-\transp{\boldsymbol Z}\boldsymbol \theta)]^{2}}_{bias^2}
 }_\text{mean square revision error}+
-\underbrace{2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)}_{\text{constraints}}.
+\underbrace{2\transp{\boldsymbol l}(\transp{\boldsymbol U_{p}}\boldsymbol v-\transp{\boldsymbol U}\boldsymbol \theta)}_{\text{constraints}}.
 $$ {#eq-lppasym}
 where $\boldsymbol l$ is a vector of Lagrange multipliers.
 
@@ -455,7 +473,7 @@ When $\boldsymbol U=\boldsymbol X$, the constraint is equivalent to preserving p
 When $\boldsymbol U=\transp{\begin{pmatrix}1&\cdots&1\end{pmatrix}}$, $\boldsymbol Z=\transp{\begin{pmatrix}-h&\cdots&+h\end{pmatrix}}$, $\boldsymbol \delta=\delta_1$, $\boldsymbol D=\sigma^2\boldsymbol I$ and when the symmetric filter is the Henderson filter, we find the asymmetric Musgrave filters (using the Henderson kernel).
 This filter assumes that, for real-time estimation, the data is generated by a linear process and that the asymmetric filters preserve the constants ($\sum v_i=\sum \theta_i=1$).
 These asymmetric filters depend on the ratio $\lvert\delta_1/\sigma\rvert$, which, assuming that the trend is linear and the bias constant, can be linked to the I-C ratio $R=\frac{\bar{I}}{\bar{C}}=\frac{\sum\lvert I_t-I_{t-1}\rvert}{\sum\lvert C_t-C_{t-1}\rvert}$: $\delta_1/\sigma=2/(R\sqrt{\pi})$.
-This ratio is used in particular in X-13ARIMA to determine the length of the Henderson filter. 
+This ratio is used in particular in X-11 to determine the length of the Henderson filter. 
 For monthly data:
 
 - If the ratio is large ($3.5< R$) then a 23 term filter is used (to remove more noise).
@@ -551,29 +569,43 @@ One drawback of the approach of @proietti2008 is the lack of control over the ph
 However, it is possible to improve the modelling by incorporating in @eq-lppasym the timeliness criterion defined by @ch15HBSA.
 This was proposed by Jean Palate, then coded in Java and integrated into `rjd3filters`.
 
+To measure the phase shift between the input series and the filtered one, @eq-lppasym introduces a criterion, $T_g$, called *timeliness*.
+When a moving average $\boldsymbol v$ is applied, the level input signal is also altered by the gain function. 
+That’s why the timeliness criterion depends on the gain and phase shift functions ($\rho_{\boldsymbol v}$ and $\varphi_{\boldsymbol v}$), the link between both functions being made by a penalty function $f$.
+The criterion measures phase shift for the frequencies in the interval $[\omega_1, \omega_2]$:
+$$
+T_g(\boldsymbol v)=\int_{\omega_{1}}^{\omega_{2}}f(\rho_{\boldsymbol v}(\omega),\varphi_{\boldsymbol v}(\omega))\ud\omega
+$$
+As mentioned in @sec-propMM, in the case of trend-cycle extraction we can set $\omega_1=0$ and for monthly series $\omega_2=2\pi/12.$
+For the penalty function, the authors suggest $f\colon(\rho,\varphi)\mapsto\rho^2\sin(\varphi)^2$ and show thant in that case the criteria can be written in a quadratic form:
+$$
+T_g(\boldsymbol v) = \transp{\boldsymbol v}\boldsymbol T\boldsymbol v
+$$
+with $T\boldsymbol=\int_{\omega_{1}}^{\omega_{2}}\boldsymbol{Si}(\omega)\transp{\boldsymbol{Si}(\omega)}\ud\omega$ and $\boldsymbol{Si}(\omega)=(\sin(p\omega),\dots, \sin (f\omega))$ if $\boldsymbol v$ uses $p$ points in the past and $f$ points in the future.
+
 Using the same notation as in @sec-lppasymf, $\boldsymbol\theta$ represents the symmetric filter and $\boldsymbol v$ the asymmetric filter.
 With $\boldsymbol\theta=\transp{\begin{pmatrix}\transp{\boldsymbol\theta_p}&\transp{\boldsymbol\theta_f}\end{pmatrix}}$ and $\boldsymbol\theta_p$ of the same length as $\boldsymbol v$, and $\boldsymbol g=\boldsymbol v-\boldsymbol \theta_p$, the timeliness criterion can be expressed as:
 $$
-T_g(\boldsymbol v)=\boldsymbol v'\boldsymbol T\boldsymbol v=\boldsymbol g'\boldsymbol T\boldsymbol g+2\boldsymbol \theta_p'\boldsymbol T\boldsymbol g+\boldsymbol \theta_p'\boldsymbol T\boldsymbol \theta_p
+T_g(\boldsymbol v)=\transp{\boldsymbol v}\boldsymbol T\boldsymbol v=\transp{\boldsymbol g}\boldsymbol T\boldsymbol g+2\transp{\boldsymbol \theta_p}\boldsymbol T\boldsymbol g+\transp{\boldsymbol \theta_p}\boldsymbol T\boldsymbol \theta_p
 \quad\text{ with }\boldsymbol T\text{ a symmetric matrix}.
 $$
 Furthermore, the objective function $\varphi$ of @eq-lppasym can be rewritten:
 \begin{align*}
-\varphi(\boldsymbol v)&=(\boldsymbol v-\boldsymbol \theta_p)'\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_p)+
-  \boldsymbol \theta_f'\boldsymbol D_{f}\boldsymbol \theta_f+
-  [\boldsymbol \delta'(\boldsymbol Z_{p}'\boldsymbol v-\boldsymbol Z'\boldsymbol \theta)]^{2}+
-2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)\\
-&=\boldsymbol g'\boldsymbol Q\boldsymbol g-2\boldsymbol P\boldsymbol g+2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)+\boldsymbol c,
+\varphi(\boldsymbol v)&=\transp{(\boldsymbol v-\boldsymbol \theta_p)}\boldsymbol D_{p}(\boldsymbol v-\boldsymbol \theta_p)+
+  \transp{\boldsymbol \theta_f}\boldsymbol D_{f}\boldsymbol \theta_f+
+  [\transp{\boldsymbol \delta}(\transp{\boldsymbol Z_{p}}\boldsymbol v-\transp{\boldsymbol Z}\boldsymbol \theta)]^{2}+
+2\transp{\boldsymbol l}(\transp{\boldsymbol U_{p}}\boldsymbol v-\transp{\boldsymbol U}\boldsymbol \theta)\\
+&=\transp{\boldsymbol g}\boldsymbol Q\boldsymbol g-2\boldsymbol P\boldsymbol g+2\transp{\boldsymbol l}(\transp{\boldsymbol U_{p}}\boldsymbol v-\transp{\boldsymbol U}\boldsymbol \theta)+\boldsymbol c,
 \end{align*}
-with $\boldsymbol Q=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z'_p,$ $\boldsymbol P=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z_p'$ and $\boldsymbol c$ a constant independent of $\boldsymbol v.$
+with $\boldsymbol Q=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\transp{\boldsymbol \delta}\transp{\boldsymbol Z}_p,$ $\boldsymbol P=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\transp{\boldsymbol \delta}\transp{\boldsymbol Z_p}$ and $\boldsymbol c$ a constant independent of $\boldsymbol v.$
 
 Adding the timeliness criterion:
 $$
-\widetilde\varphi(\boldsymbol v)=\boldsymbol g'\widetilde {\boldsymbol Q}\boldsymbol g-
-2\widetilde {\boldsymbol P}\boldsymbol g+2\boldsymbol l'(\boldsymbol U_{p}'\boldsymbol v-\boldsymbol U'\boldsymbol \theta)+
+\widetilde\varphi(\boldsymbol v)=\transp{\boldsymbol g}\widetilde {\boldsymbol Q}\boldsymbol g-
+2\widetilde {\boldsymbol P}\boldsymbol g+2\transp{\boldsymbol l}(\transp{\boldsymbol U_{p}}\boldsymbol v-\transp{\boldsymbol U}\boldsymbol \theta)+
 \widetilde {\boldsymbol c},
 $$
-where $\alpha_T$ is the weight associated with the timeliness criterion, $\widetilde {\boldsymbol Q}=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z'_p + \alpha_T\boldsymbol T$, $\widetilde {\boldsymbol P}=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\boldsymbol \delta'\boldsymbol Z_p'-\alpha_T\boldsymbol \theta_p\boldsymbol T$ and $\widetilde {\boldsymbol c}$ a constant independent of $\boldsymbol v.$
+where $\alpha_T$ is the weight associated with the timeliness criterion, $\widetilde {\boldsymbol Q}=\boldsymbol D_p+\boldsymbol Z_p\boldsymbol \delta\transp{\boldsymbol \delta}\transp{\boldsymbol Z_p} + \alpha_T\boldsymbol T$, $\widetilde {\boldsymbol P}=\boldsymbol \theta_f\boldsymbol Z_f\boldsymbol \delta\transp{\boldsymbol \delta}\transp{\boldsymbol Z_p}-\alpha_T\boldsymbol \theta_p\boldsymbol T$ and $\widetilde {\boldsymbol c}$ a constant independent of $\boldsymbol v.$
 
 With $\alpha_T=0$ we find $\varphi(\boldsymbol v)$.
 This extension therefore makes it possible to find all the symmetric and asymmetric filters presented in the previous section but also generalizes the approach of @GrayThomson1996.
@@ -594,12 +626,21 @@ For example, with the LC method, global parametrisation means assuming that the 
 This is what is proposed in this article, with a local parametrisation of the asymmetric filters by estimating $\delta$ and $\sigma^2$ separately.
 Although this does not give an unbiased estimator of the ratio $\lvert\delta/\sigma\rvert$, it does allow the main evolutions to be captured, such as the decay towards 0 before a turning point and the growth after the turning point for the LC method:
 
-- The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(w_{-p},\dots,w_p)$:
+- The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(w_{-h},\dots,w_h)$.
+Indeed, as for example shown by @Loader1999, the variance $\sigma^2$ can be estimating using the normalized residual sum of squares:
 $$
-\hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\hat \mu_t)^2}{1-2w_0^2+\sum w_i^2}.
+\hat\sigma^2=\frac{1}{(n-2h)-2\nu_1+\nu_2}\sum_{t=h+1}^{n-h}(y_t-\hat \mu_t)^2.
 $$
+Since the symmetric filter is used, only $n-2h$ observations can be used to estimate $\sigma^2$.
+$\nu_1$ and $\nu_2$ are two definitions of degrees of freedom of a local fit (generalization of the number of parameters of a parametric model).
+In the case of local polynomial smoothings, they can be linked to the coefficient of the associated filter: $\nu_1 = (n-h)w_0$ (number of observations multiplied by the central coefficient of the moving average) and $\nu_2 = (n-h)\sum_{i=-h}^{h} w_i^2$ (number of observations multiplied by the sum of squares of coefficients of the moving average).
+Thus, the variance can be estimated by:
+$$
+\hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\hat \mu_t)^2}{1-2w_0^2+\sum_{i=-h}^{h} w_i^2}.
+$$
+
 - The parameter $\delta$ can be estimated by moving average from @eq-mmsym. 
-For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\boldsymbol X'\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
+For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
 The DAF method then simply allows us to calculate the associated asymmetric moving averages.  
 Although a moving average of different length to that used for estimating the trend could be considered, this seems to degrade the results in terms of phase shift (using the same methodology as in @sec-comparison).
 Furthermore, for the construction of moving averages, the trend can be modelled as being locally of degree 2 or 3 (this has no impact on the final estimate of concavity).
@@ -722,7 +763,7 @@ For series with high variability, the phase shift is only reduced by using the f
 For series with low variability, performance seems to be slightly improved only with the LC filter.
 
 
-```{r, echo=FALSE, out.width="100%", fig.note = footnotes}
+```{r, echo=FALSE, out.width="100%"}
 #| label: fig-graphstpsimul
 #| fig-cap: Distribution of phase shifts on simulated series.
 img <- sprintf("img/simulations/phase_shift_simul.%s", "pdf")
@@ -864,7 +905,7 @@ Il y a toutefois deux inconvénients à cette simplification :
 Le choix de la méthode utilisée pour l'estimation de la tendance-cycle peut donc avoir un impact bien au-delà de 6 mois.
 
 2. D'autre part, les moyennes mobiles étant des opérateurs linéaires, ils sont sensibles à la présence de points atypiques.
-L'application directe des méthodes peut donc conduire à des estimations biaisées, du fait de leur présence, alors que les méthodes de désaisonnalisation (comme la méthode X-13ARIMA) ont un module de correction des points atypiques.
+L'application directe des méthodes peut donc conduire à des estimations biaisées, du fait de leur présence, alors que les méthodes de désaisonnalisation (comme la méthode X-13ARIMA-SEATS) ont un module de correction des points atypiques.
 Par ailleurs, comme notamment montré par @dagum1996new, le filtre symétrique final utilisé par X-13ARIMA pour extraire la tendance-cycle (et donc celui indirectement utilisé lorsqu'on applique les méthodes sur les séries désaisonnalisées) laisse passer environ 72 % des cycles de 9 ou 10 mois (généralement associés à du bruit plutôt qu'à la tendance-cycle).
 Les filtres asymétriques finaux amplifient même les cycles de 9 ou 10 mois.
 Cela peut avoir pour conséquence l'introduction d'ondulations indésirables, c'est-à-dire la détection de faux points de retournement.
@@ -912,7 +953,7 @@ Asymmetric filters are calibrated using indicators calculated for the estimation
 Furthermore, we have only focused on monthly series with a 13-term symmetric filter, but the results may be different if the symmetric filter studied is longer or shorter and if we study series with other frequencies (quarterly or daily, for example).
 
 Another possibility would be to study the impact of atypical points: moving averages, like any linear operator, are very sensitive to the presence of atypical points. 
-To limit their impact, in X-13ARIMA a strong correction for atypical points is performed on the irregular component before applying the filters to extract the trend-cycle.
+To limit their impact, in X-11 a strong correction for atypical points is performed on the irregular component before applying the filters to extract the trend-cycle.
 This leads us to study the impact of these points on the estimation of the trend-cycle and turning points, and also to explore new types of asymmetric filters based on robust methods (such as robust local regressions or moving medians).
 
 \newpage
