@@ -699,7 +699,8 @@ For all series, a symmetric 13-term filter is used: we then assume than the band
 A nearest neighbour bandwidth is also tested (13-term asymmetric filters: real-time estimates uses observation between $y_{t-12}$ and $y_{t}$, the second asymmetric filters uses obversations between $y_{t-11}$ and $y_{t+1}$, etc.) but with no improvement in the results (see supplemental material).
 More complexe methods to locally select bandwidth, like the one proposed by @fan1992variable, were not tested.
 All the methods to create asymmetric filters are also compared with estimates obtained by extending the series with an ARIMA model, then applying a 13-term symmetric Henderson filter.
-The ARIMA model is determined automatically, using no seasonal lag (the series being seasonally adjusted) and no external variables (such as external regressors for correction of atypical points).
+The ARIMA model is determined automatically, using @autoarima algorithm (function `forecast::auto.arima()`), using no seasonal lag (the series being seasonally adjusted) and no external variables (such as external regressors for correction of atypical points).
+
 The performance of the different methods is judged on criteria relating to revisions (between two consecutive estimates and in relation to the final estimate) and the number of periods required to detect turning points.
 
 ## Simulated series

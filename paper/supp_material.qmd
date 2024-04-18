@@ -56,7 +56,24 @@ knitr::include_graphics(img)
 
 # Impact of the span used to detect the ARIMA model
 
+::: {#fig-graphs-impact-span}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_arima_length.pdf")
+```
+
+Distribution of phase shifts on simulated series by number of years used to identify and estimate the AIRMA model.
+:::
+
 # Quarterly data
+
+::: {#fig-graphs-impact-span}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_q.pdf")
+```
+
+Distribution of phase shifts on quarterly data.
+:::
+
 
 # Nearest neighbour bandwidth
 
@@ -89,6 +106,23 @@ knitr::include_graphics(img)
 img <- sprintf("img/filters_used/%s_nn.%s", tolower("DAF"), "pdf")
 knitr::include_graphics(img)
 ```
+
+
+::: {#fig-graphs-impact-span}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
+```
+
+Distribution of phase shifts using nearest neighbour bandwidth.
+:::
+
+::: {#fig-graphs-impact-span}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
+```
+
+Distribution of phase shifts using nearest neighbour bandwidth for polynomial filters with local parametrisation.
+:::
 
 <!-- # R code example {#ann-ex-r} -->
 
