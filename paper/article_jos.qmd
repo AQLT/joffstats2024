@@ -19,6 +19,7 @@ crossref:
   tbl-prefix: table
   fig-prefix: figure
   sec-prefix: section
+  eq-prefix: equation
 linestretch: 2
 echo: false
 tbl-cap-location: top
@@ -61,7 +62,7 @@ By construction, trend-cycle extraction methods are closely related to seasonal 
 
 A moving average, or linear filter, is a statistical method that consists of applying a rolling weighted mean to a times series: for each date $t$ it computes a weighted mean of $p$ past points and $q$ future points where $p,q\geq0$ depends on the moving average.
 Moving averages are ubiquitous in business cycle extraction and seasonal adjustment methods.
-For example, the X-11 decomposition method (used in X-13ARIMA-SEATS) uses several moving averages to estimate the main components of a time series. 
+For example, the X-11 decomposition method [@x11], used in X-13ARIMA-SEATS software [@x13],  uses several moving averages to estimate the main components of a time series. 
 Symmetric filters are applied to the center of the series, but when it comes to estimate the most recent points, all of these methods must rely on asymmetric filters. 
 For trend-cycle extraction, the most popular symmetric filter is the @henderson1916note moving average, which is used in the X-11 seasonal adjustment algorithm. 
  
@@ -78,7 +79,8 @@ However, these methods have two drawbacks.
 Firstly, the phase shift (i.e. the delay in detecting turning points) is not directly controlled.
 Secondly, asymmetric filters depend on a parameter that is generally estimated over the whole series using assumptions that may be wrong locally.
 The aim of this study is to propose extensions to the @proietti2008 class of filters in order to take these shortcomings into account.
-The extensions have been implemented in the R `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and can therefore be easily used.
+Those extensions are implemented in the statistical software R [@logicielr] throw the `rjd3filters` package (available at <https://github.com/rjdemetra/rjd3filters>) and can therefore be easily used.
+All the code associated to this paper is available at <https://github.com/XXXX> (anonymized linked before the manuscript is accepted).
 
 In @sec-propMM, we describe the general properties of moving averages and the associated quality criteria.
 This allows us to understand the foundations behind the construction of moving averages from local polynomial regressions, as well as those behind the two extensions proposed in this article (@sec-nonparamreg).
@@ -328,19 +330,21 @@ This is why it may be necessary to define alternative criteria for judging the q
 
 Many trend-cycle extraction methods are based on non-parametric regressions, which are particularly flexible because they do not assume any predetermined dependency in the predictors. 
 In practice, local regressions can be used. 
-More specifically, consider a set of points $(x_i,y_i)_{1\leq i\leq n}$. 
-Non-parametric regression involves assuming that there exists a function $\mu$, to be estimated, such that $y_i=\mu(x_i)+\varepsilon_i$ with $\varepsilon_i$ an error term.
-According to Taylor's theorem, for any point $x_0$, if $\mu$ is differentiable $d$ times, then:
+More specifically, consider a set of points $(x_t,y_t)_{1\leq t\leq n}$ and we here consider that $x_t=t$ (no external regressor is used). 
+Non-parametric regression involves assuming that there exists a function $\mu$, to be estimated, such that $y_t=\mu(t)+\varepsilon_t$ with $\varepsilon_t$ an error term.
+According to Taylor's theorem, for any date $t_0$, if $\mu$ is differentiable $d$ times, then:
 $$
-\forall t \::\:TC_t = \mu(x_0) + \mu'(x_0)(x-x_0)+\dots +
-\frac{\mu^{(d)}(x_0)}{d!}(x-x_0)^d+R_d(x),
+\forall t \::\:\underbrace{\mu(t)}_{=TC_t} = \underbrace{\mu(t_0)}_{=TC_{t_0}} + \mu'(t_0)(t-t_0)+\dots +
+\frac{\mu^{(d)}(t_0)}{d!}(t-t_0)^d+R_d(t),
 $$ {#eq-taylor}
-where $R_d$ is a negligible residual term in the neighbourhood of $x_0$. 
-In a neighbourhood $h(x_0)$ around $x_0$, $\mu$ can be approximated by a polynomial of degree $d$. 
-The quantity $h(x_0)$ is called the *bandwidth*.
-If $\varepsilon_i$ is white noise, then we can estimate by least squares $\mu(x_0)$ using the observations which are in $\left[x_0-h(x_0),x_0+h(x_0)\right]$. 
+where $R_d$ is a negligible residual term in the neighbourhood of $t_0$. 
+In a neighbourhood $h(t_0)$ around $t_0$, $\mu$ can therefore be approximated by a polynomial of degree $d$. 
+The quantity $h(t_0)$ is called the *bandwidth*.
+If $\varepsilon_t$ is white noise, we can estimate $\mu(t_0)=TC_{t_0}$ by least squares using the observations which are in $\left[t_0-h(t_0),t_0+h(t_0)\right]$. 
+In practice, this means assuming that the trend is locally polynomial.
+We also generally assume that the bandwith is fixed over time: $h(t_0)=h.$
+This is also what is assumed in the seasonal adjustment algorithm X-11 and what will be assumed in this paper.
 
-In practice, this means assuming that the trend is locally polynomial. 
 Various estimation methods can be used to derive symmetric and asymmetric moving averages.  
 @GrayThomson1996 propose a complete statistical framework that makes it possible, in particular, to model the error in approximating the trend by local polynomials.
 However, as the specification of this error is generally complex, simpler models may be preferred, such as that of @proietti2008.  
@@ -453,10 +457,19 @@ $$
 \begin{pmatrix}\boldsymbol \gamma \\ \boldsymbol \delta\end{pmatrix}+\boldsymbol \varepsilon,\quad
 \boldsymbol \varepsilon\sim\mathcal{N}(0,\boldsymbol D).
 $$ {#eq-lpgeneralmodel}
-where $[\boldsymbol U,\boldsymbol Z]$ is of full rank and forms a subset of the columns of $X$ and the variance of the error is defined as $\boldsymbol D = \sigma^2\boldsymbol K^{-1}$ to directly take into account the weights associated to the observations.
-The objective is to find a filter $\boldsymbol v$ that minimises the mean square error of revision (to the symmetric filter $\boldsymbol \theta$) under certain constraints.
-These constraints are represented by the matrix $\boldsymbol U=\transp{\begin{pmatrix} \transp{\boldsymbol U_{p}}& \transp{\boldsymbol U_{f}}\end{pmatrix}}$: $\transp{\boldsymbol U_p}\boldsymbol v=\transp{\boldsymbol U}\boldsymbol \theta$ (with $\boldsymbol U_p$ the $(h+q+1)\times (d+1)$ matrix which contains the observations of the matrix $U$ known during estimation by the asymmetric filter).
-The problem is equivalent to finding $v$ which minimises:
+where $[\boldsymbol U,\boldsymbol Z]$ is of full rank and forms a subset of the columns of $X.$
+Defining the variance error as $\boldsymbol D = \sigma^2\boldsymbol K^{-1}$ (to directly take into account the weights associated to the observations) and with $[\boldsymbol U,\boldsymbol Z] = \boldsymbol X$ we this find the model associated to symmetric filters.
+The objective is to find an asymmetric filter $\boldsymbol v$ which uses $q$ points in the future and minimises the mean square error of revision (to the symmetric filter $\boldsymbol \theta$) under certain (polynomial) constraints.
+The matrices $\boldsymbol y$, $\boldsymbol U$, $\boldsymbol Z$ and $\boldsymbol \theta$ are partitioned as follows:
+$$
+\boldsymbol y = \begin{pmatrix} \boldsymbol y_p \\ \boldsymbol y_f \end{pmatrix}, \quad
+\boldsymbol U = \begin{pmatrix} \boldsymbol U_p \\ \boldsymbol U_f \end{pmatrix}, \quad  
+\boldsymbol Z = \begin{pmatrix} \boldsymbol Z_p \\ \boldsymbol Z_f \end{pmatrix}, \quad 
+\boldsymbol \theta = \begin{pmatrix} \boldsymbol \theta_p \\ \boldsymbol \theta_f \end{pmatrix},
+$$
+where $\boldsymbol y_p$ is a matrix $(h+q+1)\times 1$ which denotes the set of available observations (from $y_{t-h}$ to $y_{t+q}$) and $\boldsymbol U$, $\boldsymbol Z$ and $\boldsymbol \theta$ are partitioned in the same way.
+The constraints are defined as $\transp{\boldsymbol U_p}\boldsymbol v=\transp{\boldsymbol U}\boldsymbol \theta$: they represents the polynomial preservation constraints we want to impose on the asymmetric filter.
+@proietti2008 show that the problem is equivalent to finding $v$ which minimises:
 $$
 \varphi(\boldsymbol v)=
 \underbrace{
@@ -468,9 +481,9 @@ $$
 $$ {#eq-lppasym}
 where $\boldsymbol l$ is a vector of Lagrange multipliers.
 
-When $\boldsymbol U=\boldsymbol X$, the constraint is equivalent to preserving polynomials of degree $d$: we find asymmetric direct filters (DAF) when $\boldsymbol D=\boldsymbol K^{-1}$.
+When $\boldsymbol U=\boldsymbol X$ (and then $\boldsymbol Z = \boldsymbol 0$), the constraint is equivalent to preserving polynomials of degree $d$ and we find asymmetric direct filters (DAF) when $\boldsymbol D=\boldsymbol K^{-1}$.
 
-When $\boldsymbol U=\transp{\begin{pmatrix}1&\cdots&1\end{pmatrix}}$, $\boldsymbol Z=\transp{\begin{pmatrix}-h&\cdots&+h\end{pmatrix}}$, $\boldsymbol \delta=\delta_1$, $\boldsymbol D=\sigma^2\boldsymbol I$ and when the symmetric filter is the Henderson filter, we find the asymmetric Musgrave filters (using the Henderson kernel).
+When $\boldsymbol U=\transp{\begin{pmatrix}1&\cdots&1\end{pmatrix}}$, $\boldsymbol Z=\transp{\begin{pmatrix}-h&\cdots&+h\end{pmatrix}}$, $\boldsymbol \delta=\delta_1$, $\boldsymbol D=\sigma^2\boldsymbol I$ and when the symmetric filter is the Henderson filter, we find the asymmetric Musgrave filters.
 This filter assumes that, for real-time estimation, the data is generated by a linear process and that the asymmetric filters preserve the constants ($\sum v_i=\sum \theta_i=1$).
 These asymmetric filters depend on the ratio $\lvert\delta_1/\sigma\rvert$, which, assuming that the trend is linear and the bias constant, can be linked to the I-C ratio $R=\frac{\bar{I}}{\bar{C}}=\frac{\sum\lvert I_t-I_{t-1}\rvert}{\sum\lvert C_t-C_{t-1}\rvert}$: $\delta_1/\sigma=2/(R\sqrt{\pi})$.
 This ratio is used in particular in X-11 to determine the length of the Henderson filter. 
@@ -618,26 +631,29 @@ However, in future studies, we could imagine a two step calibration: fix the val
 
 ## Local parametrisation of asymmetric filters {#sec-localic}
 
-Asymmetric filters are usually parametrised globally: $\lvert\delta/\sigma\rvert$ estimated on all the data using the IC-ratio or a cross-validation criterion. 
+Asymmetric filters are usually parametrised globally: $\lvert\delta/\sigma\rvert$ is fixed using all the data (with the IC-ratio or a cross-validation criterion). 
 However, we might prefer a local parametrisation: ratio $\lvert\delta/\sigma\rvert$ which varies as a function of time.
 Indeed, although the overall parametrisation is generally valid, assuming a constant value of the $\lvert\delta/\sigma\rvert$ ratio for all asymmetric filters does not appear relevant for real-time estimation, especially during periods of economic downturn.
-For example, with the LC method, global parametrisation means assuming that the slope of the trend is constant, whereas during economic downturns it tends towards 0 up to the turning point.
+For example, with the LC method, global parametrisation means assuming that the slope of the trend is constant, whereas during economic downturns it tends towards 0 up around the turning point.
 
 This is what is proposed in this article, with a local parametrisation of the asymmetric filters by estimating $\delta$ and $\sigma^2$ separately.
 Although this does not give an unbiased estimator of the ratio $\lvert\delta/\sigma\rvert$, it does allow the main evolutions to be captured, such as the decay towards 0 before a turning point and the growth after the turning point for the LC method:
 
-- The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(w_{-h},\dots,w_h)$.
+- The variance $\sigma^2$ can be estimated using the observed data set and the symmetric filter $(\theta_{-h},\dots,\theta_h)$.
 Indeed, as for example shown by @Loader1999, the variance $\sigma^2$ can be estimating using the normalized residual sum of squares:
 $$
-\hat\sigma^2=\frac{1}{(n-2h)-2\nu_1+\nu_2}\sum_{t=h+1}^{n-h}(y_t-\hat \mu_t)^2.
+\hat\sigma^2=\frac{1}{(n-2h)-2\nu_1+\nu_2}\sum_{t=h+1}^{n-h}(y_t-\widehat{TC}_t)^2.
 $$
 Since the symmetric filter is used, only $n-2h$ observations can be used to estimate $\sigma^2$.
 $\nu_1$ and $\nu_2$ are two definitions of degrees of freedom of a local fit (generalization of the number of parameters of a parametric model).
-In the case of local polynomial smoothings, they can be linked to the coefficient of the associated filter: $\nu_1 = (n-h)w_0$ (number of observations multiplied by the central coefficient of the moving average) and $\nu_2 = (n-h)\sum_{i=-h}^{h} w_i^2$ (number of observations multiplied by the sum of squares of coefficients of the moving average).
+In the case of local polynomial smoothings, they can be linked to the coefficient of the associated filter: $\nu_1 = (n-h)\theta_0$ (number of observations multiplied by the central coefficient of the moving average) and $\nu_2 = (n-h)\sum_{i=-h}^{h} \theta_i^2$ (number of observations multiplied by the sum of squares of coefficients of the moving average).
 Thus, the variance can be estimated by:
 $$
-\hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\hat \mu_t)^2}{1-2w_0^2+\sum_{i=-h}^{h} w_i^2}.
+\hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\widehat{TC}_t)^2}{1-2\theta_0^2+\sum_{i=-h}^{h} \theta_i^2}.
 $$
+<!-- The assumption that $\hat\mu(x)$ is unbiased is rarely exactly true, so variance -->
+<!-- estimates and confidence intervals are usually computed at small band- -->
+<!-- widths where bias is small.  -->
 
 - The parameter $\delta$ can be estimated by moving average from @eq-mmsym. 
 For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
@@ -679,10 +695,11 @@ knitr::include_graphics(c("img/filters_used/mm_penteconcavite_ex.pdf",
 # Comparison of different methods {#sec-comparison}
 
 The different methods are compared on simulated and real data. 
-For all series, a symmetric 13-term filter is used.
-These methods are also compared with estimates obtained by extending the series with an ARIMA model, then applying a 13-term symmetric Henderson filter.
+For all series, a symmetric 13-term filter is used: we then assume than the bandwidth is fixed, as in the seasonal adjustement method X-11.
+A nearest neighbour bandwidth is also tested (13-term asymmetric filters: real-time estimates uses observation between $y_{t-12}$ and $y_{t}$, the second asymmetric filters uses obversations between $y_{t-11}$ and $y_{t+1}$, etc.) but with no improvement in the results (see supplemental material).
+More complexe methods to locally select bandwidth, like the one proposed by @fan1992variable, were not tested.
+All the methods to create asymmetric filters are also compared with estimates obtained by extending the series with an ARIMA model, then applying a 13-term symmetric Henderson filter.
 The ARIMA model is determined automatically, using no seasonal lag (the series being seasonally adjusted) and no external variables (such as external regressors for correction of atypical points).
-
 The performance of the different methods is judged on criteria relating to revisions (between two consecutive estimates and in relation to the final estimate) and the number of periods required to detect turning points.
 
 ## Simulated series

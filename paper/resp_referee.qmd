@@ -84,6 +84,8 @@ $\mu(t) = u'_t\gamma + z'_t\delta$ (also you assume that the noise component has
 > 5. You should state that you assume a fixed bandwidth. 
 A nearest neighbour bandwidth should be interesting to consider: as such it would contribute more to the reduction of the variance at the expenses of the phase shift.
 
+*It was added in the beginning of section 3 and 4 than the bandwidth is fixed. Nearest neighbour bandwidth was added in supplemental material.*
+
 > 6. Is the phase shift related to the notion of bias in local polynomial smoothing?
 
 Minor points
@@ -108,7 +110,7 @@ Perhaps the authors should state that their intent is to separate the trend-cycl
 
 > - Page 7, line 38. ’which extends’ is repeated twice.
 
-*Fixed*
+*Corrected*
 
 > - Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts induced by $w_0$, etc.? 
 The forecasts are obtained from an assumed polynomial trend model?
@@ -131,7 +133,8 @@ The forecasts are obtained from an assumed polynomial trend model?
 
 *Those sections are now numbered*
 
-> Adding the appropriate items for both R and X-13ARIMA-SEATS to the References may be warranted.  In addition, in the text, it would probably be preferable to use R (the letter itself) instead of the R icon.
+> Adding the appropriate items for both R and X-13ARIMA-SEATS to the References may be warranted. 
+In addition, in the text, it would probably be preferable to use R (the letter itself) instead of the R icon.
 
 > Some of the important results appear in the tables and figures, but the accompanying discussion in the text should still be fleshed out more.  In addition, in Figures 2-4 and 6-7 (and the figures in the supplement), the lines can be distinguished by color, but it may be helpful to find some way to keep them distinguishable without the benefit of color.  It might be the case that there is too much information to display neatly in some of these.
 
@@ -141,9 +144,13 @@ The forecasts are obtained from an assumed polynomial trend model?
 Other (non-exhaustive) [only remarks that require a response]
 - P2 L8:  “X-13ARIMA seasonal adjustment method” -- The software is officially X-13ARIMA-SEATS, but the seasonal adjustment method itself is X-11 (applies to subsequent occurrences as well)
 
+*This was clarified in the article, for example in the introduction the text was changed with "the X-11 decomposition method (used in X-13ARIMA-SEATS)"*
+
 - P2 L29:  “good properties” -- This could be less vague.
 
 - P7 L58:  There is a $q$ introduced here via “$w_t^q$ for $t>q$” that shows up later as well, but  itself does not appear to be properly defined otherwise.
+
+*This section was rewritten and all the terms are now defined.*
 
 - P9:  Author lists a number of quality criteria in Table 1.  It may be obvious for some of these, but it would be helpful to the reader to indicate whether lower values or higher values are preferable for each, either in the table or in the accompanying exposition.
 
@@ -152,7 +159,7 @@ Other (non-exhaustive) [only remarks that require a response]
 
 - P11 L22:  “$2h+1 \geq d+1$” -- Why not just say $2h\geq d$?
 
-This sentence was rephrased: $d+1$ refers to the number of parameters to estimate and $2h+1$ the number of observations.
+*This sentence was rephrased: $d+1$ refers to the number of parameters to estimate and $2h+1$ the number of observations.*
 
 - P14 L33:  More exposition wrt Table 2 may be helpful, as there is a fair amount of information to digest. 
 
@@ -165,6 +172,7 @@ And it should probably be explicitly stated what $EQM_w$ stands for prior to int
 
 - P19 L15:  “January 1960 and December 2020” -- As noted previously, is it worth considering an additional scenario with (simulated) series of shorter length?
 
+*See previous comment: it was added in supplemental material*
 
 # Referee 3
 
@@ -174,21 +182,21 @@ the equivalence between asymmetric and symmetric filters. It would be beneficial
 clarify the normalization difference and ensure a clear understanding of the relationship
 between the two types of filters.
 
-This section was rewrite to make it clearer.
+*This section was rewrite to make it clearer.*
 
 > 2.  Symbol [[ ]] Meaning (Page 11, Lines 53-54)
 > The meaning of the symbol [[ ]] on page 11, lines 53-54, is not clear. I recommend that
 the authors explicitly define this symbol or provide a clear explanation to avoid any
 ambiguity in its interpretation.
 
-This symbol was referring to integer interval, it was removed to avoid confusion (for example $[[1,d]]$ was replaced by $\{1,2,\dots, d\}$).
+*This symbol was referring to integer interval, it was removed to avoid confusion (for example $[[1,d]]$ was replaced by $\{1,2,\dots, d\}$).*
 
 > 3.  Variance Determination in Local Parameterization (Page 17)
 > The determination of variance in the local parameterization of asymmetric filters (page
 17) could benefit from a more detailed explanation. I recommend that the authors
 clearly identify the quantities appearing in the denominator for better understanding.
 
-More explanations was added to this paragraph: the formula comes from local regression theory simplified because we are here in the case of local polynomial approximation.
+*More explanations was added to this paragraph: the formula comes from local regression theory simplified because we are here in the case of local polynomial approximation.*
 
 > 4.  Applicability to High-Frequency Data.
 > It would be valuable if the authors could explicitly address the applicability of the
