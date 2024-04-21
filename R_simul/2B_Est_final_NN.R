@@ -45,7 +45,7 @@ for (method in c("LC","QL")){
         nom_f_s_rev_ce <- sprintf("results_simul/localic_final_nn/%s_%s_h%i%s_ce_rev.RDS",
                                   name_file,
                                   tolower(method), h, complement)
-        data_info <- readRDS(sprintf("data_simul/byseriespente_final/%s_h%i.RDS",
+        data_info <- readRDS(sprintf("data_simul/byseriespente_nn/%s_h%i.RDS",
                                      gsub(".RDS", "",basename(s)),h))
         
         if(all(file.exists(nom_f_s_tp),
@@ -61,7 +61,7 @@ for (method in c("LC","QL")){
             data_t = data_info[[nom_d]][[method]]
             ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
             icr = 2/(sqrt(pi) * ratio)
-            lp_coef = lp_filter2_nn(icr = icr, method = method, h = h, kernel = kernel)
+            lp_coef = lp_filter2_nn(icr = icr, method = method, h = 6, kernel = kernel)
             res <- rjd3filters::filter(x, lp_coef)
             
             res[1:h] <- NA

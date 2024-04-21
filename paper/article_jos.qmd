@@ -651,6 +651,7 @@ Thus, the variance can be estimated by:
 $$
 \hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\widehat{TC}_t)^2}{1-2\theta_0^2+\sum_{i=-h}^{h} \theta_i^2}.
 $$
+This is implemented in the function `rjd3filters::var_estimator()`.
 <!-- The assumption that $\hat\mu(x)$ is unbiased is rarely exactly true, so variance -->
 <!-- estimates and confidence intervals are usually computed at small band- -->
 <!-- widths where bias is small.  -->

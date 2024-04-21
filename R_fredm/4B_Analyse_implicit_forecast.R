@@ -10,17 +10,17 @@ all_tp_rev <- get_all_tp(dossier = "results_fredm/compile_tp/")
 
 detected_tp <- readRDS("results_fredm/compile_tp_norev/detected_tp_lp.RDS")
 
-
+all_tp |> dplyr::filter(series == "CE16OV")
 series <- "CE16OV"
 tp_keep <- "2001.16666666667"
 all_prevs <- get_all_prevs(series = series, tp_keep = tp_keep,
-                           nb_est = 8, nb_dates_before = 6)
+                           nb_est = 8, nb_dates_before = 6,
+                           d_localic = 2, h_localic = 6)
 plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              series = series,
                              all_tp = all_tp,
                              all_tp_rev = all_tp_rev,
-                             tp_keep = tp_keep,
-                             dossier = "results_fredm/compile_tp_norev/")
+                             tp_keep = tp_keep)
 wrap_plots(plots,ncol = 3) & scale_color_grey()
 
 ggsave("paper/img/nber/ce16ov_fev2001_prev_imp_lp.pdf",
@@ -30,13 +30,13 @@ ggsave("paper/img/nber/ce16ov_fev2001_prev_imp_lp.pdf",
 series <- "CE16OV"
 tp_keep <- "2020.25"
 all_prevs <- get_all_prevs(series = series, tp_keep = tp_keep,
-                           nb_est = 8, nb_dates_before = 6)
+                           nb_est = 8, nb_dates_before = 6,
+                           d_localic = 2, h_localic = 6)
 plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              series = series,
                              all_tp = all_tp,
                              all_tp_rev = all_tp_rev,
-                             tp_keep = tp_keep,
-                             dossier = "results_fredm/compile_tp_norev/")
+                             tp_keep = tp_keep)
 wrap_plots(plots,ncol = 3) & 
   scale_color_grey() & 
   labs(subtitle = NULL)
@@ -52,17 +52,13 @@ series <- "RETAILx"
 tp_keep <- "2007.91666666667"
 
 all_prevs <- get_all_prevs(series = series, tp_keep = tp_keep,
-                           nb_est = 8, nb_dates_before = 6,
-                           fst_weights = fst_weights,
-                           fst_degree = fst_degree)
+                           nb_est = 8, nb_dates_before = 6)
 plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              series = series,
                              all_tp = all_tp,
                              all_tp_rev = all_tp_rev,
                              tp_keep = tp_keep,
-                             dossier = "results_fredm/compile_tp_norev/",
-                             fst_weights = fst_weights,
-                             fst_degree = fst_degree)
+                             dossier = "results_fredm/compile_tp_norev/")
 wrap_plots(plots, ncol = 3)
 
 ggsave("paper/img/nber/retailx_nov2007_prev_imp_lp.pdf",

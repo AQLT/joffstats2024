@@ -29,7 +29,7 @@ lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
 
 fs <- list()
 j <- 1
-h_retain <- 6
+h_retain <- 3:6
 kernel = "Henderson"
 for (method in c("LC","QL")){
   print(method)
@@ -48,7 +48,7 @@ for (method in c("LC","QL")){
                   name_file,
                   tolower(method), h, complement)
         
-        data_info <- readRDS(sprintf("data_fredm/byseriespente_final_nber_dt/%s_h%i.RDS",
+        data_info <- readRDS(sprintf("data_fredm/byseriespente_final_nber/%s_h%i.RDS",
                                      gsub(".RDS", "",basename(s)),h))
         if(all(file.exists(nom_f_s_tp),
                file.exists(nom_f_s)))
@@ -62,7 +62,7 @@ for (method in c("LC","QL")){
             data_t = data_info[[nom_d]][[method]]
             ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
             icr = 2/(sqrt(pi) * ratio)
-            lp_coef = lp_filter2(ic = icr, method = method, h = h, kernel = kernel)
+            lp_coef = lp_filter2(ic = icr, method = method, h = 6, kernel = kernel)
             rjd3filters::filter(x, lp_coef)
           })
           names(series_s) <- names(data)

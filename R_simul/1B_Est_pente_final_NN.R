@@ -1,9 +1,7 @@
 library(AQLThesis)
-library(future)
 library(rjd3filters)
-plan(multisession)
-if(!dir.exists("data_fredm/byseriespente_daf_nber"))
-  dir.create("data_fredm/byseriespente_daf_nber")
+if(!dir.exists("data_simul/byseriespente_nn"))
+  dir.create("data_simul/byseriespente_nn")
 
 # Dans ce programme, pour paramétrer les méthodes LC et QL :
 # 1. On prend les MM asymétriques d'estimation de la pente et polynôme degré 2 et on fait une estimation en temps réel
@@ -32,35 +30,35 @@ gen_MM <- function(p=6, q=p, d=2){
 }
 
 MM = lapply(0:6, function(q){
-  d2 = gen_MM(p=6, q=q, d=2)
-  d3 = gen_MM(p=6, q=q, d=3)
-  add_0 <- matrix(0, ncol = ncol(d2), nrow = 6-q)
-  d2 = rbind(d2, add_0)
-  d3 = rbind(d3, add_0)
+  d2 = gen_MM(p=12-q, q=q, d=2)
+  d3 = gen_MM(p=12-q, q=q, d=3)
+  
   list(pente = list(
-    `d=2` = d2[,2],
-    `d=3` = d3[,2]),
-    `deriv2` = list(
-      `d=2` = d2[,3],
-      `d=3` = d3[,3]))
+    `d=2` = moving_average(d2[,2], -(12-q)) ,
+    `d=3` = moving_average(d3[,2], -(12-q))
+  ),
+  `deriv2` = list(
+    `d=2` = moving_average(d2[,3], -(12-q)),
+    `d=3` = moving_average(d3[,3], -(12-q))
+  ))
 })
 MM = list(pente = list(
-  `d=2` = sapply(MM, function(x) x[[1]][[1]]),
-  `d=3` = sapply(MM, function(x) x[[1]][[2]])
+  `d=2` = finite_filters(MM[[7]][[1]][[1]], sapply(MM[-7], function(x) x[[1]][[1]]), first_to_last = TRUE),
+  `d=3` = finite_filters(MM[[7]][[1]][[2]], sapply(MM[-7], function(x) x[[1]][[2]]), first_to_last = TRUE)
 ),
 `deriv2` = list(
-  `d=2` = sapply(MM, function(x) x[[2]][[1]]),
-  `d=3` = sapply(MM, function(x) x[[2]][[2]])
+  `d=2` = finite_filters(MM[[7]][[2]][[1]], sapply(MM[-7], function(x) x[[2]][[1]]), first_to_last = TRUE),
+  `d=3` = finite_filters(MM[[7]][[2]][[2]], sapply(MM[-7], function(x) x[[2]][[2]]), first_to_last = TRUE)
 )
 )
-MM = lapply(MM, function(x){
-  lapply(x, finite_filters, first_to_last = TRUE)
-})
 
-for(s in list.files("data_fredm/byseries",full.names = TRUE)){
+s = list.files("data_simul/byseries",full.names = TRUE)[1]
+d = 2
+h = 6
+for(s in list.files("data_simul/byseries",full.names = TRUE)){
   print(s)
-  for(h in 3:6){
-    new_f = sprintf("data_fredm/byseriespente_daf_nber/%s_h%i.RDS",
+  for(h in 6){
+    new_f = sprintf("data_simul/byseriespente_nn/%s_h%i.RDS",
                     gsub(".RDS", "",basename(s)),h)
     print(new_f)
     hend_filter <- lp_filter(horizon = h)@sfilter

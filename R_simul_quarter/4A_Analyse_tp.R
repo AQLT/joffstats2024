@@ -77,7 +77,7 @@ p <- ggplot(data_tp %>%
 p
 
 
-ggsave("paper/img/simulations/phase_shift_simul.pdf",
+ggsave("paper/img/simulations/phase_shift_simul_q.pdf",
             plot = p,
             width = 10, height = 6)
 

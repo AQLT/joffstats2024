@@ -72,8 +72,7 @@ select_mae <- function(x){
 extract_est_data <- function(method = "lc", kernel = "henderson", nb_est = 10,
                              series = "RETAILx",
                              tp_date = 2020.25,
-                             nb_dates_before = 6,
-                             fst_degree = 2){
+                             nb_dates_before = 6){
   sep = "_"
   if(method %in% c("lc","ql", "cq", "daf")){
     dir <- "lp"
@@ -85,18 +84,12 @@ extract_est_data <- function(method = "lc", kernel = "henderson", nb_est = 10,
     } else if (length(grep("_localic", method)) >0) {
       if (length(grep("_final", method)) >0) {
         dir <- "localic_final"
-        full_name <- gsub("localic_final", "h6_d2", method)
+        full_name <- gsub("localic_final_", "", method)
       } else {
         dir <- "localic_daf_trunc"
-        full_name <- gsub("localic", "d2", method)
+        full_name <- gsub("localic_", "", method)
       }
-    } else if (length(grep("^weight", method)) > 0 ) {
-      dir <- "fst"
-      full_name <- sprintf("degree%s_%s", fst_degree, method)
-    } else {
-      dir <- "rkhs"
-      full_name <- method
-    }
+    } 
   }
   file = sprintf("results_fredm/%s/%s%s%s.RDS", dir, series, sep, full_name)
   data <- readRDS(file)
@@ -125,21 +118,44 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
     select_var()
 
   tp_lic_final <-
-    merge(readRDS(sprintf("%stroughs_localic_daf_trunc.RDS", dossier)),
-          readRDS(sprintf("%speaks_localic_daf_trunc.RDS", dossier)),
+    merge(readRDS(sprintf("%stroughs_localic_final.RDS", dossier)),
+          readRDS(sprintf("%speaks_localic_final.RDS", dossier)),
           by=c("series","kernel", "method", "degree", "h")) %>%
-    dplyr::filter(degree == "d2", h == "h6") %>%
-    select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
+    # dplyr::filter(degree == "d2", h == "h6") %>%
+    select_var() %>% 
+    mutate(method = sprintf("%s_localic_final_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
 
   tp_lic_final_daf <-
     merge(readRDS(sprintf("%stroughs_localic_daf_trunc.RDS", dossier)),
           readRDS(sprintf("%speaks_localic_daf_trunc.RDS", dossier)),
           by=c("series","kernel", "method", "degree", "h")) %>%
-    dplyr::filter(degree == "d2", h == "h6") %>%
-    select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
+    # dplyr::filter(degree == "d2", h == "h6") %>%
+    select_var() %>% 
+    mutate(method = sprintf("%s_localic_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
 
+  order_methods  <- c(
+    "lc",
+    "lc_localic_final_h6_d2",
+    "lc_localic_final_h3_d2", "lc_localic_final_h4_d2", "lc_localic_final_h5_d2", 
+    "lc_localic_final_h3_d3", "lc_localic_final_h4_d3", "lc_localic_final_h5_d3", 
+    "lc_localic_final_h6_d3",
+    "lc_localic_h3_d2", "lc_localic_h4_d2", "lc_localic_h5_d2", 
+    "lc_localic_h6_d2", "lc_localic_h3_d3", "lc_localic_h4_d3", "lc_localic_h5_d3", 
+    "lc_localic_h6_d3", 
+    "ql",
+    "ql_localic_final_h6_d2",
+    "ql_localic_final_h3_d2", "ql_localic_final_h4_d2", "ql_localic_final_h5_d2", 
+    "ql_localic_final_h3_d3", "ql_localic_final_h4_d3", "ql_localic_final_h5_d3", 
+    "ql_localic_final_h6_d3",
+    "ql_localic_h3_d2", "ql_localic_h4_d2", "ql_localic_h5_d2", 
+    "ql_localic_h6_d2", "ql_localic_h3_d3", "ql_localic_h4_d3", "ql_localic_h5_d3", 
+    "ql_localic_h6_d3",
+    "cq",
+    "daf",
+    "auto_arima"
+    )
   all_tp <-
     rbind(tp_lp,
           tp_arima,
@@ -147,16 +163,15 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
           tp_lic_final_daf
     ) %>%
     mutate(method = factor(method,
-                           c("lc", "lc_localic_final", "lc_localic",
-                             "ql", "ql_localic_final", "ql_localic",
-                             "cq","daf", "auto_arima"),
+                           order_methods,
                            ordered = TRUE)) %>%
     arrange(series, method)
   all_tp
 }
 
 
-get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6){
+get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
+                          d_localic = 2, h_localic = 6){
   s <- sprintf("data_fredm/byseries/%s.RDS", series)
   tp_date <- as.numeric(tp_keep)
   data <- readRDS(s)
@@ -198,16 +213,15 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6){
 
 
   data_info_lic <- readRDS(sprintf("data_fredm/byseriespente_final_nber/%s_h%i.RDS",
-                                   series, 6))
-  data_info_lic_daf <- readRDS(sprintf("data_fredm/byseriespente_daf_nber/%s.RDS",
-                                       series))
+                                   series, h_localic))
+  data_info_lic_daf <- readRDS(sprintf("data_fredm/byseriespente_daf_nber/%s_h%i.RDS",
+                                       series, h_localic))
   list_method_localic <- c("LC", "QL")
   prevs_imp_localic <- lapply(list_method_localic, function(method){
     do.call(ts.union, lapply(seq_along(data), function(i){
       y <- data[[i]]
-      d = 2
       data_t = data_info_lic[[names(data)[i]]][[method]]
-      ratio = data_t[[sprintf("d=%i", d)]] / sqrt(data_t[["sigma2"]])
+      ratio = data_t[[sprintf("d=%i", d_localic)]] / sqrt(data_t[["sigma2"]])
       icr = 2/(sqrt(pi) * ratio)
       lp_coef = lp_filter2(icr = icr, method = method, h = 6, kernel = kernel)
       prevs = implicit_forecast(x=y, coefs = lp_coef)
@@ -345,10 +359,10 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
     mutate(title = as.character(recode(method, lc = "LC", ql = "QL",
                                        cq = "CQ", daf = "DAF",
                                        auto_arima = "ARIMA",
-                                       lc_localic_final = "LC final local param.",
-                                       lc_localic = "LC local param.",
-                                       ql_localic_final = "QL final local param.",
-                                       ql_localic = "QL local param.")),
+                                       lc_localic_final_h6_d2 = "LC final local param.",
+                                       lc_localic_h6_d2 = "LC local param.",
+                                       ql_localic_final_h6_d2 = "QL final local param.",
+                                       ql_localic_h6_d2 = "QL local param.")),
            subtitle = sprintf("Phase shift of %i months",
                               round(.data[[tp_keep_col]]))
     ) %>%
@@ -370,8 +384,7 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
                      kernel = "henderson",
                      series = all_tp_plot[i_row, "series"],
                      tp_date = as.numeric(tp_plot),
-                     nb_est = nb_est, nb_dates_before = nb_dates_before,
-                     fst_degree = fst_degree)
+                     nb_est = nb_est, nb_dates_before = nb_dates_before)
   })
   all_range <- range(sapply(all_mod_est, range,na.rm = TRUE))
   plots <- lapply(seq_len(nrow(all_tp_plot)), function(i_row) {
@@ -392,29 +405,30 @@ get_all_plots_prevs <- function(data_prevs,
                                 series,
                                 all_tp,
                                 all_tp_rev = NULL,
-                                tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)],
-                                dossier = "results_fredm/compile_tp_norev/") {
+                                tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)]) {
   tp_keep_col <- paste0("X", tp_keep)
   column_to_remove <- grep(tp_keep_col,
                            grep("^X", colnames(all_tp),value = TRUE),
                            value = TRUE, invert = TRUE)
+  legend <- c(lc = "LC", ql = "QL",
+  cq = "CQ", daf = "DAF",
+  auto_arima = "ARIMA",
+  lc_localic_final_h6_d2 = "LC final local param.",
+  lc_localic_h6_d2 = "LC local param.",
+  ql_localic_final_h6_d2 = "QL final local param.",
+  ql_localic_h6_d2 = "QL local param.")
   all_tp_plot <-
     all_tp %>%
-    dplyr::filter(series == !!series)%>%
-    mutate(title = as.character(recode(method, lc = "LC", ql = "QL",
-                                       cq = "CQ", daf = "DAF",
-                                       auto_arima = "ARIMA",
-                                       lc_localic_final = "LC final local param.",
-                                       lc_localic = "LC local param.",
-                                       ql_localic_final = "QL final local param.",
-                                       ql_localic = "QL local param.")),
+    dplyr::filter(series == !!series, method %in% names(legend))%>%
+    mutate(title = as.character(recode(method, !!!legend)),
            subtitle = sprintf("Phase shift of %i months",
                               round(.data[[tp_keep_col]]))
     ) %>%
-    select(!c(!!column_to_remove, kernel, !!tp_keep_col, length))
+    select(!c(!!column_to_remove, kernel, !!tp_keep_col, length)) 
   if (!is.null(all_tp_rev)) {
     all_tp_rev_plot <-
-      all_tp_rev %>% dplyr::filter(series %in% !!series) %>%
+      all_tp_rev %>% 
+      dplyr::filter(series %in% !!series, method %in% names(legend)) %>%
       mutate(subtitle = sprintf("\n(1st detection in %i months)",
                                 round(.data[[tp_keep_col]]))
       )

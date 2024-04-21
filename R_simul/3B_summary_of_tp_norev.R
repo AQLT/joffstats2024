@@ -126,13 +126,15 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   split <- strsplit(full_names, "_")
   series <- sapply(split, `[`, 1)
   method <- sapply(split, `[`, 2)
-  if(length(grep("localic_daf", dir)) >0){
-    h <- "h6"
-    degree <- sapply(split, `[`, 3)
-  } else {
-    h <- sapply(split, `[`, 3)
-    degree <- sapply(split, `[`, 4)
-  }
+  h <- sapply(split, `[`, 3)
+  degree <- sapply(split, `[`, 4)
+  # if(length(grep("localic_daf", dir)) >0){
+  #   h <- "h6"
+  #   degree <- sapply(split, `[`, 3)
+  # } else {
+  #   h <- sapply(split, `[`, 3)
+  #   degree <- sapply(split, `[`, 4)
+  # }
   degree[is.na(degree)] <- "d3"
   
   all_t <- data.frame(t(sapply(all_tp_lp, function(x) x[["troughs"]][["phaseshift"]])),
@@ -146,6 +148,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   
   
   all_files <- list.files(sprintf("results_simul/%s_nn/", dir),pattern = "_tp",full.names = TRUE)
+  if (length(all_files) > 0){
   all_tp_lp <- lapply(seq_along(all_files), function(i){
     print(i)
     f = all_files[i]
@@ -159,13 +162,15 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   split <- strsplit(full_names, "_")
   series <- sapply(split, `[`, 1)
   method <- sapply(split, `[`, 2)
-  if(length(grep("localic_daf", dir)) >0){
-    h <- "h6"
-    degree <- sapply(split, `[`, 3)
-  } else {
-    h <- sapply(split, `[`, 3)
-    degree <- sapply(split, `[`, 4)
-  }
+  h <- sapply(split, `[`, 3)
+  degree <- sapply(split, `[`, 4)
+  # if(length(grep("localic_daf", dir)) >0){
+  #   h <- "h6"
+  #   degree <- sapply(split, `[`, 3)
+  # } else {
+  #   h <- sapply(split, `[`, 3)
+  #   degree <- sapply(split, `[`, 4)
+  # }
   degree[is.na(degree)] <- "d3"
   
   all_t <- data.frame(t(sapply(all_tp_lp, function(x) x[["troughs"]][["phaseshift"]])),
@@ -176,4 +181,5 @@ for(dir in c("localic_daf_trunc", "localic_final")){
   
   saveRDS(all_t, sprintf("results_simul/compile_tp_norev/troughs_%s_nn.RDS", dir))
   saveRDS(all_p, sprintf("results_simul/compile_tp_norev/peaks_%s_nn.RDS", dir))
+  }
 }

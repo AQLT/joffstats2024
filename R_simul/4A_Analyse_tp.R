@@ -6,42 +6,34 @@ library(scales)
 library(latex2exp)
 
 tp_lp <- merge(readRDS("results_simul/compile_tp_norev/troughs_lp.RDS"),
-                   readRDS("results_simul/compile_tp_norev/peaks_lp.RDS"),
-                   by=c("series","kernel", "method")) %>%
+               readRDS("results_simul/compile_tp_norev/peaks_lp.RDS"),
+               by=c("series","kernel", "method")) %>%
   select_var()
 
 tp_lic_final <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_final.RDS"),
-                          readRDS("results_simul/compile_tp_norev/peaks_localic_final.RDS"),
-                          by=c("series", "kernel", "h", "degree", "method"))  %>%
-  dplyr::filter(degree == "d2", h == "h6") %>%
-  select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
-  select(!c(degree, h))
-tp_lic_daf_trunc <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_daf_trunc.RDS"),
-                              readRDS("results_simul/compile_tp_norev/peaks_localic_daf_trunc.RDS"),
-                              by=c("series", "kernel", "h", "degree", "method")) %>%
-  dplyr::filter(degree == "d2", h == "h6") %>%
-  select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
+                      readRDS("results_simul/compile_tp_norev/peaks_localic_final.RDS"),
+                      by=c("series", "kernel", "h", "degree", "method"))  %>%
+  # dplyr::filter() %>%
+  # mutate(method = ifelse(degree == "d2", h == "h6"))
+  select_var() %>% 
+  mutate(method = sprintf("%s_localic_final_%s_%s", method, degree, h)) %>%
   select(!c(degree, h))
 
-tp_lp_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_lp_nn.RDS"),
-                  readRDS("results_simul/compile_tp_norev/peaks_lp_nn.RDS"),
-                  by=c("series","kernel", "method")) %>%
+tp_lic_daf_trunc <- merge(
+  readRDS("results_simul/compile_tp_norev/troughs_localic_daf_trunc.RDS"),
+  readRDS("results_simul/compile_tp_norev/peaks_localic_daf_trunc.RDS"),
+  by=c("series", "kernel", "h", "degree", "method")) %>%
   select_var() %>% 
-  mutate(method = sprintf("%s_nn", method))
+  mutate(method = sprintf("%s_localic_%s_%s", method, degree, h)) %>%
+  select(!c(degree, h))
+
 
 tp_lic_final_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_final_nn.RDS"),
-                      readRDS("results_simul/compile_tp_norev/peaks_localic_final_nn.RDS"),
-                      by=c("series", "kernel", "h", "degree", "method"))  %>%
+                         readRDS("results_simul/compile_tp_norev/peaks_localic_final_nn.RDS"),
+                         by=c("series", "kernel", "h", "degree", "method"))  %>%
   dplyr::filter(degree == "d2", h == "h6") %>%
   select_var() %>% mutate(method = sprintf("%s_localic_final", method)) %>%
   select(!c(degree, h)) %>% 
-  mutate(method = sprintf("%s_nn", method))
-tp_lic_daf_trunc_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_daf_trunc_nn.RDS"),
-                          readRDS("results_simul/compile_tp_norev/peaks_localic_daf_trunc_nn.RDS"),
-                          by=c("series", "kernel", "h", "degree", "method")) %>%
-  dplyr::filter(degree == "d2", h == "h6") %>%
-  select_var() %>% mutate(method = sprintf("%s_localic", method)) %>%
-  select(!c(degree, h)) %>%
   mutate(method = sprintf("%s_nn", method))
 
 tp_arima <-
@@ -60,11 +52,20 @@ tp_ner_neigh_hend <-
 
 order_methods  <- c(
   "lc", "lc_nn",
-  "lc_localic_final", "lc_localic_final_nn",
-  "lc_localic", "lc_localic_nn",
+  "lc_localic_final_d2_h3", "lc_localic_final_d2_h4", "lc_localic_final_d2_h5", "lc_localic_final_d2_h6", 
+  "lc_localic_final_d3_h3", "lc_localic_final_d3_h4", "lc_localic_final_d3_h5", 
+  "lc_localic_final_d3_h6","lc_localic_final_nn",
+  "lc_localic_d2_h3", "lc_localic_d2_h4", "lc_localic_d2_h5", 
+  "lc_localic_d2_h6", "lc_localic_d3_h3", "lc_localic_d3_h4", "lc_localic_d3_h5", 
+  "lc_localic_d3_h6", 
   "ql", "ql_nn",
-  "ql_localic_final", "ql_localic_final_nn",
-  "ql_localic", "ql_localic_nn",
+  "ql_localic_final_d2_h3", "ql_localic_final_d2_h4", "ql_localic_final_d2_h5", "ql_localic_final_d2_h6", 
+  "ql_localic_final_d3_h3", "ql_localic_final_d3_h4", "ql_localic_final_d3_h5", 
+  "ql_localic_final_d3_h6",
+  "ql_localic_final_nn",
+  "ql_localic_d2_h3", "ql_localic_d2_h4", "ql_localic_d2_h5", 
+  "ql_localic_d2_h6", "ql_localic_d3_h3", "ql_localic_d3_h4", "ql_localic_d3_h5", 
+  "ql_localic_d3_h6",
   "cq", "cq_nn",
   "daf", "daf_nn",
   "auto_arima_ny2", "auto_arima_ny4", "auto_arima_ny6",
@@ -80,8 +81,7 @@ all_tp <- rbind(
   tp_arima,
   tp_ner_neigh_hend,
   tp_lp_nn,
-  tp_lic_final_nn,
-  tp_lic_daf_trunc_nn) %>%
+  tp_lic_final_nn) %>%
   mutate(method = factor(method, order_methods,
                          ordered = TRUE),
          variability = factor(variability,
@@ -89,19 +89,19 @@ all_tp <- rbind(
                               ordered = TRUE),
          kernel = tolower(kernel))
 
-data_tp <- all_tp %>% format_table_tp()
 
 
 legende <- c(lc = "LC", ql = "QL",
              cq = "CQ", daf = "DAF",
-             lc_localic_final = "LC loc. param.\n(final estimates)",
-             lc_localic = "LC loc.\nparam.",
-             ql_localic_final = "QL loc. param.\n(final estimates)",
-             ql_localic = "QL loc.\nparam.",
+             lc_localic_final_d2_h6 = "LC loc. param.\n(final estimates)",
+             lc_localic_d2_h6 = "LC loc.\nparam.",
+             ql_localic_final_d2_h6 = "QL loc. param.\n(final estimates)",
+             ql_localic_d2_h6 = "QL loc.\nparam.",
              auto_arima = "ARIMA")
 p <- ggplot(all_tp %>% 
-              filter(method %in%
-                       names(legende))  %>% format_table_tp() ,aes(x=method, y = value))+
+              dplyr::filter(method %in%
+                              names(legende))  %>% 
+              format_table_tp() ,aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
@@ -110,8 +110,8 @@ p <- ggplot(all_tp %>%
 p
 
 ggsave("paper/img/simulations/phase_shift_simul.pdf",
-            plot = p,
-            width = 10, height = 6)
+       plot = p,
+       width = 10, height = 6)
 legende <- c(
   lc = "LC", lc_nn = "LC\n(nearest neighbors)",
   # lc_localic_final = "LC loc. param.\n(final estimates)", lc_localic_final_nn = "LC loc. param.\n(final estimates) NN",
@@ -121,46 +121,46 @@ legende <- c(
   # ql_localic = "QL loc.\nparam.", ql_localic_nn = "QL loc.\nparam. NN",
   cq = "CQ", cq_nn = "CQ\n(nearest neighbors)",
   daf = "DAF", daf_nn = "DAF\n(nearest neighbors)"
-  )
+)
 
-p <- ggplot(data_tp %>% 
-              filter(method %in%
-                       names(legende)) ,aes(x=method, y = value))+
+p_nn <- ggplot(all_tp  %>% 
+                 dplyr::filter(method %in%
+                                 names(legende)) %>% 
+                 format_table_tp(),aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende)
-p
+p_nn
 
 ggsave("paper/img/simulations/phase_shift_simul_nn_lp.pdf",
-       plot = p,
+       plot = p_nn,
        width = 10, height = 6)
 
 legende <- c(
   # lc = "LC", lc_nn = "LC NN",
-  lc_localic_final = "LC loc. param.\n(final estimates)", lc_localic_final_nn = "LC loc. param.\n(final estimates)\n(nearest neighbors)",
-  lc_localic = "LC loc.\nparam.", lc_localic_nn = "LC loc.\nparam.\n(nearest neighbors)",
+  lc_localic_d2_h6 = "LC loc.\nparam.", lc_localic_final_nn = "LC loc. param.\n(final estimates)\n(nearest neighbors)",
   # ql = "QL", ql_nn = "QL NN",
-  ql_localic_final = "QL loc. param.\n(final estimates)", ql_localic_final_nn = "QL loc. param.\n(final estimates)\n(nearest neighbors)",
-  ql_localic = "QL loc.\nparam.", ql_localic_nn = "QL loc.\nparam.\n(nearest neighbors)"
+  ql_localic_d2_h6 = "QL loc.\nparam.", ql_localic_final_nn = "QL loc. param.\n(final estimates)\n(nearest neighbors)"
   # cq = "CQ", cq_nn = "CQ NN",
   # daf = "DAF", daf_nn = "DAF NN"
 )
 
-p <- ggplot(data_tp %>% 
-              filter(method %in%
-                       names(legende)) ,aes(x=method, y = value))+
+p_local_nn <- ggplot(all_tp  %>% 
+                       dplyr::filter(method %in%
+                                       names(legende)) %>% 
+                       format_table_tp() ,aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende)
-p
+p_local_nn
 
 ggsave("paper/img/simulations/phase_shift_simul_nn_lp_localparam.pdf",
-       plot = p,
+       plot = p_local_nn,
        width = 10, height = 6)
 
- legende <-
+legende <-
   c(
     "auto_arima_ny2" = "2 years",
     "auto_arima_ny4" = "4 years",
@@ -176,21 +176,119 @@ ggsave("paper/img/simulations/phase_shift_simul_nn_lp_localparam.pdf",
     "auto_arima_ny30" = "30 years",
     "auto_arima" = "Full span"
   )
-p <- ggplot(data_tp %>% 
-              filter(method %in%
-                       names(legende)),
-                     aes(x=method, y = value))+
+p_arima <- ggplot(all_tp  %>% 
+                    dplyr::filter(method %in%
+                                    names(legende)) %>% 
+                    format_table_tp(),
+                  aes(x=method, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL) +
   scale_x_discrete(labels = legende) 
-p
+
 ggsave("paper/img/simulations/phase_shift_simul_arima_length.pdf",
-       plot = p,
+       plot = p_arima,
        width = 10, height = 6)
 
+
+legende <- c( 
+  "lc_localic_final_d2_h3" = "d=2, h=3", 
+  "lc_localic_final_d2_h4" = "d=2, h=4", 
+  "lc_localic_final_d2_h5" = "d=2, h=5",
+  "lc_localic_final_d2_h6" = "d=2, h=6",
+  "lc_localic_final_d3_h3" = "d=3, h=3", 
+  "lc_localic_final_d3_h4" = "d=3, h=4", 
+  "lc_localic_final_d3_h5" = "d=3, h=5", 
+  "lc_localic_final_d3_h6" = "d=3, h=6")
+p_lc_final <- ggplot(all_tp %>% 
+                 dplyr::filter(method %in%
+                                 names(legende))  %>% 
+                 format_table_tp() ,aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende) +
+  theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
+p_lc_final
+
+legende <- c( 
+  "lc_localic_d2_h3" = "d=2, h=3", 
+  "lc_localic_d2_h4" = "d=2, h=4", 
+  "lc_localic_d2_h5" = "d=2, h=5",
+  "lc_localic_d2_h6" = "d=2, h=6",
+  "lc_localic_d3_h3" = "d=3, h=3", 
+  "lc_localic_d3_h4" = "d=3, h=4", 
+  "lc_localic_d3_h5" = "d=3, h=5", 
+  "lc_localic_d3_h6" = "d=3, h=6")
+p_lc <- ggplot(all_tp %>% 
+                       dplyr::filter(method %in%
+                                       names(legende))  %>% 
+                       format_table_tp() ,aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende) +
+  theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
+p_lc
+
+legende <- c(
+  "ql_localic_final_d2_h3" = "d=2, h=3", 
+  "ql_localic_final_d2_h4" = "d=2, h=4", 
+  "ql_localic_final_d2_h5" = "d=2, h=5",
+  "ql_localic_final_d2_h6" = "d=2, h=6",
+  "ql_localic_final_d3_h3" = "d=3, h=3", 
+  "ql_localic_final_d3_h4" = "d=3, h=4",
+  "ql_localic_final_d3_h5" = "d=3, h=5",
+  "ql_localic_final_d3_h6" = "d=3, h=6")
+p_ql_final <- ggplot(all_tp %>% 
+                 dplyr::filter(method %in%
+                                 names(legende))  %>% 
+                 format_table_tp() ,aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende) +
+  theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
+p_ql_final
+
+
+legende <- c(
+  "ql_localic_d2_h3" = "d=2, h=3", 
+  "ql_localic_d2_h4" = "d=2, h=4", 
+  "ql_localic_d2_h5" = "d=2, h=5",
+  "ql_localic_d2_h6" = "d=2, h=6",
+  "ql_localic_d3_h3" = "d=3, h=3", 
+  "ql_localic_d3_h4" = "d=3, h=4",
+  "ql_localic_d3_h5" = "d=3, h=5",
+  "ql_localic_d3_h6" = "d=3, h=6")
+p_ql <- ggplot(all_tp %>% 
+                       dplyr::filter(method %in%
+                                       names(legende))  %>% 
+                       format_table_tp(),aes(x=method, y = value))+
+  geom_boxplot() +
+  facet_wrap(vars(variability), ncol = 1) + theme_bw() +
+  labs(y="Phase shift", x = NULL) +
+  scale_x_discrete(labels = legende) +
+  theme(axis.text.x = element_text( margin = margin(10, 0, 0, 0), vjust = 1))
+p_ql
+
+ggsave("paper/img/simulations/phase_shift_simul_local_lc.pdf",
+       plot = p_lc,
+       width = 10, height = 6)
+ggsave("paper/img/simulations/phase_shift_simul_local_final_lc.pdf",
+       plot = p_lc_final,
+       width = 10, height = 6)
+
+ggsave("paper/img/simulations/phase_shift_simul_local_ql.pdf",
+       plot = p_ql,
+       width = 10, height = 6)
+ggsave("paper/img/simulations/phase_shift_simul_local_final_ql.pdf",
+       plot = p_ql_final,
+       width = 10, height = 6)
+
+
 kernels <- c("henderson", "biweight", "gaussian", "parabolic", "triangular", 
-            "tricube", "triweight", "uniform")
+             "tricube", "triweight", "uniform")
 data_tp_kernel <- tp_lp %>%
   mutate(kernel = factor(kernel, kernels,
                          ordered = TRUE),
@@ -198,8 +296,8 @@ data_tp_kernel <- tp_lp %>%
                               levels = c("lowvariability","mediumvariability","highvariability"),
                               ordered = TRUE)) %>% 
   format_table_tp(kernel = kernels)
-p_kernel <- ggplot(data_tp_kernel %>% filter(method == "lc"),
-            aes(x=kernel, y = value))+
+p_kernel <- ggplot(data_tp_kernel %>% dplyr::filter(method == "lc"),
+                   aes(x=kernel, y = value))+
   geom_boxplot() +
   facet_wrap(vars(variability), ncol = 1) + theme_bw() +
   labs(y="Phase shift", x = NULL)

@@ -32,12 +32,14 @@ gen_MM <- function(p=6, q=p, d=2){
 
 MM = lapply(3:6, function(h){
   list(pente = list(
-    `d=2` = gen_MM(p=h, d=2)[,2],
-    `d=3` = gen_MM(p = h, d=3)[,2]),
-    `deriv2` = list(
-      `d=2` = gen_MM(p=h, d=2)[,3],
-      `d=3` = gen_MM(p = h, d=3)[,3]),
-    henderson = lp_filter(horizon = h)@sfilter
+    `d=2` = moving_average(gen_MM(p = 6, d=2)[,2], -6),
+    `d=3` = moving_average(gen_MM(p = 6, d=3)[,2], -6)
+  ),
+  `deriv2` = list(
+    `d=2` = moving_average(gen_MM(p = 6, d=2)[,3], -6),
+    `d=3` = moving_average(gen_MM(p = 6, d=3)[,3], -6)
+  ),
+  henderson = lp_filter(horizon = h)@sfilter
   )
 })
 names(MM) <- sprintf("h=%i", 3:6)
@@ -54,21 +56,21 @@ for(s in list.files("data_simul/byseries",full.names = TRUE)){
     if(!file.exists(new_f)){
       data <- readRDS(s)
       last_est = data[[length(data)]]
-      pente_d2 = zoo::na.locf(moving_average(MM_h$pente[[sprintf("d=%i",2)]], -h) * last_est)
-      pente_d3 = zoo::na.locf(moving_average(MM_h$pente[[sprintf("d=%i",3)]], -h) * last_est)
-      courbure_d2 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",2)]], -h) * last_est)
-      courbure_d3 = zoo::na.locf(moving_average(MM_h$deriv2[[sprintf("d=%i",3)]], -h) * last_est)
+      pente_d2 = zoo::na.locf(MM_h$pente[[sprintf("d=%i",2)]] * last_est)
+      pente_d3 = zoo::na.locf(MM_h$pente[[sprintf("d=%i",3)]] * last_est)
+      courbure_d2 = zoo::na.locf(MM_h$deriv2[[sprintf("d=%i",2)]] * last_est)
+      courbure_d3 = zoo::na.locf(MM_h$deriv2[[sprintf("d=%i",3)]] * last_est)
       
       info <- lapply(data, function(x){
         sigma2 <- var_estimator(x, MM_h[["henderson"]])
         list("LC" = list(
-          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), h)),
-          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), h)),
+          `d=2` = as.numeric(tail(window(pente_d2, end = end(x)), 6)),
+          `d=3` = as.numeric(tail(window(pente_d3, end = end(x)), 6)),
           `sigma2` = sigma2
         ),
         "QL" = list(
-          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), h)),
-          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), h)),
+          `d=2` = as.numeric(tail(window(courbure_d2, end = end(x)), 6)),
+          `d=3` = as.numeric(tail(window(courbure_d3, end = end(x)), 6)),
           `sigma2` = sigma2
         )
         )

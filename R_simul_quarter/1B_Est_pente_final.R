@@ -32,10 +32,10 @@ gen_MM <- function(p=2, q=p, d=2){
 
 MM = lapply(2:3, function(h){
   list(pente = list(
-    `d=2` = gen_MM(p = h, d=2)[,2]
+    `d=2` = gen_MM(p = 3, d=2)[,2]
     ),
     `deriv2` = list(
-      `d=2` = gen_MM(p = h, d=2)[,3]
+      `d=2` = gen_MM(p = 3, d=2)[,3]
       ),
     henderson = lp_filter(horizon = h)@sfilter
   )
