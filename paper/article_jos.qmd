@@ -20,6 +20,7 @@ crossref:
   fig-prefix: figure
   sec-prefix: section
   eq-prefix: equation
+  
 linestretch: 2
 echo: false
 tbl-cap-location: top
@@ -86,14 +87,32 @@ In @sec-propMM, we describe the general properties of moving averages and the as
 This allows us to understand the foundations behind the construction of moving averages from local polynomial regressions, as well as those behind the two extensions proposed in this article (@sec-nonparamreg).
 In a final section (@sec-comparison), all these methods are compared empirically on simulated and real series.
 
-# Some properties of moving averages {#sec-propMM}
+# Local trend-cycle models and moving averages {#sec-propMM}
+
+The basic assumption  used in  time series decomposition methods is that the input observed time series, $y_t$ can be decomposed into a signal component $g_t$ and a an erratic component $\varepsilon_t$ (called irregular):
+$$
+f(y_t)=g_t+\varepsilon_t
+$$
+where $f$ denotes some appropriate transformation (usually logarithmic or no transformation).
+To simplify further notations, $y_t$ will denote the transformed observed series.
+The noise component $\varepsilon_t$ is usually assumed to be a white noise.
+Assuming that the input time series is seasonally adjusted (or without seasonality), the signal $g_t$ represents the trend and cycle components, here estimated jointly and called trend-cycle $TC_t$.
+This component can be locally approximated by a polynomial degree (see @sec-nonparamreg):
+$$
+g_t = \sum_{j=0}^d\beta_jt^j+\xi_t
+$$
+with $\xi_t$ a stochastic process uncorrelated with $\varepsilon_t$.
+Event if some papers model $\xi_t$ and $\varepsilon_t$ separately [see for example @GrayThomson2002], an usual assumption, adopted in this paper, is to is to gather $\xi_t$ and $\varepsilon_t$.
+Thus, the trend-cycle $TC_t$ is considered as deterministic and modelled as a polynomial trend of degree $d$.
+The coefficients $(\beta_0,\dots,\beta_k)$ can be estimated by weighted least squares.
+The estimate $\hat \beta_0$ provides the trend-cycle estimate $\hat TC_t$ and it can be shown that this equivalent to apply of moving average (see @sec-nonparamreg).
 
 Numerous papers describe the definition and the properties of moving averages and linear filters, see for example @ch12HBSA. 
 In this section we summarize some of the main results to understand the next sections.
 
-Let $p$ and $f$ two integers, a moving average $M_{\boldsymbol\theta}$ or $M$ is defined by a set of coefficients $\boldsymbol\theta=\transp{\begin{pmatrix}\theta_{-p}&\cdots&\theta_{f}\end{pmatrix}}$ such as for all time series $X_t$:
+Let $p$ and $f$ two integers, a moving average $M_{\boldsymbol\theta}$ or $M$ is defined by a set of coefficients $\boldsymbol\theta=\transp{\begin{pmatrix}\theta_{-p}&\cdots&\theta_{f}\end{pmatrix}}$ such as for all time series $y_t$:
 $$
-M_{\boldsymbol\theta}(X_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}.
+M_{\boldsymbol\theta}(y_t)=\sum_{k=-p}^{+f}\theta_kX_{t+k}.
 $$
 
 - $p+f+1$ is called the *moving average order*.
@@ -105,11 +124,11 @@ In this case, the quantity $h=p=f$ is called the *bandwidth*.
 
 ## Gain and phase shift functions {#subsec:gain-deph}
 
-To interpret the notions of gain and phase shift, it is useful to illustrate the effects of moving averages on harmonic series $X_t=\e^{-i\omega t}$ with $\omega\in[0,\pi]$.
-The moving average $M_{\boldsymbol\theta}$ transforms $X_t$ into:
+To interpret the notions of gain and phase shift, it is useful to illustrate the effects of moving averages on harmonic series $y_t=\e^{-i\omega t}$ with $\omega\in[0,\pi]$.
+The moving average $M_{\boldsymbol\theta}$ transforms $y_t$ into:
 $$
-Y_t = M_{\boldsymbol\theta}X_t = \sum_{k=-p}^{+f} \theta_k \e^{-i \omega (t+k)}
-= \left(\sum_{k=-p}^{+f} \theta_k \e^{-i \omega k}\right)\cdot X_t.
+Y_t = M_{\boldsymbol\theta}y_t = \sum_{k=-p}^{+f} \theta_k \e^{-i \omega (t+k)}
+= \left(\sum_{k=-p}^{+f} \theta_k \e^{-i \omega k}\right)\cdot y_t.
 $$
 The function  $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{-i \omega k}$ is called the *transfer function* or *frequency response function*.
 The frequency response function can alternatively be defined as $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{i \omega k}$ or $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{2\pi i \omega k}$.
@@ -128,7 +147,7 @@ We this have:
 The phase shift is sometimes represented as $\phi_{\boldsymbol\theta}(\omega)=\frac{\varphi_{\boldsymbol\theta}(\omega)}{\omega}$ to measure it in number of periods.
 For all symmetric moving averages we have $\varphi_{\boldsymbol\theta}(\omega)\equiv 0 \;(modulo\;{\pi})$. 
 
-To sum up, applying a moving average to a harmonic times series ($X_t=\e^{-i\omega t}$) affects it in in two different ways:
+To sum up, applying a moving average to a harmonic times series ($y_t=\e^{-i\omega t}$) affects it in in two different ways:
 
 - by multiplying it by an amplitude coefficient $\rho_{\boldsymbol\theta}\left(\omega\right)$ (gain);
 
@@ -152,28 +171,37 @@ Analysis of the phase shift shows that the shorter the cycles, the greater the p
 knitr::opts_chunk$set(fig.pos = "H")
 ```
 
+::: {#fig-graphsmusgrave}
 ```{r, echo=FALSE, out.width="100%"}
-#| label: fig-graphsmusgrave
-#| fig-cap: "Coefficients, gain and phase shift function for the Musgrave filter in real time with $I/C=3.5$."
 img <- sprintf("img/filters_used/%s.%s", tolower("musgrave"), "pdf")
 knitr::include_graphics(img)
 ```
+
+Note: the Musgrave filter depends on a ratio $I/C$ (see @sec-nonparamreg). 
+In X-11, for monthly series, when the bandwidth is 6 (i.e.: a symmetric Henderson filter of order 13 is used, what is used in most cases), the ratio is fixed to 3.5 and this value is used in this figure.
+
+Coefficients, gain and phase shift function for the Musgrave filter used in X-11 in real time (last estimate) for monthly series when the bandwidth is 6.
+:::
+
+## Trend-cycle estimates and moving average
+
+Les méthodes présentées dans cette étude permettent de lisser les séries afin d'extraire la composante tendance-cycle pour faciliter l'analyse des retournements conjoncturels dans le cycle classique (également appelé cycle des affaires).
+On ne cherche donc pas à estimer séparément la tendance (qui représente les évolutions de long terme) et le cycle (qui représente les évolutions cycliques autour de la tendance) puisque ces composantes peuvent être difficiles à séparer (quelle définition prendre pour distinguer les cycles courts et des cycles longs ?).
+Par ailleurs, la décomposition entre tendance et cycle, associée à des méthodes de filtrage de type Hodrick-Prescott ou Baxter-King, sont plutôt utilisées pour analyser les points de retournement dans le cycle de croissance (voir @ferrara2009caracterisationcycles pour une description des différents cycles économiques).
+Ces méthodes de décomposition tendance et cycle nécessitent d'avoir des séries longues (afin de distinguer cycles courts et tendance de long terme) alors que les méthodes utilisées dans cet article utilisent peu d'observations (en général 13 pour des séries mensuelles).
 
 
 ## Desirable properties of a moving average
 
 To decompose a time series into a seasonal component, a trend-cycle and the irregular, the X-11 decomposition algorithm (used in X-13ARIMA-SEATS) uses a succession of moving averages, all with specific constraints.
 
-In our case, we assume that our initial series $y_t$ is seasonally adjusted and can be written as the sum of a trend-cycle, $TC_t$, and an irregular component, $I_t$:
+In this paper, we assume that our initial series $y_t$ is seasonally adjusted and can be written as the sum of a trend-cycle, $TC_t$, and an irregular component, $\varepsilon_t$:
 $$
-y_t=TC_t+I_t.
+y_t=TC_t+\varepsilon_t.
 $$
-The aim will be to build moving averages that best preserve the trend-cycle ($M_{\boldsymbol\theta} (TC_t)\simeq TC_t$) and minimise noise ($M_{\boldsymbol\theta} (I_t)\simeq 0$).
+The aim will be to build moving averages that best preserve the trend-cycle ($M_{\boldsymbol\theta} (TC_t)\simeq TC_t$).
 
-### Trend preservation
-
-Trend-cycles are generally modelled by local polynomial trends (see @sec-nonparamreg).
-In order to best preserve the trend-cycles, we try to design moving averages that preserve the polynomial trends.
+Trend-cycles are generally modelled by local polynomial trends (see @sec-nonparamreg) and, in order to best preserve the trend-cycles, we thus design moving averages that preserve the polynomial trends.
 A moving average $M_{\boldsymbol\theta}$ preserves a function of time $f(t)$ if $\forall t:M_{\boldsymbol\theta} f(t)=f(t)$.
 
 For the moving average $M_{\boldsymbol\theta}$, it can be shown that:
@@ -187,18 +215,18 @@ $$
 $$
 - If $M_{\boldsymbol\theta}$ is symmetric ($p=f$ and $\theta_{-k} = \theta_k$) and preserves polynomials of degree $2d$ then it also preserves polynomials of degree $2d+1$.
 
-### Noise reduction
+<!-- ### Noise reduction -->
 
-All time series are affected by noise, which can blur the extraction of trends and cycles.
-This is why we try to reduce this noise (by reducing its variance) while preserving the relevant trends.
-The sum of the squares of the coefficients $\sum_{k=-p}^{+f}\theta_k^2$ is the *reduction of variance* ratio.
+<!-- All time series are affected by noise, which can blur the extraction of trends and cycles. -->
+<!-- This is why we try to reduce this noise (by reducing its variance) while preserving the relevant trends. -->
+<!-- The sum of the squares of the coefficients $\sum_{k=-p}^{+f}\theta_k^2$ is the *reduction of variance* ratio. -->
 
-Indeed, let $\{\varepsilon_t\}$ be a sequence of independent random variables with $\E{\varepsilon_t}=0$, $\V{\varepsilon_t}=\sigma^2$:
-$$
-\V{M_{\boldsymbol\theta}\varepsilon_t}=\V{\sum_{k=-p}^{+f} \theta_k \varepsilon_{t+k}}
-= \sum_{k=-p}^{+f} \theta_k^2 \V{\varepsilon_{t+k}}=
-\sigma^2\sum_{k=-p}^{+f} \theta_k^2.
-$$
+<!-- Indeed, let $\{\varepsilon_t\}$ be a sequence of independent random variables with $\E{\varepsilon_t}=0$, $\V{\varepsilon_t}=\sigma^2$: -->
+<!-- $$ -->
+<!-- \V{M_{\boldsymbol\theta}\varepsilon_t}=\V{\sum_{k=-p}^{+f} \theta_k \varepsilon_{t+k}} -->
+<!-- = \sum_{k=-p}^{+f} \theta_k^2 \V{\varepsilon_{t+k}}= -->
+<!-- \sigma^2\sum_{k=-p}^{+f} \theta_k^2. -->
+<!-- $$ -->
 
 
 ## Real-time estimation and asymmetric moving average {#sec-mmasym}
@@ -652,16 +680,15 @@ $$
 \hat\sigma^2=\frac{1}{n-2h}\sum_{t=h+1}^{n-h}\frac{(y_t-\widehat{TC}_t)^2}{1-2\theta_0^2+\sum_{i=-h}^{h} \theta_i^2}.
 $$
 This is implemented in the function `rjd3filters::var_estimator()`.
-<!-- The assumption that $\hat\mu(x)$ is unbiased is rarely exactly true, so variance -->
-<!-- estimates and confidence intervals are usually computed at small band- -->
-<!-- widths where bias is small.  -->
+This estimator assumes that $\widehat{TC}_t$ is unbiased, so variance estimates intervals are usually computed at small bandwidths ($h$).
+In this paper we study monthly series with small bandwidth ($h=6$), and the variance is estimated using local polynomial of degree 3 (Henderson filter), the biased of $\widehat{TC}_t$ is thus already small and using smaller bandwidths have almost no impact on the estimates (see Supplemental materials).
 
 - The parameter $\delta$ can be estimated by moving average from @eq-mmsym. 
 For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
 The DAF method then simply allows us to calculate the associated asymmetric moving averages.  
 Although a moving average of different length to that used for estimating the trend could be considered, this seems to degrade the results in terms of phase shift (using the same methodology as in @sec-comparison).
 Furthermore, for the construction of moving averages, the trend can be modelled as being locally of degree 2 or 3 (this has no impact on the final estimate of concavity).
-Here, we have chosen to model a trend of degree 2: this reduces the phase shift but slightly increases the revisions linked to the first estimate of the trend-cycle. 
+Here, we have chosen to model a trend of degree 2: this slightly reduces the phase shift (see Supplemental material) but slightly increases the revisions linked to the first estimate of the trend-cycle. 
 @fig-mmpenteconcac shows the moving averages used.
 
 ```{r, echo=FALSE, out.width="90%"}
@@ -789,7 +816,7 @@ img <- sprintf("img/simulations/phase_shift_simul.%s", "pdf")
 knitr::include_graphics(img)
 ```
 
-In terms of revisions, the variability of the series has little effect on the respective performances of the different methods, but it does affect the orders of magnitude, which is why the results are presented only for series with medium variability (Table\ \ref{tab-simulrev}).
+In terms of revisions, the variability of the series has little effect on the respective performances of the different methods, but it does affect the orders of magnitude, which is why the results are presented only for series with medium variability (@tbl-simulrev).
 In general, LC filters always minimise revisions (with relatively small effect from the local parametrisation of the filters) and revisions are greater with cubic-quadratic (CQ) and direct (DAF) polynomial filters.
 
 For the QL filter, there is a large revision between the second and third estimates: this may be due to the fact that for the second estimate (when one point in the future is known), the QL filter assigns a greater weight to the estimate in $t+1$ than to the estimate in $t$, which creates a discontinuity. 
@@ -799,65 +826,69 @@ For polynomial filters other than the LC filter, the large revisions at the firs
 Extending the series using an ARIMA model gives revisions with the latest estimates of the same order of magnitude as the LC filter, but slightly larger revisions between consecutive estimates, particularly between the fourth and fifth estimates (as might be expected, as highlighted in @sec-mmetprev).
 
 
-```{r, echo = FALSE}
-#| label: tab-simulrev
-#| tbl-cap: "Average of the relative deviations of the revisions for the different filters on simulated series with medium variability."
-#| eval: false
+::: {#tbl-simulrev}
+```{r}
+#| echo: false
 rev_table <- readRDS("data/simulations_revisions.RDS")
 pack_row_index = c("$MAE_{fe}(q) = \\mathbb E\\\\left[\\\\left|(y_{t|t+q} -  y_{t|last})/y_{t|last}\\\\right|\\\\right]$" = nrow(rev_table) / 2,
                    "$MAE_{ce}(q)=\\mathbb E\\\\left[
 \\\\left|(y_{t|t+q} - y_{t|t+q+1})/y_{t|t+q+1}\\\\right|
 \\\\right]$" = nrow(rev_table) / 2)
-p <- rev_table  %>%
+rev_table  %>%
   kable(format.args = list(digits = 2,
                            decimal.mark = "."),
         align = "c", booktabs = T, row.names = FALSE, 
-        label = "tab-simulrev",
-        escape = FALSE,
-        format = "latex") %>%  
+        escape = FALSE,) %>%  
   kable_styling(latex_options=c(#"striped",  
     "hold_position")) %>% 
   pack_rows(index = pack_row_index, escape = FALSE) # %>%
     # add_footnote_kable(stop_centering = TRUE)
 ```
+Lecture: the estimates for $q=0$ correspond to the first estimates of the trend-cycle (real-time estimates when 0 point in the future is known), $q=1$ correspond to the second estimates of the trend-cycle (when 1 point in the future is known).
+Since the final estimates are obtain using a symmetric filter of bandwidth 6, $q=6$ corresponds to the final estimates of the trend-cycle (when 6 points in the future are known).
+$MAE_{fe}(0)$ compares the revision between the first estimate ($q=0$) and the last estimate ($q=6$) and $MAE_{ce}(0)$ compares the revision between the first estimate ($q=0$) and the second estimate ($q=1$).
 
-```{=tex}
-\begin{table}[!h]
-\caption{\label{tab-simulrev} Average of the relative deviations of the revisions for the different
-filters on simulated series with medium variability.}
-\centering
-\begin{tabular}{ccccccc}
-\toprule
-Method & $q=0$ & $q=1$ & $q=2$ & $q=3$ & $q=4$ & $q=5$\\
-\midrule
-\addlinespace[0.3em]
-\multicolumn{7}{l}{\textbf{$MAE_{fe}(q) = \mathbb E\left[\left|(y_{t|t+q} -  y_{t|last})/y_{t|last}\right|\right]$}}\\
-\hspace{1em}LC & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
-\hspace{1em}LC local param. (final estimates) & 0.19 & 0.09 & 0.03 & 0.03 & 0.03 & 0.01\\
-\hspace{1em}LC local param. & 0.29 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
-\hspace{1em}QL & 0.33 & 0.10 & 0.04 & 0.04 & 0.03 & 0.01\\
-\hspace{1em}QL local param. (final estimates) & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
-\hspace{1em}QL local param. & 0.30 & 0.10 & 0.04 & 0.03 & 0.03 & 0.01\\
-\hspace{1em}CQ & 0.45 & 0.13 & 0.13 & 0.09 & 0.06 & 0.02\\
-\hspace{1em}DAF & 0.47 & 0.15 & 0.15 & 0.09 & 0.06 & 0.02\\
-\hspace{1em}ARIMA & 0.22 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\
-\addlinespace[0.3em]
-\multicolumn{7}{l}{\textbf{$MAE_{ce}(q)=\mathbb E\left[
-\left|(y_{t|t+q} - y_{t|t+q+1})/y_{t|t+q+1}\right|
-\right]$}}\\
-\hspace{1em}LC & 0.19 & 0.10 & 0.02 & 0.01 & 0.07 & 0.01\\
-\hspace{1em}LC local param. (final estimates) & 0.20 & 0.10 & 0.03 & 0.01 & 0.05 & 0.01\\
-\hspace{1em}LC local param. & 0.24 & 0.11 & 0.03 & 0.01 & 0.05 & 0.01\\
-\hspace{1em}QL & 0.29 & 3.46 & 0.00 & 0.03 & 0.04 & 0.01\\
-\hspace{1em}QL local param. (final estimates) & 0.31 & 0.11 & 0.02 & 0.01 & 0.04 & 0.01\\
-\hspace{1em}QL local param. & 0.24 & 0.16 & 0.00 & 0.03 & 0.04 & 0.01\\
-\hspace{1em}CQ & 0.43 & 0.02 & 0.10 & 0.07 & 0.05 & 0.02\\
-\hspace{1em}DAF & 0.66 & 0.24 & 0.11 & 0.14 & 0.06 & 0.02\\
-\hspace{1em}ARIMA & 0.21 & 0.13 & 0.02 & 0.02 & 0.25 & 0.01\\
-\bottomrule
-\end{tabular}
-\end{table}
-```
+
+Average of the relative deviations of the revisions for the different filters on simulated series with medium variability.
+:::
+
+<!-- ```{=tex} -->
+<!-- \begin{table}[!h] -->
+<!-- \caption{\label{tbl-simulrev} Average of the relative deviations of the revisions for the different -->
+<!-- filters on simulated series with medium variability.} -->
+<!-- \centering -->
+<!-- \begin{tabular}{ccccccc} -->
+<!-- \toprule -->
+<!-- Method & $q=0$ & $q=1$ & $q=2$ & $q=3$ & $q=4$ & $q=5$\\ -->
+<!-- \midrule -->
+<!-- \addlinespace[0.3em] -->
+<!-- \multicolumn{7}{l}{\textbf{$MAE_{fe}(q) = \mathbb E\left[\left|(y_{t|t+q} -  y_{t|last})/y_{t|last}\right|\right]$}}\\ -->
+<!-- \hspace{1em}LC & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}LC local param. (final estimates) & 0.19 & 0.09 & 0.03 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}LC local param. & 0.29 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}QL & 0.33 & 0.10 & 0.04 & 0.04 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}QL local param. (final estimates) & 0.21 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}QL local param. & 0.30 & 0.10 & 0.04 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \hspace{1em}CQ & 0.45 & 0.13 & 0.13 & 0.09 & 0.06 & 0.02\\ -->
+<!-- \hspace{1em}DAF & 0.47 & 0.15 & 0.15 & 0.09 & 0.06 & 0.02\\ -->
+<!-- \hspace{1em}ARIMA & 0.22 & 0.10 & 0.03 & 0.03 & 0.03 & 0.01\\ -->
+<!-- \addlinespace[0.3em] -->
+<!-- \multicolumn{7}{l}{\textbf{$MAE_{ce}(q)=\mathbb E\left[ -->
+<!-- \left|(y_{t|t+q} - y_{t|t+q+1})/y_{t|t+q+1}\right| -->
+<!-- \right]$}}\\ -->
+<!-- \hspace{1em}LC & 0.19 & 0.10 & 0.02 & 0.01 & 0.07 & 0.01\\ -->
+<!-- \hspace{1em}LC local param. (final estimates) & 0.20 & 0.10 & 0.03 & 0.01 & 0.05 & 0.01\\ -->
+<!-- \hspace{1em}LC local param. & 0.24 & 0.11 & 0.03 & 0.01 & 0.05 & 0.01\\ -->
+<!-- \hspace{1em}QL & 0.29 & 3.46 & 0.00 & 0.03 & 0.04 & 0.01\\ -->
+<!-- \hspace{1em}QL local param. (final estimates) & 0.31 & 0.11 & 0.02 & 0.01 & 0.04 & 0.01\\ -->
+<!-- \hspace{1em}QL local param. & 0.24 & 0.16 & 0.00 & 0.03 & 0.04 & 0.01\\ -->
+<!-- \hspace{1em}CQ & 0.43 & 0.02 & 0.10 & 0.07 & 0.05 & 0.02\\ -->
+<!-- \hspace{1em}DAF & 0.66 & 0.24 & 0.11 & 0.14 & 0.06 & 0.02\\ -->
+<!-- \hspace{1em}ARIMA & 0.21 & 0.13 & 0.02 & 0.02 & 0.25 & 0.01\\ -->
+<!-- \bottomrule -->
+<!-- \end{tabular} -->
+<!-- \end{table} -->
+<!-- ``` -->
 
 
 ## Real series
@@ -867,7 +898,6 @@ The series studied correspond to the database published in November 2022.
 The series studied is the level of employment in the United States (series `CE160V`, used in logarithm) around the February 2001 turning point, consistent with the monthly dating of the turning points.
 This point and this series were chosen because the economic turnaround is particularly visible in the raw series (@fig-ce16ov-previmp-lp), because this series is used for dating economic cycles and because the FRED-MD database facilitates the reproducibility of the results (thanks to the availability of series published on past dates).
 Studying the series up to January 2020, this series has a medium variability: a symmetric filter of 13 terms is therefore appropriate.
-Appendix [-@sec-ann-ex-r] shows how the code to reproduce the different plots.
 
 @fig-ce16ovlp shows the successive estimates of the trend-cycle using the different methods studied.
 

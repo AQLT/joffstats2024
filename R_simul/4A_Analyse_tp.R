@@ -28,6 +28,11 @@ tp_lic_daf_trunc <- merge(
   select(!c(degree, h))
 
 
+tp_lp_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_lp_nn.RDS"),
+                  readRDS("results_simul/compile_tp_norev/peaks_lp_nn.RDS"),
+                  by=c("series","kernel", "method")) %>%
+  select_var() %>% 
+  mutate(method = sprintf("%s_nn", method))
 tp_lic_final_nn <- merge(readRDS("results_simul/compile_tp_norev/troughs_localic_final_nn.RDS"),
                          readRDS("results_simul/compile_tp_norev/peaks_localic_final_nn.RDS"),
                          by=c("series", "kernel", "h", "degree", "method"))  %>%
@@ -97,7 +102,7 @@ legende <- c(lc = "LC", ql = "QL",
              lc_localic_d2_h6 = "LC loc.\nparam.",
              ql_localic_final_d2_h6 = "QL loc. param.\n(final estimates)",
              ql_localic_d2_h6 = "QL loc.\nparam.",
-             auto_arima = "ARIMA")
+             auto_arima_ny12 = "ARIMA")
 p <- ggplot(all_tp %>% 
               dplyr::filter(method %in%
                               names(legende))  %>% 

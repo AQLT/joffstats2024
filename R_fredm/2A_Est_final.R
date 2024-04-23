@@ -31,6 +31,10 @@ fs <- list()
 j <- 1
 h_retain <- 3:6
 kernel = "Henderson"
+d <- 2
+s = list.files("data_fredm/byseries", full.names = TRUE)[1]
+h <- 6
+method <- "LC"
 for (method in c("LC","QL")){
   print(method)
   for(s in list.files("data_fredm/byseries", full.names = TRUE)){

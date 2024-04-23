@@ -13,6 +13,7 @@ list_series <- list.files("data_fredm/byseries", full.names = TRUE)
 s = list_series[1]
 fs <- list()
 i <- 0
+nyears <- 12
 for(s in list_series){
   name_file <- gsub(".RDS$", "", basename(s))
   print(name_file)
@@ -37,12 +38,14 @@ for(s in list_series){
     
     series_s <- lapply(names(data), function(nom_d){
       x <- data[[nom_d]]
+      first_date <- 1 + max(0, length(x) - nyears * frequency(x))
+      x_arima <- window(x, start = time(x)[first_date])
       l = data_info[[nom_d]]["optimal_length"]
       l = 13
-      prevs = auto.arima(x, max.Q = 0, max.D = 0, max.P = 0) %>% 
+      prevs = auto.arima(x_arima, max.Q = 0, max.D = 0, max.P = 0) %>% 
         forecast(h=(l-1)/2)
       y_prevs = ts(c(x, prevs$mean), start = start(x), frequency = frequency(x))
-      window(henderson(y_prevs, musgrave = FALSE,length = l),
+      window(rjd3x11plus::henderson(y_prevs, musgrave = FALSE,length = l),
              start = start(x), end = end(x))
     })
     names(series_s) <- names(data)

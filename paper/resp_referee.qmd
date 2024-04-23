@@ -15,9 +15,8 @@ format: pdf
 
 *Indeed, it was corrected.*
 
-> 3. Section 1.2.1: these results are well-known; the derivatives of the frequency response function 
-> at $\omega = 0$ yield the conditions. So the results could be stated with references, and the 
-> derivations omitted, and this subsection compactified. 
+> 3. Section 1.2.1: these results are well-known; the derivatives of the frequency response function at $\omega = 0$ yield the conditions. 
+So the results could be stated with references, and the derivations omitted, and this subsection compactified. 
 
 *This sections was simplified*
 
@@ -26,7 +25,7 @@ format: pdf
 
 > 5. Page 8, line 10: omit the $\forall q$ since you have stated this qualification in the previous line. 
 
-The $\forall q$ was omitted and this section was rewritten to make it clearer.
+*The $\forall q$ was omitted and this section was rewritten to make it clearer.*
 
 
 > 6. Table 1: I repeat the referees here. The table needs more explication in the text. What is $\omega_1$? Define $\nabla$, Guggemos, etc. 
@@ -38,9 +37,10 @@ The $\forall q$ was omitted and this section was rewritten to make it clearer.
 
 > 8. Page 15, line 36: should be "same length as $v$" 
 
+*Fixed*
+
 > 9. Page 15, line 40: I couldn't find the matrix $T$ defined. How is it connected to timeliness? 
-> That is, when you display the entries of the matrix $T$, you need to make a connection between 
-> those values and the concept of timeliness. 
+That is, when you display the entries of the matrix $T$, you need to make a connection between those values and the concept of timeliness. 
 
 *More details are added to this section to explain how the matrix $T$ is defined by Grun-Rehomme et al. (2018).*
 
@@ -52,24 +52,29 @@ The $\forall q$ was omitted and this section was rewritten to make it clearer.
 
 > 11. Page 17, lines 53-55: This discussion needs more clarity; it seems a bit terse. 
 
-> 12. Appendix B: rather than typing out the R code, it would be better to have the files available 
-> as supplementary material. (Or possibly put in a github repo and provide the links in the 
-> text.) 
+> 12. Appendix B: rather than typing out the R code, it would be better to have the files available as supplementary material. 
+(Or possibly put in a github repo and provide the links in the text.) 
 
 *All the code will be in a github repository*
 
 # Referee 1
 
 > 1. The authors should provide a clear definition of trend-cycle, $TC_t$, and irregular, $I_t$. In other words, how is the decomposition $y_t =TC_t+I_t$ identified?
-> In section 1 they seem to hint at the interpretation of $TC_t$ as the low-pass component of yt with cutoff frequency $\pi/6$ (and correspondingly they interpret $I_t$ as the high-pass component). 
+> In section 1 they seem to hint at the interpretation of $TC_t$ as the low-pass component of $y_t$ with cutoff frequency $\pi/6$ (and correspondingly they interpret $I_t$ as the high-pass component). 
 > This point should be clarified, I think. 
 > Related questions are: are $y_t$ and its components stochastic or deterministic? 
-> The treatment in section 1.2.1 suggests that $TC_t$ is an unknown possibly nonlinear deterministic function of time. 
+> The treatment in section 1.2.1 suggests that $TC_t$ is an unknown possibly nonlinear deterministic function of time.
 > The variance inflation factor $\sum_k \theta_k^2$ implies that $I_t$ is white noise. 
+
+The modelled of the input time series is now describe more precisely in section 2 (previous section 1). $TC_t$ is here considered as deterministic
+
 
 > 2. The idea of minimizing the noise component ($M_\theta(I_t)\simeq 0$) is not very formal. 
 > Do you mean that the unconditional variance is minimized?
 > Or the long run variance?
+
+*Since section 1.3.2 was removed (not central to the paper and simplify the reading), the section 1.2.2 and the reference to the minimization of the noise component (through the minimisation of the variance is it is modelled as a white noise) is removed*
+
 
 > 3. A definition of turning point would also be needed. 
 Are these ’regular’ points at which the slope of the trend changes sign? 
@@ -84,9 +89,13 @@ $\mu(t) = u'_t\gamma + z'_t\delta$ (also you assume that the noise component has
 > 5. You should state that you assume a fixed bandwidth. 
 A nearest neighbour bandwidth should be interesting to consider: as such it would contribute more to the reduction of the variance at the expenses of the phase shift.
 
-*It was added in the beginning of section 3 and 4 than the bandwidth is fixed. Nearest neighbour bandwidth was added in supplemental material.*
+*It was added in the beginning of new sections 3 and 4 than the bandwidth is fixed. Nearest neighbour bandwidth was added in supplemental material but it doesn't improve the results in therm of phase shift. I can be explain that the bi*
 
 > 6. Is the phase shift related to the notion of bias in local polynomial smoothing?
+
+In local polynomial smoothing, the notion of bias is associated to the approximation error of the smoothed series by a polynomial degree of order $d$.
+It can thus be writer as
+
 
 Minor points
 
@@ -103,6 +112,8 @@ Minor points
 
 > - Figure 1. In the caption, the ratio $I/C$ was never defined before.
 The description of the three panels should be better explained in the main text.
+
+*A lecture note is added*
 
 > - Section 1.2 makes a reference to X-11 and X-13-ARIMA. 
 The author assumes that the reader is knowledgeable about seasonal adjustment methods. 
@@ -127,7 +138,12 @@ The forecasts are obtained from an assumed polynomial trend model?
 
 # Referee 2
 
-> The author simulates time series of length 60 years to illustrate the methodology at the end of the series.  It may be worth considering (in addition) shorter series.  Another thought is that the ARIMA model being used to extend the series appears to be modeled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
+> The author simulates time series of length 60 years to illustrate the methodology at the end of the series.
+It may be worth considering (in addition) shorter series. 
+Another thought is that the ARIMA model being used to extend the series appears to be modeled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
+*Indeed it is in general not relevant to identify an ARIMA model on a monthly time series of length 60 years.*
+In our case, since the same data generation process remains the same, it could be relevant and leads to better results in terms of delay to detect turning points (in supplement materials, a plot is added comparing the results with different spans to identify/estimate the ARIMA model).
+However, on the main text, we now only used 12 years to identify the ARIMA model, to be closer to what would be done on real series.
 
 > The author avoids numbering the Introduction and Conclusion; numbering both (and adjusting the numbering of the other sections accordingly) may be better.
 
@@ -135,6 +151,8 @@ The forecasts are obtained from an assumed polynomial trend model?
 
 > Adding the appropriate items for both R and X-13ARIMA-SEATS to the References may be warranted. 
 In addition, in the text, it would probably be preferable to use R (the letter itself) instead of the R icon.
+
+*Bibliography added and the R icon was removed*
 
 > Some of the important results appear in the tables and figures, but the accompanying discussion in the text should still be fleshed out more.  In addition, in Figures 2-4 and 6-7 (and the figures in the supplement), the lines can be distinguished by color, but it may be helpful to find some way to keep them distinguishable without the benefit of color.  It might be the case that there is too much information to display neatly in some of these.
 
@@ -177,55 +195,44 @@ And it should probably be explicitly stated what $EQM_w$ stands for prior to int
 # Referee 3
 
 > 1. Equivalence between Asymmetric and Symmetric Filters (Page 8, Line 9)
-> I suggest that the authors provide a more explicit explanation on page 8, line 9, regarding
-the equivalence between asymmetric and symmetric filters. It would be beneficial to
-clarify the normalization difference and ensure a clear understanding of the relationship
-between the two types of filters.
+> I suggest that the authors provide a more explicit explanation on page 8, line 9, regarding the equivalence between asymmetric and symmetric filters. 
+It would be beneficial to clarify the normalization difference and ensure a clear understanding of the relationship between the two types of filters.
 
 *This section was rewrite to make it clearer.*
 
 > 2.  Symbol [[ ]] Meaning (Page 11, Lines 53-54)
-> The meaning of the symbol [[ ]] on page 11, lines 53-54, is not clear. I recommend that
-the authors explicitly define this symbol or provide a clear explanation to avoid any
-ambiguity in its interpretation.
+> The meaning of the symbol [[ ]] on page 11, lines 53-54, is not clear. 
+I recommend that the authors explicitly define this symbol or provide a clear explanation to avoid any ambiguity in its interpretation.
 
 *This symbol was referring to integer interval, it was removed to avoid confusion (for example $[[1,d]]$ was replaced by $\{1,2,\dots, d\}$).*
 
 > 3.  Variance Determination in Local Parameterization (Page 17)
-> The determination of variance in the local parameterization of asymmetric filters (page
-17) could benefit from a more detailed explanation. I recommend that the authors
-clearly identify the quantities appearing in the denominator for better understanding.
+> The determination of variance in the local parameterization of asymmetric filters (page 17) could benefit from a more detailed explanation. 
+I recommend that the authors clearly identify the quantities appearing in the denominator for better understanding.
 
 *More explanations was added to this paragraph: the formula comes from local regression theory simplified because we are here in the case of local polynomial approximation.*
 
 > 4.  Applicability to High-Frequency Data.
-> It would be valuable if the authors could explicitly address the applicability of the
-proposed procedure to high-frequency data. If modifications or considerations are
-necessary for such data, it should be discussed to provide a comprehensive
-understanding of the methodology.
+> It would be valuable if the authors could explicitly address the applicability of the proposed procedure to high-frequency data. 
+If modifications or considerations are necessary for such data, it should be discussed to provide a comprehensive understanding of the methodology.
 
 > 5.  Clarity on Phase Shift Computation (Page 20)
-> A clearer explanation of how the phase shift is computed on page 20 would enhance the
-paper's overall clarity. The authors should specify the method used for determining the
-phase shift, particularly in relation to the identification of true turning points based on
-symmetric filter estimates.
+> A clearer explanation of how the phase shift is computed on page 20 would enhance the paper's overall clarity. 
+The authors should specify the method used for determining the phase shift, particularly in relation to the identification of true turning points based on symmetric filter estimates.
 
 > 6.  Commentary on Figure 5
 > I suggest that the authors include a detailed commentary on Figure 5 in the paper.
-Providing explanations for the results shown in the figure would be crucial for readers to
-better understand the performance of the filters/methods.
+Providing explanations for the results shown in the figure would be crucial for readers to better understand the performance of the filters/methods.
 
 > 7.  Better Description of Results in Table 3
-> The meaning of "second and third estimates" in Table 3 on page 22 is not clear. I
-recommend that the authors provide a more detailed description or explanation of the
-results to improve comprehension.
+> The meaning of "second and third estimates" in Table 3 on page 22 is not clear. 
+I recommend that the authors provide a more detailed description or explanation of the results to improve comprehension.
+
+*A lecture note is added in the tables and more explainations are added to the text*
 
 
 > 8.  Consideration of Different Series Periodicity
-> It would be beneficial if the authors could address the suggestion of considering series
-with different periodicities in the real data application. Discussing how the proposed
-methodology performs when applied to series with various frequencies would add
-depth to the study.
+> It would be beneficial if the authors could address the suggestion of considering series with different periodicities in the real data application. Discussing how the proposed methodology performs when applied to series with various frequencies would add depth to the study.
 
 
 
@@ -235,11 +242,11 @@ depth to the study.
 
 # Referee 4
 
-1) The paper lacks in describing the contribution from the beginning. 
+> 1) The paper lacks in describing the contribution from the beginning. 
 I had to read the paper a couple of times to clearly identify the contribution.
 I found the contribution of the paper clearly stated on page 16, but I think I should come before in the text.
 
-2) The paper omits to consider the Covid19 period and how this influences the trend and cycle decomposition. 
+> 2) The paper omits to consider the Covid19 period and how this influences the trend and cycle decomposition. 
 I understand that this is not the main focus of the paper, but at least the authors should address this problem in word and possible solution to address it, e.g. outlier correction, robust distributions, etc.
 
 > 3) I think a quote from other works can be removed from the paper. For example, I

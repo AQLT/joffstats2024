@@ -57,10 +57,11 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              series = series,
                              all_tp = all_tp,
                              all_tp_rev = all_tp_rev,
-                             tp_keep = tp_keep,
-                             dossier = "results_fredm/compile_tp_norev/")
+                             tp_keep = tp_keep)
 wrap_plots(plots, ncol = 3)
 
 ggsave("paper/img/nber/retailx_nov2007_prev_imp_lp.pdf",
-       plot = wrap_plots(plots, ncol = 3),
+       plot = wrap_plots(plots, ncol = 3)& 
+         scale_color_grey() & 
+         labs(subtitle = NULL),
        width = 8, height = 8)

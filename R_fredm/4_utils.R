@@ -171,7 +171,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
 
 
 get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
-                          d_localic = 2, h_localic = 6){
+                          d_localic = 2, h_localic = 6, nyears_arima = 12){
   s <- sprintf("data_fredm/byseries/%s.RDS", series)
   tp_date <- as.numeric(tp_keep)
   data <- readRDS(s)
@@ -184,7 +184,9 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
   colnames(data_merge) <- as.character(zoo::as.yearmon(as.numeric(names(data))))
 
   arima_prevs <- do.call(ts.union, lapply(data, function(y){
-    prevs = forecast::auto.arima(y, max.Q = 0, max.D = 0, max.P = 0) %>%
+    first_date <- 1 + max(0, length(y) - nyears * frequency(y))
+    x_arima <- window(y, start = time(y)[first_date])
+    prevs = forecast::auto.arima(x_arima, max.Q = 0, max.D = 0, max.P = 0) %>%
       forecast::forecast(6)
     ts(c(tail(y,1), prevs$mean), start = tail(time(y),1),
        frequency = frequency(y))
