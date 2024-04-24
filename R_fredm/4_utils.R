@@ -89,7 +89,7 @@ extract_est_data <- function(method = "lc", kernel = "henderson", nb_est = 10,
         dir <- "localic_daf_trunc"
         full_name <- gsub("localic_", "", method)
       }
-    } 
+    }
   }
   file = sprintf("results_fredm/%s/%s%s%s.RDS", dir, series, sep, full_name)
   data <- readRDS(file)
@@ -122,7 +122,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
           readRDS(sprintf("%speaks_localic_final.RDS", dossier)),
           by=c("series","kernel", "method", "degree", "h")) %>%
     # dplyr::filter(degree == "d2", h == "h6") %>%
-    select_var() %>% 
+    select_var() %>%
     mutate(method = sprintf("%s_localic_final_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
 
@@ -131,26 +131,26 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
           readRDS(sprintf("%speaks_localic_daf_trunc.RDS", dossier)),
           by=c("series","kernel", "method", "degree", "h")) %>%
     # dplyr::filter(degree == "d2", h == "h6") %>%
-    select_var() %>% 
+    select_var() %>%
     mutate(method = sprintf("%s_localic_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
 
   order_methods  <- c(
     "lc",
     "lc_localic_final_h6_d2",
-    "lc_localic_final_h3_d2", "lc_localic_final_h4_d2", "lc_localic_final_h5_d2", 
-    "lc_localic_final_h3_d3", "lc_localic_final_h4_d3", "lc_localic_final_h5_d3", 
+    "lc_localic_final_h3_d2", "lc_localic_final_h4_d2", "lc_localic_final_h5_d2",
+    "lc_localic_final_h3_d3", "lc_localic_final_h4_d3", "lc_localic_final_h5_d3",
     "lc_localic_final_h6_d3",
-    "lc_localic_h3_d2", "lc_localic_h4_d2", "lc_localic_h5_d2", 
-    "lc_localic_h6_d2", "lc_localic_h3_d3", "lc_localic_h4_d3", "lc_localic_h5_d3", 
-    "lc_localic_h6_d3", 
+    "lc_localic_h3_d2", "lc_localic_h4_d2", "lc_localic_h5_d2",
+    "lc_localic_h6_d2", "lc_localic_h3_d3", "lc_localic_h4_d3", "lc_localic_h5_d3",
+    "lc_localic_h6_d3",
     "ql",
     "ql_localic_final_h6_d2",
-    "ql_localic_final_h3_d2", "ql_localic_final_h4_d2", "ql_localic_final_h5_d2", 
-    "ql_localic_final_h3_d3", "ql_localic_final_h4_d3", "ql_localic_final_h5_d3", 
+    "ql_localic_final_h3_d2", "ql_localic_final_h4_d2", "ql_localic_final_h5_d2",
+    "ql_localic_final_h3_d3", "ql_localic_final_h4_d3", "ql_localic_final_h5_d3",
     "ql_localic_final_h6_d3",
-    "ql_localic_h3_d2", "ql_localic_h4_d2", "ql_localic_h5_d2", 
-    "ql_localic_h6_d2", "ql_localic_h3_d3", "ql_localic_h4_d3", "ql_localic_h5_d3", 
+    "ql_localic_h3_d2", "ql_localic_h4_d2", "ql_localic_h5_d2",
+    "ql_localic_h6_d2", "ql_localic_h3_d3", "ql_localic_h4_d3", "ql_localic_h5_d3",
     "ql_localic_h6_d3",
     "cq",
     "daf",
@@ -184,14 +184,14 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
   colnames(data_merge) <- as.character(zoo::as.yearmon(as.numeric(names(data))))
 
   arima_prevs <- do.call(ts.union, lapply(data, function(y){
-    first_date <- 1 + max(0, length(y) - nyears * frequency(y))
+    first_date <- 1 + max(0, length(y) - nyears_arima * frequency(y))
     x_arima <- window(y, start = time(y)[first_date])
     prevs = forecast::auto.arima(x_arima, max.Q = 0, max.D = 0, max.P = 0) %>%
       forecast::forecast(6)
     ts(c(tail(y,1), prevs$mean), start = tail(time(y),1),
        frequency = frequency(y))
   }))
-  arima_prevs <- list(arima_prevs)
+  arima_prevs <- list(auto_arima = arima_prevs)
 
   list_method <- c("LC", "QL", "CQ", "DAF")
   kernel = "Henderson"
@@ -426,10 +426,10 @@ get_all_plots_prevs <- function(data_prevs,
            subtitle = sprintf("Phase shift of %i months",
                               round(.data[[tp_keep_col]]))
     ) %>%
-    select(!c(!!column_to_remove, kernel, !!tp_keep_col, length)) 
+    select(!c(!!column_to_remove, kernel, !!tp_keep_col, length))
   if (!is.null(all_tp_rev)) {
     all_tp_rev_plot <-
-      all_tp_rev %>% 
+      all_tp_rev %>%
       dplyr::filter(series %in% !!series, method %in% names(legend)) %>%
       mutate(subtitle = sprintf("\n(1st detection in %i months)",
                                 round(.data[[tp_keep_col]]))

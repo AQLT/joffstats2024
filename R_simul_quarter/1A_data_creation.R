@@ -23,22 +23,6 @@ series_q = list(
   lowvariability3 = simulated_tci(time,sigma_nu = 0.08,sigma_e = 0.40,lambda = 72/4,rho = 4)
 )
 series_q = lapply(series_q,ts, start = start, frequency = frequency)
-do.call(rbind, lapply(series_q, function(x){
-  x <- x[,"tc"]
-  res = rjd3x11plus::select_trend_filter(x, length = 5)
-  res = c(res[c("length", "icr")],
-          rjd3x11plus::select_trend_filter(x, length = 7)[1])
-  names(res) = c("optimal_length", "icr-5", "icr-7")
-  res
-}))
-forecast::autoplot(do.call(cbind, lapply(series_q[c(2,5,8)],`[`, ,"tc")))  +
-  theme_bw() +theme(legend.background = element_rect(fill = alpha('gray99', 0.4),
-                                                     colour = "gray80", linetype = "solid"),
-                    legend.justification = c(0,0),
-                    legend.position = c(0,0),
-                    legend.key = element_blank(),
-                    legend.title = element_blank()) +
-  labs(x = NULL, y = NULL)
 
 tp = turning_points(series_q[[1]][,"cycle"])
 first_date = time(series_q[[9]][,"cycle"])[25]

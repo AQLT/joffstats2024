@@ -10,7 +10,6 @@ all_tp_rev <- get_all_tp(dossier = "results_fredm/compile_tp/")
 
 detected_tp <- readRDS("results_fredm/compile_tp_norev/detected_tp_lp.RDS")
 
-all_tp |> dplyr::filter(series == "CE16OV")
 series <- "CE16OV"
 tp_keep <- "2001.16666666667"
 all_prevs <- get_all_prevs(series = series, tp_keep = tp_keep,
@@ -37,14 +36,11 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
                              all_tp = all_tp,
                              all_tp_rev = all_tp_rev,
                              tp_keep = tp_keep)
-wrap_plots(plots,ncol = 3) & 
-  scale_color_grey() & 
-  labs(subtitle = NULL)
-
+wrap_plots(plots,ncol = 3) &
+  scale_color_grey()
 ggsave("paper/img/nber/ce16ov_covid_prev_imp_lp.pdf",
-       plot = wrap_plots(plots, ncol = 3) & 
-         scale_color_grey() & 
-         labs(subtitle = NULL),
+       plot = wrap_plots(plots, ncol = 3) &
+         scale_color_grey(),
        width = 8, height = 8)
 
 
@@ -61,7 +57,7 @@ plots <- get_all_plots_prevs(data_prevs = all_prevs,
 wrap_plots(plots, ncol = 3)
 
 ggsave("paper/img/nber/retailx_nov2007_prev_imp_lp.pdf",
-       plot = wrap_plots(plots, ncol = 3)& 
-         scale_color_grey() & 
+       plot = wrap_plots(plots, ncol = 3)&
+         scale_color_grey() &
          labs(subtitle = NULL),
        width = 8, height = 8)

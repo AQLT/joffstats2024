@@ -93,6 +93,7 @@ Distribution of phase shifts associated to the local parametrisation of the quad
 :::
 
 \newpage
+
 # Quarterly data
 
 ::: {#fig-graphs-impact-span}
@@ -138,7 +139,7 @@ knitr::include_graphics(img)
 ```
 
 
-::: {#fig-graphs-impact-span}
+::: {#fig-nn-lp}
 ```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
 ```
@@ -146,11 +147,13 @@ knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
 Distribution of phase shifts using nearest neighbour bandwidth.
 :::
 
-::: {#fig-graphs-impact-span}
+::: {#fig-nn-localparam}
 ```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
+knitr::include_graphics("img/simulations/phase_shift_simul_nn_localparam.pdf")
 ```
-Note:
+Note: nearest bandwidth moving average are used to estimate slope and concavity.
+We thus do not distinguish local parametrisation and final local parametrisation which asumptions might not be plausible.
+Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).
 
 Distribution of phase shifts using nearest neighbour bandwidth for polynomial filters with local parametrisation.
 :::

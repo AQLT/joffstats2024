@@ -23,6 +23,10 @@ So the results could be stated with references, and the derivations omitted, and
 > 4. Page 7, line 40: why say the series is extended by one year? 
 > The extensions are for as many years as needed by the particular filters (typically, half their length in years). 
 
+*The final filter used in X-11 is much longer than one year.*
+*The series are thus just partially extended (and asymmetric filters are still used): this avoid problems associated to long horizon forecasting (outliers/shifts).*
+*This was clarified in the text.*
+
 > 5. Page 8, line 10: omit the $\forall q$ since you have stated this qualification in the previous line. 
 
 *The $\forall q$ was omitted and this section was rewritten to make it clearer.*
@@ -34,6 +38,8 @@ So the results could be stated with references, and the derivations omitted, and
 
 > 7. Page 13, equation (4): it is hard to understand what $\theta_f$ and $\theta_p$ are, and what $\gamma$ and $\delta$ are. 
 > Add more explanation to the text. 
+
+*More explanation are added to this section*
 
 > 8. Page 15, line 36: should be "same length as $v$" 
 
@@ -52,6 +58,8 @@ That is, when you display the entries of the matrix $T$, you need to make a conn
 
 > 11. Page 17, lines 53-55: This discussion needs more clarity; it seems a bit terse. 
 
+*All the section was rewritten to be clearer*
+
 > 12. Appendix B: rather than typing out the R code, it would be better to have the files available as supplementary material. 
 (Or possibly put in a github repo and provide the links in the text.) 
 
@@ -66,8 +74,7 @@ That is, when you display the entries of the matrix $T$, you need to make a conn
 > The treatment in section 1.2.1 suggests that $TC_t$ is an unknown possibly nonlinear deterministic function of time.
 > The variance inflation factor $\sum_k \theta_k^2$ implies that $I_t$ is white noise. 
 
-The modelled of the input time series is now describe more precisely in section 2 (previous section 1). $TC_t$ is here considered as deterministic
-
+*The modelled of the input time series is now describe more precisely in section 2 (previous section 1). $TC_t$ is here considered as deterministic*
 
 > 2. The idea of minimizing the noise component ($M_\theta(I_t)\simeq 0$) is not very formal. 
 > Do you mean that the unconditional variance is minimized?
@@ -80,22 +87,35 @@ The modelled of the input time series is now describe more precisely in section 
 Are these ’regular’ points at which the slope of the trend changes sign? 
 Or changepoints?
 
+*The definition was clarified.*
+*In this paper we focus on turning points associated to business-cycles: they are defined as changepoints.*
+*However, the method usually used to detect turning point makes no difference between regular points at which the slope of the trend changes sign and changepoints.*
+*It is then possible to detect "false turning points" (undesirable ripples): that's why in the simulation we only focus on the simulated turning points and in real data application we look at turning points which are officially dated (for the US by the NBER).*
+
 > 4. The notation should be unified: why not writing $TC_t = \mu(t)$ and in section 2 using $t$ instead of $x$? 
 The observation index $i$ should be replaced by $t$, as in section 2.1. 
 Similarly, why not using $\varepsilon_t$ directly and start section 1.2 by stating that you assume that $y_t$ is generated as $y_t = \mu(t) + \varepsilon_t$, etc.
 Secondly, you should clarify the meaning of (3), where you set
 $\mu(t) = u'_t\gamma + z'_t\delta$ (also you assume that the noise component has possibly a non-scalar covariance matrix, do you need the matrix $D$ for later treatment?)
 
+*The notation is simplified and unified and the equations/notations clarified.*
+*The matrix $D$ is needed to see the equivalence with symmetric filter/DAF (clarified in the text).*
+
 > 5. You should state that you assume a fixed bandwidth. 
 A nearest neighbour bandwidth should be interesting to consider: as such it would contribute more to the reduction of the variance at the expenses of the phase shift.
 
-*It was added in the beginning of new sections 3 and 4 than the bandwidth is fixed. Nearest neighbour bandwidth was added in supplemental material but it doesn't improve the results in therm of phase shift. I can be explain that the bi*
+*It was added in the beginning of new sections 3 and 4 than the bandwidth is fixed.* 
+*Nearest neighbour bandwidth was added in supplemental material but it doesn't improve the results in therm of phase shift.* 
+*One explanation could be that the bias is higher with LC/QL methodes (we model linear trend using higher bandwidth) and for other methods (e.g. DAF) that the revisions to the final symmetric filters are higher;*
 
 > 6. Is the phase shift related to the notion of bias in local polynomial smoothing?
 
-In local polynomial smoothing, the notion of bias is associated to the approximation error of the smoothed series by a polynomial degree of order $d$.
-It can thus be writer as
-
+*In local polynomial smoothing, the notion of bias is associated to the approximation error of the smoothed series by a polynomial degree of order $d$.*
+*If the moving average $\theta$ preserve a polynomial of degree $d$, the bias at the date $t$ is then:*
+$$
+\mathbb E[\hat \mu(t)] - \mu(t)=\sum_{j=d+1}^{+\infty}\frac{\mu^{(j)}(t)}{j!}\sum_{k=-h}^k\theta_k k^j
+$$
+*It is then not directly related to the phase shift.*
 
 Minor points
 
@@ -110,6 +130,8 @@ Minor points
 
 > - Page 4. The definition of the high-pass component (oscillations in the frequency range from $\pi/6$ to $\pi$) as undesirable oscillations is controversial.
 
+*The term "undersirable oscillations" was removed*
+
 > - Figure 1. In the caption, the ratio $I/C$ was never defined before.
 The description of the three panels should be better explained in the main text.
 
@@ -118,6 +140,8 @@ The description of the three panels should be better explained in the main text.
 > - Section 1.2 makes a reference to X-11 and X-13-ARIMA. 
 The author assumes that the reader is knowledgeable about seasonal adjustment methods. 
 Perhaps the authors should state that their intent is to separate the trend-cycle component from the ’noise’ component.
+
+*Reference are added and the goal of the paper was clarified in new section 2 (previous section 1)*
 
 > - Page 7, line 38. ’which extends’ is repeated twice.
 
@@ -141,9 +165,11 @@ The forecasts are obtained from an assumed polynomial trend model?
 > The author simulates time series of length 60 years to illustrate the methodology at the end of the series.
 It may be worth considering (in addition) shorter series. 
 Another thought is that the ARIMA model being used to extend the series appears to be modeled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
+
 *Indeed it is in general not relevant to identify an ARIMA model on a monthly time series of length 60 years.*
-In our case, since the same data generation process remains the same, it could be relevant and leads to better results in terms of delay to detect turning points (in supplement materials, a plot is added comparing the results with different spans to identify/estimate the ARIMA model).
-However, on the main text, we now only used 12 years to identify the ARIMA model, to be closer to what would be done on real series.
+*In our case, since the same data generation process remains the same, it could be relevant and leads to better results in terms of delay to detect turning points (in supplement materials, a plot is added comparing the results with different spans to identify/estimate the ARIMA model).*
+*However, on the main text, we now only used 12 years to identify the ARIMA model, to be closer to what would be done on real series.*
+*Since other methods are local, it is not a problem to have long time series.*
 
 > The author avoids numbering the Introduction and Conclusion; numbering both (and adjusting the numbering of the other sections accordingly) may be better.
 
@@ -154,41 +180,53 @@ In addition, in the text, it would probably be preferable to use R (the letter i
 
 *Bibliography added and the R icon was removed*
 
-> Some of the important results appear in the tables and figures, but the accompanying discussion in the text should still be fleshed out more.  In addition, in Figures 2-4 and 6-7 (and the figures in the supplement), the lines can be distinguished by color, but it may be helpful to find some way to keep them distinguishable without the benefit of color.  It might be the case that there is too much information to display neatly in some of these.
+> Some of the important results appear in the tables and figures, but the accompanying discussion in the text should still be fleshed out more.  
+
+> In addition, in Figures 2-4 and 6-7 (and the figures in the supplement), the lines can be distinguished by color, but it may be helpful to find some way to keep them distinguishable without the benefit of color.  
+It might be the case that there is too much information to display neatly in some of these.
+
+*Figures are now black and white a scaled gray legend.*
+*In some of them, there are indeed a lot of information with several labels, but the goal is not to be able to read all the details of all the lines but to see the general behavior of the filters (for example if the implicit forecasts seem relevant or not)*
 
 > It is somewhat unclear just how prominent the new functionality being added via the R package rjd3filters is intended to be in this paper.
 
+*We try to clarify in the section associated to the proposed methods: all the functions mentionned are already in rjd3filters.*
+*The local parametrisation is not directly in the package but can be easily implemented (especially because the code is available): the variance estimator is in the package but not the moving-averages associated to slope/concavity estimators (which can be easily derived)*
 
 Other (non-exhaustive) [only remarks that require a response]
-- P2 L8:  “X-13ARIMA seasonal adjustment method” -- The software is officially X-13ARIMA-SEATS, but the seasonal adjustment method itself is X-11 (applies to subsequent occurrences as well)
+
+> - P2 L8:  “X-13ARIMA seasonal adjustment method” -- The software is officially X-13ARIMA-SEATS, but the seasonal adjustment method itself is X-11 (applies to subsequent occurrences as well)
 
 *This was clarified in the article, for example in the introduction the text was changed with "the X-11 decomposition method (used in X-13ARIMA-SEATS)"*
 
-- P2 L29:  “good properties” -- This could be less vague.
+> - P2 L29:  “good properties” -- This could be less vague.
 
-- P7 L58:  There is a $q$ introduced here via “$w_t^q$ for $t>q$” that shows up later as well, but  itself does not appear to be properly defined otherwise.
+*TODO*
+
+> - P7 L58:  There is a $q$ introduced here via “$w_t^q$ for $t>q$” that shows up later as well, but  itself does not appear to be properly defined otherwise.
 
 *This section was rewritten and all the terms are now defined.*
 
-- P9:  Author lists a number of quality criteria in Table 1.  It may be obvious for some of these, but it would be helpful to the reader to indicate whether lower values or higher values are preferable for each, either in the table or in the accompanying exposition.
+> - P9:  Author lists a number of quality criteria in Table 1.  It may be obvious for some of these, but it would be helpful to the reader to indicate whether lower values or higher values are preferable for each, either in the table or in the accompanying exposition.
 
 *The section 1.3.2 was removed: it's not central to the paper, and it would have made the reading more cumbersome to go into the details of the notations. Table 2 has also been removed *
 
 
-- P11 L22:  “$2h+1 \geq d+1$” -- Why not just say $2h\geq d$?
+> - P11 L22:  “$2h+1 \geq d+1$” -- Why not just say $2h\geq d$?
 
 *This sentence was rephrased: $d+1$ refers to the number of parameters to estimate and $2h+1$ the number of observations.*
 
-- P14 L33:  More exposition wrt Table 2 may be helpful, as there is a fair amount of information to digest. 
+> - P14 L33:  More exposition wrt Table 2 may be helpful, as there is a fair amount of information to digest. 
 
 *Table 2 was removed*
 
-- P14 L45:  What is the rationale for this combined measure $EQM_w=A_w + S_w + T_w + R_w$?  Looking at the expressions for these four from Table 1, it is apparent that $A_w$ and $T_w$ sum up (the two have the same integrand, and the resulting sum is the integral from 0 to $\pi$), and same goes for $S_w$ and $R_w$.  
-And it should probably be explicitly stated what $EQM_w$ stands for prior to introducing it in the table. 
+> - P14 L45:  What is the rationale for this combined measure $EQM_w=A_w + S_w + T_w + R_w$?  
+> Looking at the expressions for these four from Table 1, it is apparent that $A_w$ and $T_w$ sum up (the two have the same integrand, and the resulting sum is the integral from 0 to $\pi$), and same goes for $S_w$ and $R_w$.  
+> And it should probably be explicitly stated what $EQM_w$ stands for prior to introducing it in the table. 
 
 *This table was removed but to answer your question the criteria comes from the decomposition of the mean squared error into four quantities*
 
-- P19 L15:  “January 1960 and December 2020” -- As noted previously, is it worth considering an additional scenario with (simulated) series of shorter length?
+> - P19 L15:  “January 1960 and December 2020” -- As noted previously, is it worth considering an additional scenario with (simulated) series of shorter length?
 
 *See previous comment: it was added in supplemental material*
 
@@ -216,13 +254,19 @@ I recommend that the authors clearly identify the quantities appearing in the de
 > It would be valuable if the authors could explicitly address the applicability of the proposed procedure to high-frequency data. 
 If modifications or considerations are necessary for such data, it should be discussed to provide a comprehensive understanding of the methodology.
 
+*Quarterly series with simulated data are added in supplemental material, a new section was added to discuss the use of the methods with different periodicities*
+
 > 5.  Clarity on Phase Shift Computation (Page 20)
 > A clearer explanation of how the phase shift is computed on page 20 would enhance the paper's overall clarity. 
 The authors should specify the method used for determining the phase shift, particularly in relation to the identification of true turning points based on symmetric filter estimates.
 
+*The definition of phase-shift was clarified in*
+
 > 6.  Commentary on Figure 5
 > I suggest that the authors include a detailed commentary on Figure 5 in the paper.
 Providing explanations for the results shown in the figure would be crucial for readers to better understand the performance of the filters/methods.
+
+*TODO*
 
 > 7.  Better Description of Results in Table 3
 > The meaning of "second and third estimates" in Table 3 on page 22 is not clear. 
@@ -234,9 +278,7 @@ I recommend that the authors provide a more detailed description or explanation 
 > 8.  Consideration of Different Series Periodicity
 > It would be beneficial if the authors could address the suggestion of considering series with different periodicities in the real data application. Discussing how the proposed methodology performs when applied to series with various frequencies would add depth to the study.
 
-
-
-
+*Quarterly series with simulated data are added in supplemental material, a new section was added to discuss the use of the methods with different periodicities*
 
 
 
@@ -246,10 +288,14 @@ I recommend that the authors provide a more detailed description or explanation 
 I had to read the paper a couple of times to clearly identify the contribution.
 I found the contribution of the paper clearly stated on page 16, but I think I should come before in the text.
 
+*We try to clarify the contribution in the abtract, introduction and in the beginning of sections 2 and 3*
+
 > 2) The paper omits to consider the Covid19 period and how this influences the trend and cycle decomposition. 
 I understand that this is not the main focus of the paper, but at least the authors should address this problem in word and possible solution to address it, e.g. outlier correction, robust distributions, etc.
 
-> 3) I think a quote from other works can be removed from the paper. For example, I
-would remove the quote in point 2) of page 7.
+*A new section was added with an example around Covid19 and some possible solutions for outliers*
+
+> 3) I think a quote from other works can be removed from the paper. 
+For example, I would remove the quote in point 2) of page 7.
 
 *The quote was removed*

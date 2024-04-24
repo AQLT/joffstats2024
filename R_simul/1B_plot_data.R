@@ -20,13 +20,16 @@ p <- ggplot(data = dataGraph,
   ) +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 12),
                      labels = function(x) format(x, decimal.mark = ".")) +
-  theme_bw() +theme(legend.background = element_rect(fill = alpha('gray99', 0.4),
-                                                     colour = "gray80", linetype = "solid"),
-                    legend.justification = c(0,0),
-                    legend.position = c(0,0),
-                    legend.key = element_blank(),
-                    legend.title = element_blank())
-
+  theme_bw() +
+  theme(legend.background = element_rect(fill = alpha('gray99', 0.4),
+                                         colour = "gray80", linetype = "solid"),
+        legend.position = "inside",
+        legend.justification = c
+        (0,0),
+        legend.key = element_blank(),
+        legend.title = element_blank()) +
+  scale_color_grey()
+p
 ggsave("paper/img/simulations/simul_data.pdf",
        plot = p,
        width = 8, height = 4)

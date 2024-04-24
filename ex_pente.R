@@ -66,8 +66,8 @@ tp = readRDS("data_simul/tp_simul1.RDS")
 p <- autoplot(data[,c(1,2)]) +
   geom_vline(data = data.frame(xintercept = c(tp$downturn,
                                               tp$upturn)),
-             aes(xintercept = xintercept)) +
-  scale_color_discrete(
+             aes(xintercept = xintercept),alpha = 0.5) +
+  scale_color_grey(
     breaks = c("icr", "icr_local"),
     labels = c(
       latex2exp::TeX("Global $|\\delta_1/\\sigma|"),
@@ -76,12 +76,16 @@ p <- autoplot(data[,c(1,2)]) +
   labs(x = NULL, y = NULL) +
   theme_bw() +
   theme(legend.justification = c(0,1),
-        legend.position = c(0,1),
+        legend.position = "inside",
         legend.key = element_blank(),
         legend.title = element_blank(),
         legend.background = element_rect(fill = alpha('gray99', 0.8),
-                                         colour = "gray80", linetype = "solid")
-  )
+                                         colour = "gray80", linetype = "solid"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank()
+  ) +
+  coord_cartesian(ylim = c(0, 1.8), expand = FALSE,
+                  xlim = c(1960, 2022))
 
 p
 ggsave("paper/img/filters_used/mm_penteconcavite_ex.pdf",
@@ -91,8 +95,9 @@ ggsave("paper/img/filters_used/mm_penteconcavite_ex.pdf",
 p2 <- autoplot(data[,c(1,3)]) +
   geom_vline(data = data.frame(xintercept = c(tp$downturn,
                                               tp$upturn)),
-             aes(xintercept = xintercept)) +
-  scale_color_discrete(
+             aes(xintercept = xintercept),
+             alpha = 0.5) +
+  scale_color_grey(
     breaks = c("icr", "icr_local2"),
     labels = c(
       latex2exp::TeX("Global $|\\delta_1/\\sigma|"),
@@ -105,8 +110,12 @@ p2 <- autoplot(data[,c(1,3)]) +
         legend.key = element_blank(),
         legend.title = element_blank(),
         legend.background = element_rect(fill = alpha('gray99', 0.8),
-                                         colour = "gray80", linetype = "solid")
-  )
+                                         colour = "gray80", linetype = "solid"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank()
+  ) +
+  coord_cartesian(ylim = c(0, 1.8), expand = FALSE,
+                  xlim = c(1960, 2022))
 p2
 
 ggsave("paper/img/filters_used/mm_penteconcavite_ex2.pdf",

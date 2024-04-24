@@ -31,7 +31,7 @@ for(i in names(all_filters)){
       ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
       ggplot2::labs(y = "Phase shift") +
       ggplot2::guides(colour = "none"))
-  p
+  p <- p & ggplot2::scale_color_grey()
   ggsave(sprintf("paper/img/filters_used/%s.pdf",tolower(i)),
               width = 8, height = 4.5,
               plot = p)
@@ -76,6 +76,7 @@ p <- ggplot_coef(x, q = c(0:6)) / (
     ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
     ggplot2::labs(y = "Phase shift") +
     ggplot2::guides(colour = "none"))
+p <- p & ggplot2::scale_color_grey()
 p
 ggsave("paper/img/filters_used/nn_henderson.pdf",
        width = 8, height = 4.5,
@@ -102,7 +103,7 @@ for(i in names(all_filters)){
       ggplot_phase(x, xlim = c(0, 4/12*pi), q = c(0:6))+
       ggplot2::labs(y = "Phase shift") +
       ggplot2::guides(colour = "none"))
-  p
+  p <- p & ggplot2::scale_color_grey()
   ggsave(sprintf("paper/img/filters_used/%s_nn.pdf",tolower(i)),
          width = 8, height = 4.5,
          plot = p)
