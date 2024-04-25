@@ -20,7 +20,7 @@ for (crit in c("ce", "fe")) {
         select(!c(degree, h))
     }
     if (method == "arima") {
-      data <- data  %>% dplyr::filter(ny == "All") %>% 
+      data <- data  %>% dplyr::filter(ny == "12") %>%
         select(!c(ny))
     }
     data <- data %>% select(!kernel)
@@ -49,10 +49,10 @@ legend <- c(lc = "LC", lc_localic_final_d2_h6 = "LC local param. (final estimate
             ql_localic_d2_h6 = "QL local param.",
             cq = "CQ", daf = "DAF",
             auto_arima = "ARIMA")
-rev_table <- rev_tot %>% 
+rev_table <- rev_tot %>%
   dplyr::filter(variability == "mediumvariability" & method %in% names(legend))%>%
   mutate(method = recode(factor(method, level = names(legend), ordered = TRUE), !!!legend)) %>%
-  arrange(crit, method) |> 
+  arrange(crit, method) |>
   select(!c(variability, crit)) %>%
   rename_at(vars(starts_with("rev")), function(x){
     sprintf("$q=%s$", gsub("rev.q","",x))
@@ -62,19 +62,19 @@ rev_table
 saveRDS(rev_table, file = "paper/data/simulations_revisions.RDS")
 
 
-legend <- c( 
-  "lc_localic_final_d2_h6" = "d=2, h=3", 
-  "lc_localic_final_d2_h4" = "d=2, h=4", 
+legend <- c(
+  "lc_localic_final_d2_h6" = "d=2, h=3",
+  "lc_localic_final_d2_h4" = "d=2, h=4",
   "lc_localic_final_d2_h5" = "d=2, h=5",
   "lc_localic_final_d2_h6" = "d=2, h=6",
-  "lc_localic_final_d3_h3" = "d=3, h=3", 
-  "lc_localic_final_d3_h4" = "d=3, h=4", 
-  "lc_localic_final_d3_h5" = "d=3, h=5", 
+  "lc_localic_final_d3_h3" = "d=3, h=3",
+  "lc_localic_final_d3_h4" = "d=3, h=4",
+  "lc_localic_final_d3_h5" = "d=3, h=5",
   "lc_localic_final_d3_h6" = "d=3, h=6")
-rev_table_lc_final <- rev_tot %>% 
+rev_table_lc_final <- rev_tot %>%
   dplyr::filter(variability == "mediumvariability" & method %in% names(legend))%>%
   mutate(method = recode(factor(method, level = names(legend), ordered = TRUE), !!!legend)) %>%
-  arrange(crit, method) |> 
+  arrange(crit, method) |>
   select(!c(variability, crit)) %>%
   rename_at(vars(starts_with("rev")), function(x){
     sprintf("$q=%s$", gsub("rev.q","",x))
@@ -82,19 +82,19 @@ rev_table_lc_final <- rev_tot %>%
   rename(`Method` = method)
 rev_table_lc_final
 
-legend <- c( 
-  "lc_localic_d2_h6" = "d=2, h=3", 
-  "lc_localic_d2_h4" = "d=2, h=4", 
+legend <- c(
+  "lc_localic_d2_h6" = "d=2, h=3",
+  "lc_localic_d2_h4" = "d=2, h=4",
   "lc_localic_d2_h5" = "d=2, h=5",
   "lc_localic_d2_h6" = "d=2, h=6",
-  "lc_localic_d3_h3" = "d=3, h=3", 
-  "lc_localic_d3_h4" = "d=3, h=4", 
-  "lc_localic_d3_h5" = "d=3, h=5", 
+  "lc_localic_d3_h3" = "d=3, h=3",
+  "lc_localic_d3_h4" = "d=3, h=4",
+  "lc_localic_d3_h5" = "d=3, h=5",
   "lc_localic_d3_h6" = "d=3, h=6")
-rev_table_lc <- rev_tot %>% 
+rev_table_lc <- rev_tot %>%
   dplyr::filter(variability == "mediumvariability" & method %in% names(legend))%>%
   mutate(method = recode(factor(method, level = names(legend), ordered = TRUE), !!!legend)) %>%
-  arrange(crit, method) |> 
+  arrange(crit, method) |>
   select(!c(variability, crit)) %>%
   rename_at(vars(starts_with("rev")), function(x){
     sprintf("$q=%s$", gsub("rev.q","",x))
@@ -105,19 +105,19 @@ saveRDS(rev_table_lc_final, file = "paper/data/simulations_revisions_lc_final.RD
 saveRDS(rev_table_lc, file = "paper/data/simulations_revisions_lc.RDS")
 
 
-legend <- c( 
-  "ql_localic_final_d2_h6" = "d=2, h=3", 
-  "ql_localic_final_d2_h4" = "d=2, h=4", 
+legend <- c(
+  "ql_localic_final_d2_h6" = "d=2, h=3",
+  "ql_localic_final_d2_h4" = "d=2, h=4",
   "ql_localic_final_d2_h5" = "d=2, h=5",
   "ql_localic_final_d2_h6" = "d=2, h=6",
-  "ql_localic_final_d3_h3" = "d=3, h=3", 
-  "ql_localic_final_d3_h4" = "d=3, h=4", 
-  "ql_localic_final_d3_h5" = "d=3, h=5", 
+  "ql_localic_final_d3_h3" = "d=3, h=3",
+  "ql_localic_final_d3_h4" = "d=3, h=4",
+  "ql_localic_final_d3_h5" = "d=3, h=5",
   "ql_localic_final_d3_h6" = "d=3, h=6")
-rev_table_ql_final <- rev_tot %>% 
+rev_table_ql_final <- rev_tot %>%
   dplyr::filter(variability == "mediumvariability" & method %in% names(legend))%>%
   mutate(method = recode(factor(method, level = names(legend), ordered = TRUE), !!!legend)) %>%
-  arrange(crit, method) |> 
+  arrange(crit, method) |>
   select(!c(variability, crit)) %>%
   rename_at(vars(starts_with("rev")), function(x){
     sprintf("$q=%s$", gsub("rev.q","",x))
@@ -125,19 +125,19 @@ rev_table_ql_final <- rev_tot %>%
   rename(`Method` = method)
 rev_table_ql_final
 
-legend <- c( 
-  "ql_localic_d2_h6" = "d=2, h=3", 
-  "ql_localic_d2_h4" = "d=2, h=4", 
+legend <- c(
+  "ql_localic_d2_h6" = "d=2, h=3",
+  "ql_localic_d2_h4" = "d=2, h=4",
   "ql_localic_d2_h5" = "d=2, h=5",
   "ql_localic_d2_h6" = "d=2, h=6",
-  "ql_localic_d3_h3" = "d=3, h=3", 
-  "ql_localic_d3_h4" = "d=3, h=4", 
-  "ql_localic_d3_h5" = "d=3, h=5", 
+  "ql_localic_d3_h3" = "d=3, h=3",
+  "ql_localic_d3_h4" = "d=3, h=4",
+  "ql_localic_d3_h5" = "d=3, h=5",
   "ql_localic_d3_h6" = "d=3, h=6")
-rev_table_ql <- rev_tot %>% 
+rev_table_ql <- rev_tot %>%
   dplyr::filter(variability == "mediumvariability" & method %in% names(legend))%>%
   mutate(method = recode(factor(method, level = names(legend), ordered = TRUE), !!!legend)) %>%
-  arrange(crit, method) |> 
+  arrange(crit, method) |>
   select(!c(variability, crit)) %>%
   rename_at(vars(starts_with("rev")), function(x){
     sprintf("$q=%s$", gsub("rev.q","",x))
