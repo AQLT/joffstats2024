@@ -266,7 +266,7 @@ The authors should specify the method used for determining the phase shift, part
 > I suggest that the authors include a detailed commentary on Figure 5 in the paper.
 Providing explanations for the results shown in the figure would be crucial for readers to better understand the performance of the filters/methods.
 
-*TODO*
+*A reading note is added to figure 5 to improve its reading*
 
 > 7.  Better Description of Results in Table 3
 > The meaning of "second and third estimates" in Table 3 on page 22 is not clear. 

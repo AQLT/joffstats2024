@@ -85,7 +85,7 @@ All the code associated to this paper is available at <https://github.com/XXXX> 
 
 In @sec-propMM, we describe the general properties of moving averages and the associated quality criteria.
 This allows us to understand the foundations behind the construction of moving averages from local polynomial regressions, as well as those behind the two extensions proposed in this article (@sec-nonparamreg).
-In a final section (@sec-comparison), all these methods are compared empirically on simulated and real series.
+In @sec-comparison, all these methods are compared empirically on simulated and real series.
 
 # Local trend-cycle models and moving averages {#sec-propMM}
 
@@ -102,7 +102,7 @@ $$
 \mu_t = \sum_{j=0}^d\beta_jt^j+\xi_t
 $$
 with $\xi_t$ a stochastic process uncorrelated with $\varepsilon_t$.
-Event if some papers model $\xi_t$ and $\varepsilon_t$ separately [see for example @GrayThomson2002], an usual assumption, adopted in this paper, is to is to gather $\xi_t$ and $\varepsilon_t$.
+Even if some papers model $\xi_t$ and $\varepsilon_t$ separately [see for example @GrayThomson2002], an usual assumption, adopted in this paper, is to is to gather $\xi_t$ and $\varepsilon_t$.
 Thus, the trend-cycle $TC_t$ is considered as deterministic and modelled as a polynomial trend of degree $d$.
 The coefficients $(\beta_0,\dots,\beta_k)$ can be estimated by weighted least squares.
 The estimate $\hat \beta_0$ provides the trend-cycle estimate $\hat TC_t$ and it can be shown that this equivalent to apply of moving average (see @sec-nonparamreg).
@@ -532,7 +532,7 @@ We obtain Musgrave filters when the Henderson kernel is used and the Henderson f
 
 3. *Cubic-Quadratic* (CQ): $y_t$ cubic ($d=3$) and $\boldsymbol v$ preserves quadratic signals ($d^*=2$).
 
-Appendix [-@sec-an-cof] shows the coefficients, gain and phase shift functions of the four asymmetric filters.
+Supplemental materials shows the coefficients, gain and phase shift functions of the four asymmetric filters.
 
 <!-- Table\ \ref{tab-criteriaLp} compares the quality criteria of the different methods using the Henderson filter and $h=6$ (a symmetric filter with 13 terms).  -->
 <!-- For real-time filters ($q=0$), a more complex asymmetric filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance.  -->
@@ -752,7 +752,6 @@ For the different simulations, we vary the parameters $\rho$ and $\sigma_e^2$ in
 
 - Low signal-to-noise ratio (i.e. high I-C ratio and high variability): $\sigma_e^2=0.4$ and $\rho = 0.5,\, 0.7$ or $1.0$ (I-C ratio between 8.9 and 5.2).
 
-The series associa
 
 ```{r, echo=FALSE, out.width="100%"}
 #| label: fig-graphs-data-simul
@@ -774,7 +773,7 @@ In this paper, following @Zellner1991, we used an accepted definition for turnin
     - A downturn occurs when the economy moves from a phase of expansion to a phase of recession.
 This is the case at date  $t$ when $TC_{t-3}\leq TC_{t-2}\leq TC_{t-1}>TC_t\geq TC_{t+1}$.  
 
-  Lets denote $TC_{t|t'}$ the estimate of the trend-cycle at date $t$ using the data up to date $t'$.
+   Lets denote $TC_{t|t'}$ the estimate of the trend-cycle at date $t$ using the data up to date $t'$.
   The phase shift is often defined as the number of months required to detect the right turning point: it would then be equal to two if, in the case of a downturn,  $TC_{t-3|t+1}\leq TC_{t-2|t+1}\leq TC_{t-1|t+1}>TC_{t|t+1}\geq TC_{t+1|t+1}$ (two observations, at dates $t$ and $t+1$, are needed to qualify the date $t$ as turning point).
   Note that, in that case, the phase shift could be equivalently set to 1 (only one observation after $t$ is needed to define $t$ as a turning point), without any difference on the comparison of the different methods.\
   In this paper we use a slightly modified criterion: the phase shift is defined as the number of months needed to detect the right turning point without any future revision.
@@ -806,6 +805,12 @@ TC_{t|t+q+1}
 \right].
 $$
 
+The simulated series are of length 60 years, which is often not realistic for economic time series.
+However, since all the methods are local, the results are not affected by the length of the series.
+The length of the series would only have an impact for the identification and the estimation of the ARIMA model.
+In this case, since the same data generating process is used during the 60 years, it could be relevant to identify the ARIMA model using all the data.
+Even if it would improve the results in term of phase shift (see supplemental material) we prefer to only use the last 12 years to identify and estimate the ARIMA model, to be closer to what would have been done with a real time series.
+
 
 ## Comparison 
 
@@ -817,13 +822,18 @@ For series with moderate variability, local parametrisation of the LC and QL fil
 For series with high variability, the phase shift is only reduced by using the final $\hat\delta$ parameters: real-time estimates seem to add more variance.
 For series with low variability, performance seems to be slightly improved only with the LC filter.
 
+::: {#fig-graphstpsimul}
 
 ```{r, echo=FALSE, out.width="100%"}
-#| label: fig-graphstpsimul
-#| fig-cap: Distribution of phase shifts on simulated series.
-img <- sprintf("img/simulations/phase_shift_simul.%s", "pdf")
-knitr::include_graphics(img)
+knitr::include_graphics("img/simulations/phase_shift_simul.pdf")
 ```
+Lecture: this plots represent box plots of the phase shift: the box represents the interquartile range, the central horizontal line the median the dot the outliers and the whisker the range of the data (if no outlier).\
+For simulated series with medium variability (when a symmetric filter of length 13 is relevant), with the linear constant (LC) method, 50% of the turning point are detected with a phase shift of at most 5 months whereas when the LC filter is parametrised locally (using), 50% of the turning point are detected with a phase shift of at most 4 months.
+For the direct asymmetric filter (DAF), 25% of the turning are detected with a phase shift of at least 7 months (compares to 5 for the LC method).
+
+
+Distribution of phase shift on simulated series.
+:::
 
 In terms of revisions, the variability of the series has little effect on the respective performances of the different methods, but it does affect the orders of magnitude, which is why the results are presented only for series with medium variability (@tbl-simulrev).
 In general, LC filters always minimise revisions (with relatively small effect from the local parametrisation of the filters) and revisions are greater with cubic-quadratic (CQ) and direct (DAF) polynomial filters.
@@ -950,8 +960,8 @@ img <- sprintf("img/nber/%s_%s_prev_imp_%s.%s",
 knitr::include_graphics(img)
 ```
 
-# Discussion
-## Outliers and COVID-19
+## Discussion
+### Outliers and COVID-19
 
 In this article and in those associated to trend-cycle extraction techniques, the asymmetrical filters are applied and compared on series already seasonally adjusted or without seasonality (simulated series). 
 The revisions and therefore the phase shift are limited to 6 months (when the symmetrical filter is 13 terms), and this has the advantage of isolating the impacts of the different filters from the other processes inherent in seasonal adjustment.
@@ -1004,7 +1014,7 @@ knitr::include_graphics(img)
 ```
 
 
-## Other frequencies
+### Other frequencies
 
 
 
@@ -1044,37 +1054,3 @@ This leads us to study the impact of these points on the estimation of the trend
 
 ::: {#refs}
 :::
-
-<!-- \appendix -->
-<!-- \newpage -->
-
-<!-- # Coefficients, gain and phase shift functions {#sec-an-cof} -->
-
-<!-- ```{r, out.width="100%"} -->
-<!-- #| label: fig-graphs-coef-lc -->
-<!-- #| fig-cap: Coefficients, gain and phase shift functions for the Linear-Constant (LC) filter with $I/C=3.5$. -->
-<!-- img <- sprintf("img/filters_used/%s.%s", tolower("LC"), "pdf") -->
-<!-- knitr::include_graphics(img) -->
-<!-- ``` -->
-
-<!-- ```{r, out.width="100%"} -->
-<!-- #| label: fig-graphs-coef-ql -->
-<!-- #| fig-cap: Coefficients, gain and phase shift functions for the Quadratic-Linear (QL) filter with $I/C=3.5$. -->
-<!-- img <- sprintf("img/filters_used/%s.%s", tolower("QL"), "pdf") -->
-<!-- knitr::include_graphics(img) -->
-<!-- ``` -->
-
-
-<!-- ```{r, out.width="100%"} -->
-<!-- #| label: fig-graphs-coef-cq -->
-<!-- #| fig-cap: Coefficients, gain and phase shift functions for the Cubic-Quadratic (CQ) filter with $I/C=3.5$. -->
-<!-- img <- sprintf("img/filters_used/%s.%s", tolower("CQ"), "pdf") -->
-<!-- knitr::include_graphics(img) -->
-<!-- ``` -->
-
-<!-- ```{r, out.width="100%"} -->
-<!-- #| label: fig-graphs-coef-daf -->
-<!-- #| fig-cap: Coefficients, gain and phase shift functions for the direct asymmetric filter (DAF). -->
-<!-- img <- sprintf("img/filters_used/%s.%s", tolower("DAF"), "pdf") -->
-<!-- knitr::include_graphics(img) -->
-<!-- ``` -->

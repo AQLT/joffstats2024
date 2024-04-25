@@ -52,6 +52,44 @@ img <- sprintf("img/filters_used/%s.%s", tolower("DAF"), "pdf")
 knitr::include_graphics(img)
 ```
 
+
+\newpage
+
+# Different specifications for the estimation of the slope and concavity
+
+::: {#fig-graphs-lc-deg-final}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_local_final_lc.pdf")
+```
+
+Distribution of phase shift associated to the local parametrisation of the linear-constant (LC) filter using the final estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+:::
+
+::: {#fig-graphs-lc-deg}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_local_lc.pdf")
+```
+
+Distribution of phase shift associated to the local parametrisation of the linear-constant (LC) filter using the final estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+:::
+
+::: {#fig-graphs-ql-deg-final}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_local_final_ql.pdf")
+```
+
+Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+:::
+
+::: {#fig-graphs-ql-deg}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_local_ql.pdf")
+```
+
+Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+:::
+
+
 \newpage
 
 # Impact of the span used to detect the ARIMA model
@@ -61,49 +99,8 @@ knitr::include_graphics(img)
 knitr::include_graphics("img/simulations/phase_shift_simul_arima_length.pdf")
 ```
 
-Distribution of phase shifts on simulated series by number of years used to identify and estimate the AIRMA model.
+Distribution of phase shift on simulated series by number of years used to identify and estimate the ARIMA model.
 :::
-
-\newpage
-
-#
-
-::: {#fig-graphs-impact-span}
-```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_local_final_lc.pdf")
-```
-
-Distribution of phase shifts associated to the local parametrisation of the linear-constant (LC) filter using the final estimates of $\delta/\sigma$ in function of the length of the henderson filter used to estimate $\sigma$ ($h$) and the degree of the trend to estimate $\delta$ ($d$)/
-:::
-
-::: {#fig-graphs-impact-span}
-```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_local_lc.pdf")
-```
-
-Distribution of phase shifts associated to the local parametrisation of the linear-constant (LC) filter using real time estimates of $\delta/\sigma$ in function of the length of the henderson filter used to estimate $\sigma$ ($h$) and the degree of the trend to estimate $\delta$ ($d$)/
-:::
-
-::: {#fig-graphs-impact-span}
-```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_local_ql.pdf")
-```
-
-Distribution of phase shifts associated to the local parametrisation of the quadratic-linear (QL) filter using real time estimates of $\delta/\sigma$ in function of the length of the henderson filter used to estimate $\sigma$ ($h$) and the degree of the trend to estimate $\delta$ ($d$)/
-:::
-
-\newpage
-
-# Quarterly data
-
-::: {#fig-graphs-impact-span}
-```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_q.pdf")
-```
-
-Distribution of phase shifts on quarterly data.
-:::
-
 
 \newpage
 # Nearest neighbour bandwidth
@@ -144,26 +141,30 @@ knitr::include_graphics(img)
 knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp.pdf")
 ```
 
-Distribution of phase shifts using nearest neighbour bandwidth.
+Distribution of phase shift using nearest neighbour bandwidth.
 :::
 
 ::: {#fig-nn-localparam}
 ```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/simulations/phase_shift_simul_nn_localparam.pdf")
+knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp_localparam.pdf")
 ```
 Note: nearest bandwidth moving average are used to estimate slope and concavity.
 We thus do not distinguish local parametrisation and final local parametrisation which asumptions might not be plausible.
 Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).
 
-Distribution of phase shifts using nearest neighbour bandwidth for polynomial filters with local parametrisation.
+Distribution of phase shift using nearest neighbour bandwidth for polynomial filters with local parametrisation.
 :::
 
-<!-- # R code example {#ann-ex-r} -->
 
-<!-- In this appendix we present the {{< fa brands r-project >}} code that can be used to estimate trend-cycle components for the US Employment with local polynomial filters. -->
 
-<!-- ```{r, eval=FALSE, echo=TRUE} -->
-<!-- #| eval: false -->
-<!-- #| echo: true -->
-<!-- #| file: R_ex.R -->
-<!-- ``` -->
+\newpage
+
+# Quarterly data
+
+::: {#fig-graphs-quarterly}
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/simulations/phase_shift_simul_q.pdf")
+```
+
+Distribution of phase shift on quarterly data.
+:::
