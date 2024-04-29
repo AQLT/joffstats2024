@@ -181,7 +181,8 @@ knitr::include_graphics(img)
 ```
 
 \justifying
-*Lecture: on monthly times series, 12-month cycles (associated to the frequency $2\pi/12=\pi/6$) are amplified of 10% ($G_{\boldsymbol\theta}(\pi/6)=1.1$) and associated turning points are detected with a delay of 1 months ($\varphi_{\boldsymbol\theta}(\pi/6)/(\pi/6)\simeq -1$).*\
+*Lecture: on monthly times series, 12-month cycles (associated to the frequency $2\pi/12=\pi/6$) are amplified by 10% ($G_{\boldsymbol\theta}(\pi/6)\simeq1.1$) and associated turning points are detected with a delay of 1 months ($\varphi_{\boldsymbol\theta}(\pi/6)/(\pi/6)\simeq -1$).*
+*8-month cycles (associated to the irregular) are only reduced by 6% ($G_{\boldsymbol\theta}(\pi/4)\simeq0.94$).*\
 *Note: the Musgrave filter depends on a ratio $I/C$ (see @sec-nonparamreg).* 
 *In X-11, for monthly series, when the bandwidth is 6 (i.e.: a symmetric Henderson filter of order 13 is used, what is used in most cases), the ratio is fixed to 3.5 and this value is used in this figure.*
 
