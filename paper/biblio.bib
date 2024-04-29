@@ -7,6 +7,14 @@
 
 %% Saved with string encoding Unicode (UTF-8)
 
+@Manual{rjd3filters,
+    title = {rjd3filters: Trend-Cycle Extraction with Linear Filters},
+    author = {Jean Palate and Alain Quartier-la-Tente},
+    year = {2024},
+    note = {R package version 2.1.0, 
+https://rjdemetra.github.io/rjd3filters/},
+    url = {https://github.com/rjdemetra/rjd3filters},
+  }
 @article{ferrara,
 	title = {Characterization and {Dating} of {Economic} {Cycles} in the {Euro} {Area}},
 	volume = {60},
@@ -61,7 +69,16 @@ Publisher: Presses de Sciences Po},
     year = {2022},
     url = {https://www.R-project.org/},
   }
-
+@article{dagum1996new,
+  title={A new method to reduce unwanted ripples and revisions in trend-cycle estimates from X-11-ARIMA},
+  author={Dagum, Estela Bee},
+  journal={Survey Methodology},
+  volume={22},
+  pages={77--84},
+  year={1996},
+  publisher={Statistics Canada},
+  url={https://www150.statcan.gc.ca/n1/en/pub/12-001-x/1996001/article/14383-eng.pdf?st=UY9RsNkK}
+}
 @article{dagumBianconcini2023,
 author = {Estela Bee Dagum and Silvia Bianconcini},
 title = {Monitoring the direction of the short-term trend of economic indicators},
@@ -74,16 +91,6 @@ publisher = {Taylor & Francis},
 doi = {10.1080/07474938.2023.2209008}
 ,
  abstract = {Socioeconomic indicators have long been used by official statistical agencies to analyze and assess the current stage at which the economy stands via the application of linear filters used in conjunction with seasonal adjustment procedures. In this study, we propose a new set of symmetric and asymmetric weights that offer substantial gains in real-time by providing timely and more accurate information for detecting short-term trends with respect to filters commonly applied by statistical agencies. We compare the new filters to the classical ones through application to indicators of the US economy, which remains the linchpin of the global economic system. To assess the superiority of the proposed filters, we develop and evaluate explicit tests of the null hypothesis of no difference in revision accuracy of two competing filters. Furthermore, asymptotic and exact finite-sample tests are proposed and illustrated to assess if two compared filters have equal probabilities of failing to detect turning points at different time horizons after their occurrence. }
-}
-@article{dagum1996new,
-  title={A new method to reduce unwanted ripples and revisions in trend-cycle estimates from X-11-ARIMA},
-  author={Dagum, Estela Bee},
-  journal={Survey Methodology},
-  volume={22},
-  pages={77--84},
-  year={1996},
-  publisher={Statistics Canada},
-  url={https://www150.statcan.gc.ca/n1/fr/pub/12-001-x/1996001/article/14383-fra.pdf?st=zUxzBC0K}
 }
 
 @article{fredmd,
@@ -120,12 +127,7 @@ doi = {10.1080/07350015.2015.1086655}
   abstract={We study the performance of several short-term trend estimators for current economic analysis. These estimators are available in X11-ARIMA, X12-ARIMA, TRAMO-SEATS and STAMP. We also include two other trend-cycle estimators obtained by post-processing seasonally adjusted data with X11ARIMA, namely, a modified Henderson nonlinear filter by Dagum (1996) DMH, and a new modified version of it, DMH-D. The estimators are applied to a number of simulated non-seasonal data of various levels of variability.},
   url = {http://www.accessecon.com/Pubs/EB/2009/Volume29/EB-09-V29-I1-P7.pdf}
 }
-@article{x11,
-  title={Comprendre la m{\'e}thode X11},
-  author={Ladiray, Dominique and Quenneville, Beno{\^i}t},
-  journal={Institut National de la Statistique et des {\'E}tudes {\'E}conomiques},
-  year={1999}
-}
+
 @inproceedings{x13,
   title={The X-13A-S seasonal adjustment program},
   author={Monsell, Brian C},
@@ -224,20 +226,6 @@ doi = {10.1080/07350015.2015.1086655}
   doi={10.3929/ethz-a-004957347},
 }
 
-@Article{GrayThomson2002,
-  author={Gray, Alistair G and Thomson, Peter J},
-  title={{On a Family of Finite Moving-Average Trend Filters for the Ends of Series}},
-  journal={Journal of Forecasting},
-  year=2002,
-  volume={21},
-  number={2},
-  pages={125-149},
-  month={March},
-  keywords={},
-  doi={},
-  abstract={ A family of finite end filters is constructed using a minimum revisions criterion and based on a local dynamic model operating within the span of a given finite central filter. These end filters are equivalent to evaluating the central filter with unavailable future observations replaced by constrained optimal linear predictions. Two prediction methods are considered: best linear unbiased prediction and best linear biased prediction where the bias is time invariant. The properties of these end filters are determined. In particular, they are compared to X-11 end filters and to the case where the central filter is evaluated with unavailable future observations predicted by global ARIMA models as in X-11-ARIMA or X-12-ARIMA. Copyright © 2002 by John Wiley \& Sons, Ltd.},
-  url={https://ideas.repec.org/a/jof/jforec/v21y2002i2p125-49.html}
-}
 
 @Article{tuckerwildi2020,
   Author={Mc{E}lroy, Tucker and Wildi, Marc},
@@ -273,7 +261,7 @@ doi = {10.1080/07350015.2015.1086655}
   TITLE = {Local regression and likelihood},
   YEAR = {1999},
   PAGES = {290},
-  ISBN = {0-387-9877},
+  ISBN = {978-0-387-98775-0},
   PUBLISHER = {New York: Springer-Verlag}
 }
 
@@ -346,7 +334,7 @@ url = {https://EconPapers.repec.org/RePEc:eee:econom:v:49:y:1991:i:1-2:p:275-304
   volume={14},
   number={1},
   pages={95-114},
-  month={September},
+  month={9},
   keywords={},
   doi={},
   url={https://ideas.repec.org/a/eee/econom/v14y1980i1p95-114.html}
@@ -381,7 +369,7 @@ year = "2008"
   volume={21},
   number={2},
   pages={125-149},
-  month={March},
+  month={3},
   keywords={},
   doi={},
   abstract={ A family of finite end filters is constructed using a minimum revisions criterion and based on a local dynamic model operating within the span of a given finite central filter. These end filters are equivalent to evaluating the central filter with unavailable future observations replaced by constrained optimal linear predictions. Two prediction methods are considered: best linear unbiased prediction and best linear biased prediction where the bias is time invariant. The properties of these end filters are determined. In particular, they are compared to X-11 end filters and to the case where the central filter is evaluated with unavailable future observations predicted by global ARIMA models as in X-11-ARIMA or X-12-ARIMA. Copyright © 2002 by John Wiley \& Sons, Ltd.},

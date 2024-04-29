@@ -21,7 +21,7 @@ for (crit in c("ce", "fe")) {
         select(!c(degree, h))
     }
     if (method == "arima") {
-      data <- data  %>% dplyr::filter(ny == "All") %>% 
+      data <- data  %>% dplyr::filter(ny == "12") %>% 
         select(!c(ny))
     }
     data <- data %>% select(!kernel)

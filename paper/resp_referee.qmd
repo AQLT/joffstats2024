@@ -10,7 +10,6 @@ format: pdf
 
 *It was corrected.*
 
-
 > 2. Page 5, line 53: replace "have" with "design", I think, because you are constructing these filters, right?
 
 *Indeed, it was corrected.*
@@ -31,7 +30,6 @@ So the results could be stated with references, and the derivations omitted, and
 
 *The $\forall q$ was omitted and this section was rewritten to make it clearer.*
 
-
 > 6. Table 1: I repeat the referees here. The table needs more explication in the text. What is $\omega_1$? Define $\nabla$, Guggemos, etc. 
 
 *The section 1.3.2 was removed: it's not central to the paper, and it would have made the reading more cumbersome to go into the details of the notations. Table 2 has also been removed *
@@ -49,7 +47,6 @@ So the results could be stated with references, and the derivations omitted, and
 That is, when you display the entries of the matrix $T$, you need to make a connection between those values and the concept of timeliness. 
 
 *More details are added to this section to explain how the matrix $T$ is defined by Grun-Rehomme et al. (2018).*
-
 
 > 10. Page 15, line 53: I don't see why $v$ in this equation should be defined through the case bracket;
 >everything starting with "with" could be moved to the following text. 
@@ -74,7 +71,8 @@ That is, when you display the entries of the matrix $T$, you need to make a conn
 > The treatment in section 1.2.1 suggests that $TC_t$ is an unknown possibly nonlinear deterministic function of time.
 > The variance inflation factor $\sum_k \theta_k^2$ implies that $I_t$ is white noise. 
 
-*The modelled of the input time series is now describe more precisely in section 2 (previous section 1). $TC_t$ is here considered as deterministic*
+*The modelled of the input time series is now describe more precisely in section 2 (previous section 1).* 
+*$TC_t$ is here considered as deterministic*
 
 > 2. The idea of minimizing the noise component ($M_\theta(I_t)\simeq 0$) is not very formal. 
 > Do you mean that the unconditional variance is minimized?
@@ -106,14 +104,14 @@ A nearest neighbour bandwidth should be interesting to consider: as such it woul
 
 *It was added in the beginning of new sections 3 and 4 than the bandwidth is fixed.* 
 *Nearest neighbour bandwidth was added in supplemental material but it doesn't improve the results in therm of phase shift.* 
-*One explanation could be that the bias is higher with LC/QL methodes (we model linear trend using higher bandwidth) and for other methods (e.g. DAF) that the revisions to the final symmetric filters are higher;*
+*One explanation could be that the bias is higher with LC/QL methodes (we model linear trend using higher bandwidth) and for other methods (e.g. DAF) that the revisions to the final symmetric filters are higher.*
 
 > 6. Is the phase shift related to the notion of bias in local polynomial smoothing?
 
 *In local polynomial smoothing, the notion of bias is associated to the approximation error of the smoothed series by a polynomial degree of order $d$.*
 *If the moving average $\theta$ preserve a polynomial of degree $d$, the bias at the date $t$ is then:*
 $$
-\mathbb E[\hat \mu(t)] - \mu(t)=\sum_{j=d+1}^{+\infty}\frac{\mu^{(j)}(t)}{j!}\sum_{k=-h}^k\theta_k k^j
+\mathbb E[\hat \mu(t)] - \mu(t)=\sum_{j=d+1}^{+\infty}\frac{\mu^{(j)}(t)}{j!}\sum_{k=-h}^h\theta_k k^j
 $$
 *It is then not directly related to the phase shift.*
 
@@ -126,7 +124,6 @@ Minor points
 > - Section 1.1. The symbol $p$ for the period is already in use from the previous section, where it denotes the bandwidth and number of past observations used by the filter.
 
 *The $p$ for the period was replaced by $s$*
-
 
 > - Page 4. The definition of the high-pass component (oscillations in the frequency range from $\pi/6$ to $\pi$) as undesirable oscillations is controversial.
 
@@ -150,7 +147,9 @@ Perhaps the authors should state that their intent is to separate the trend-cycl
 > - Page 8. What is the meaning of $y_1^*n\dots, y_h^*$ being the implicit forecasts induced by $w_0$, etc.? 
 The forecasts are obtained from an assumed polynomial trend model?
 
-*More details are added to this section. The definition is more general than the polynomial ind*
+*More details were added to this section to clarify the definition: the forecasts are obtained so that the filtered extended series (input + forecast) with the symmetric filter is equal to the filtered extended series with the asymmetric filters.* 
+*It doesn't correspond to the forecasts of the polynomial model.*
+*The definition is not restricted to moving averages build with local polynomial, the forecasts do not assumed polynomial trend model.*
 
 > - Table 1. Some criteria are labelled as Guggemos, not referenced in the main text.
 

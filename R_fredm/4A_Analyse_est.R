@@ -27,12 +27,17 @@ ggsave("paper/img/nber/ce16ov_fev2001_lp.pdf",
 
 all_plots <- get_all_plots(all_tp,
                            all_tp_rev,
-                           series = "CE16OV", tp_keep ="2020.25",
-                           nb_est = 8)
-wrap_plots(all_plots[names(legende)], ncol = 3) & scale_color_grey()
+                           series = "CE16OV", 
+                           tp_keep ="2020.25", tp_plot ="2020.25",
+                           nb_est = 8,
+                           vline = FALSE)
+p <- wrap_plots(all_plots[names(legende)], ncol = 3) & scale_color_grey() &
+  geom_vline(xintercept = detected_tp[detected_tp$series == series,paste0("X", "2020.25")], 
+             linetype = "dotted") &
+  labs(subtitle = NULL)
 
 ggsave("paper/img/nber/ce16ov_covid_lp.pdf",
-       plot = wrap_plots(all_plots[names(legende)], ncol = 3) & scale_color_grey(),
+       plot = p,
        width = 8, height = 8)
 
 data <- readRDS("data_fredm/byseries/RETAILx.RDS")[["2022"]]

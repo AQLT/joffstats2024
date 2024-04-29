@@ -110,13 +110,13 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
                  by=c("series","kernel", "method")) %>%
     select_var() %>%
     dplyr::filter(kernel =="henderson")
-
+  
   tp_arima <-
     merge(readRDS(sprintf("%stroughs_arima.RDS", dossier)),
           readRDS(sprintf("%speaks_arima.RDS", dossier)),
           by=c("series","kernel", "method")) %>%
     select_var()
-
+  
   tp_lic_final <-
     merge(readRDS(sprintf("%stroughs_localic_final.RDS", dossier)),
           readRDS(sprintf("%speaks_localic_final.RDS", dossier)),
@@ -125,7 +125,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
     select_var() %>%
     mutate(method = sprintf("%s_localic_final_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
-
+  
   tp_lic_final_daf <-
     merge(readRDS(sprintf("%stroughs_localic_daf_trunc.RDS", dossier)),
           readRDS(sprintf("%speaks_localic_daf_trunc.RDS", dossier)),
@@ -134,7 +134,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
     select_var() %>%
     mutate(method = sprintf("%s_localic_%s_%s", method, h, degree)) %>%
     select(!c(degree, h))
-
+  
   order_methods  <- c(
     "lc",
     "lc_localic_final_h6_d2",
@@ -155,7 +155,7 @@ get_all_tp <- function(dossier = "results_fredm/compile_tp_norev/") {
     "cq",
     "daf",
     "auto_arima"
-    )
+  )
   all_tp <-
     rbind(tp_lp,
           tp_arima,
@@ -178,11 +178,11 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
   data <- data[names(data) >= tp_keep][1:nb_est]
   data_info <- readRDS(sub("byseries", "byseriesinfo", s))
   data_info <- data_info[names(data_info) >= tp_keep][1:nb_est]
-
+  
   data_merge <- do.call(ts.union, data)
   data_merge <- window(data_merge, start = tp_date - nb_dates_before/frequency(data_merge))
   colnames(data_merge) <- as.character(zoo::as.yearmon(as.numeric(names(data))))
-
+  
   arima_prevs <- do.call(ts.union, lapply(data, function(y){
     first_date <- 1 + max(0, length(y) - nyears_arima * frequency(y))
     x_arima <- window(y, start = time(y)[first_date])
@@ -192,7 +192,7 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
        frequency = frequency(y))
   }))
   arima_prevs <- list(auto_arima = arima_prevs)
-
+  
   list_method <- c("LC", "QL", "CQ", "DAF")
   kernel = "Henderson"
   prevs_imp_lp <-
@@ -212,8 +212,8 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
       }))
     })
   names(prevs_imp_lp) <- tolower(list_method)
-
-
+  
+  
   data_info_lic <- readRDS(sprintf("data_fredm/byseriespente_final_nber/%s_h%i.RDS",
                                    series, h_localic))
   data_info_lic_daf <- readRDS(sprintf("data_fredm/byseriespente_daf_nber/%s_h%i.RDS",
@@ -249,10 +249,10 @@ get_all_prevs <- function(series, tp_keep, nb_est = 10, nb_dates_before = 6,
     }))
   })
   names(prevs_imp_localic_daf) <- sprintf("%s_localic_daf",tolower(list_method_localic))
-
+  
   all_prevs = c(prevs_imp_lp, prevs_imp_localic, prevs_imp_localic_daf,
                 arima_prevs
-                )
+  )
   all_prevs = lapply(all_prevs, function(x){
     colnames(x) <- colnames(data_merge)
     x
@@ -273,18 +273,22 @@ format_data_plot  <- function(data){
   reshape2::melt(dataGraph, id = "date") %>% na.omit()
 }
 plot_prevs <- function (data, data_prevs, date_tp =2020.25, titre = NULL, sous_titre = NULL, limits_y = NULL,
-                        linetype_prev = "dashed", outDec = ".") {
+                        linetype_prev = "dashed", outDec = ".", vline = TRUE) {
   x_lab = y_lab= NULL;
   n_xlabel = 6 ;n_ylabel = 4;
-
+  
   dataGraph <- format_data_plot(data)
   dataGraph_prevs <- format_data_plot(data_prevs)
   data_legend = dataGraph_prevs  %>%
     group_by(variable) %>%
     dplyr::filter(date == max(date)) %>% data.frame()
   p <- ggplot(data = dataGraph, aes(x = date, y = value, group = variable,
-                                    colour = variable)) +
-    geom_vline(xintercept = date_tp, linetype = "dotted") +
+                                    colour = variable)) 
+  if (vline){
+    p <- p + 
+      geom_vline(xintercept = date_tp, linetype = "dotted")
+  }
+  p <- p +
     geom_line(linewidth = 0.7) +
     geom_line(data = dataGraph_prevs,
               aes(x = date, y = value, group = variable,
@@ -299,6 +303,7 @@ plot_prevs <- function (data, data_prevs, date_tp =2020.25, titre = NULL, sous_t
     ) +
     coord_cartesian(ylim = limits_y) +
     theme_bw()
+  
   p +
     geom_text(aes(x = date, y = value, label =variable, colour = variable),
               data = data_legend, hjust = 0,
@@ -314,16 +319,20 @@ plot_prevs <- function (data, data_prevs, date_tp =2020.25, titre = NULL, sous_t
           plot.subtitle = element_text(hjust = 0.5,
                                        size=10,face="italic"))
 }
-plot_est <- function (data, date_tp =2020.25, titre = NULL, sous_titre = NULL, limits_y = NULL, outDec = ".") {
+plot_est <- function (data, date_tp =2020.25, titre = NULL, sous_titre = NULL, limits_y = NULL, outDec = ".",
+                      vline = TRUE) {
   x_lab = y_lab= NULL
   n_xlabel = 6 ;n_ylabel = 4;
-
+  
   dataGraph <- format_data_plot(data)
   data_legend = dataGraph %>%
     group_by(variable) %>%
     dplyr::filter(date == max(date)) %>% data.frame()
-  p <- ggplot(data = dataGraph) +
-    geom_vline(xintercept = date_tp, linetype = "dotted") +
+  p <- ggplot(data = dataGraph)
+  if (vline)
+    p <- p + geom_vline(xintercept = date_tp, linetype = "dotted")
+  
+  p <- p +
     geom_line(mapping = aes(x = date, y = value, group = variable,
                             colour = variable), linewidth = 0.7) +
     labs(title = titre, subtitle = sous_titre, x = x_lab,
@@ -350,8 +359,10 @@ plot_est <- function (data, date_tp =2020.25, titre = NULL, sous_titre = NULL, l
 }
 
 
-get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)],
-                          nb_est = 10, nb_dates_before = 6) {
+get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, 
+                          tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)],
+                          nb_est = 10, nb_dates_before = 6,
+                          vline = TRUE) {
   tp_keep_col <- paste0("X", tp_keep)
   column_to_remove <- grep(tp_keep_col,
                            grep("^X", colnames(all_tp),value = TRUE),
@@ -369,7 +380,7 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
                               round(.data[[tp_keep_col]]))
     ) %>%
     select(!c(!!column_to_remove, kernel, length))
-
+  
   if (!is.null(all_tp_rev)) {
     all_tp_rev_plot <-
       all_tp_rev %>% dplyr::filter(series %in% !!series) %>%
@@ -380,7 +391,7 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
       paste0(all_tp_plot[, "subtitle"],
              all_tp_rev_plot[, "subtitle"])
   }
-
+  
   all_mod_est <- lapply(seq_len(nrow(all_tp_plot)), function(i_row) {
     extract_est_data(method = all_tp_plot[i_row, "method"],
                      kernel = "henderson",
@@ -394,7 +405,8 @@ get_all_plots <- function(all_tp, all_tp_rev = NULL, series, tp_keep, tp_plot = 
              titre = all_tp_plot[i_row, "title"],
              sous_titre = all_tp_plot[i_row, "subtitle"],
              limits_y = all_range,
-             date_tp = as.numeric(tp_plot)
+             date_tp = as.numeric(tp_plot),
+             vline = vline
     )
   })
   names(plots) <- all_tp_plot$method
@@ -407,18 +419,19 @@ get_all_plots_prevs <- function(data_prevs,
                                 series,
                                 all_tp,
                                 all_tp_rev = NULL,
-                                tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)]) {
+                                tp_plot = detected_tp[detected_tp$series == series,paste0("X", tp_keep)],
+                                vline = TRUE) {
   tp_keep_col <- paste0("X", tp_keep)
   column_to_remove <- grep(tp_keep_col,
                            grep("^X", colnames(all_tp),value = TRUE),
                            value = TRUE, invert = TRUE)
   legend <- c(lc = "LC", ql = "QL",
-  cq = "CQ", daf = "DAF",
-  auto_arima = "ARIMA",
-  lc_localic_final_h6_d2 = "LC final local param.",
-  lc_localic_h6_d2 = "LC local param.",
-  ql_localic_final_h6_d2 = "QL final local param.",
-  ql_localic_h6_d2 = "QL local param.")
+              cq = "CQ", daf = "DAF",
+              auto_arima = "ARIMA",
+              lc_localic_final_h6_d2 = "LC final local param.",
+              lc_localic_h6_d2 = "LC local param.",
+              ql_localic_final_h6_d2 = "QL final local param.",
+              ql_localic_h6_d2 = "QL local param.")
   all_tp_plot <-
     all_tp %>%
     dplyr::filter(series == !!series, method %in% names(legend))%>%
@@ -448,7 +461,8 @@ get_all_plots_prevs <- function(data_prevs,
       data_prevs = data_prevs$prevs[[i_row]],
       titre = all_tp_plot[i_row, "title"],
       sous_titre = all_tp_plot[i_row, "subtitle"],
-      date_tp = as.numeric(tp_plot)
+      date_tp = as.numeric(tp_plot),
+      vline = vline
     )
   })
   names(plots) <- all_tp_plot$method

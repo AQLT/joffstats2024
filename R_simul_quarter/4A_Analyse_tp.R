@@ -65,13 +65,9 @@ legende <- c(lc = "LC", ql = "QL",
              lc_localic = "LC loc.\nparam.",
              ql_localic_final = "QL loc. param.\n(final estimates)",
              ql_localic = "QL loc.\nparam.",
-             auto_arima_ny8 = "ARIMA")
-all_tp %>%
-  filter(method %in%
-           names(legende),
-         kernel == "henderson") |>
-  pull(method) |>
-  unique()
+             auto_arima_ny12 = "ARIMA")
+
+
 p <- ggplot(all_tp %>%
               filter(method %in%
                        names(legende),

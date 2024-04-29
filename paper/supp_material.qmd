@@ -21,6 +21,13 @@ fig-cap-location: top
 
 \appendix
 
+```{r}
+#| include: false
+library(kableExtra)
+
+```
+
+
 # Coefficients, gain and phase shift functions {#sec-an-cof}
 
 ```{r, out.width="100%"}
@@ -148,9 +155,11 @@ Distribution of phase shift using nearest neighbour bandwidth.
 ```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp_localparam.pdf")
 ```
-Note: nearest bandwidth moving average are used to estimate slope and concavity.
-We thus do not distinguish local parametrisation and final local parametrisation which asumptions might not be plausible.
-Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).
+
+\justifying
+*Note: nearest bandwidth moving average are used to estimate slope and concavity.*
+*We thus do not distinguish local parametrisation and final local parametrisation which asumptions might not be plausible.*
+*Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).*
 
 Distribution of phase shift using nearest neighbour bandwidth for polynomial filters with local parametrisation.
 :::
@@ -167,4 +176,28 @@ knitr::include_graphics("img/simulations/phase_shift_simul_q.pdf")
 ```
 
 Distribution of phase shift on quarterly data.
+:::
+
+
+::: {#tbl-simulrev-q}
+```{r}
+#| echo: false
+rev_table <- readRDS("data/simulations_revisions_q.RDS")
+pack_row_index = c("$MAE_{fe}(q) = \\mathbb E\\\\left[\\\\left|(TC_{t|t+q} -  TC_{t|last})/TC_{t|last}\\\\right|\\\\right]$" = nrow(rev_table) / 2,
+                   "$MAE_{ce}(q)=\\mathbb E\\\\left[
+\\\\left|(TC_{t|t+q} - TC_{t|t+q+1})/TC_{t|t+q+1}\\\\right|
+\\\\right]$" = nrow(rev_table) / 2)
+rev_table  %>%
+  kable(format.args = list(digits = 2,
+                           decimal.mark = "."),
+        align = "c", booktabs = T, row.names = FALSE, 
+        escape = FALSE,format = "latex") %>%  
+  # kable_styling(latex_options=c(#"striped",  
+  #   "hold_position")) %>% 
+  pack_rows(index = pack_row_index, escape = FALSE) # %>%
+    # add_footnote_kable(stop_centering = TRUE)
+```
+
+
+Average of the relative deviations of the revisions for the different filters on simulated quarterly series with medium variability.
 :::
