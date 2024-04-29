@@ -47,8 +47,8 @@ p <- (ggplot_coef(x, q=0) + ggplot2::guides(colour = "none") )/ (
     ggplot_phase(x, xlim = c(0, pi), q = 0)+
     ggplot2::labs(y = "Phase shift") + ggplot2::guides(colour = "none")
 )
+p <- p & scale_color_grey()
 p
-
 ggsave("paper/img/filters_used/musgrave.pdf",
        width = 8, height = 4.5,
        plot = p)
