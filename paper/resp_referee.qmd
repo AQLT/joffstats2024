@@ -1,7 +1,11 @@
 ---
 title: "Response to referee"
+# format: docx
 format: pdf
+lang: en-GB  
 ---
+
+We would like to thanks all the reviewers and the associate editor for the comments, suggestions and the time spent proofreading the paper.
 
 # Associated Editor
 
@@ -104,7 +108,7 @@ A nearest neighbour bandwidth should be interesting to consider: as such it woul
 
 *It was added in the beginning of new sections 3 and 4 than the bandwidth is fixed.* 
 *Nearest neighbour bandwidth was added in supplemental material but it doesn't improve the results in therm of phase shift.* 
-*One explanation could be that the bias is higher with LC/QL methodes (we model linear trend using higher bandwidth) and for other methods (e.g. DAF) that the revisions to the final symmetric filters are higher.*
+*One explanation could be that the bias is higher with LC/QL methods (we model linear trend using higher bandwidth) and for other methods (e.g. DAF) that the revisions to the final symmetric filters are higher.*
 
 > 6. Is the phase shift related to the notion of bias in local polynomial smoothing?
 
@@ -127,7 +131,7 @@ Minor points
 
 > - Page 4. The definition of the high-pass component (oscillations in the frequency range from $\pi/6$ to $\pi$) as undesirable oscillations is controversial.
 
-*The term "undersirable oscillations" was removed*
+*The term "undesirable oscillations" was removed*
 
 > - Figure 1. In the caption, the ratio $I/C$ was never defined before.
 The description of the three panels should be better explained in the main text.
@@ -163,7 +167,7 @@ The forecasts are obtained from an assumed polynomial trend model?
 
 > The author simulates time series of length 60 years to illustrate the methodology at the end of the series.
 It may be worth considering (in addition) shorter series. 
-Another thought is that the ARIMA model being used to extend the series appears to be modeled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
+Another thought is that the ARIMA model being used to extend the series appears to be modelled using the full series; what if the ARIMA model used to extend the series was instead estimated using just a short span toward the end of the series?
 
 *Indeed it is in general not relevant to identify an ARIMA model on a monthly time series of length 60 years.*
 *In our case, since the same data generation process remains the same, it could be relevant and leads to better results in terms of delay to detect turning points (in supplement materials, a plot is added comparing the results with different spans to identify/estimate the ARIMA model).*
@@ -185,11 +189,11 @@ In addition, in the text, it would probably be preferable to use R (the letter i
 It might be the case that there is too much information to display neatly in some of these.
 
 *Figures are now black and white a scaled gray legend.*
-*In some of them, there are indeed a lot of information with several labels, but the goal is not to be able to read all the details of all the lines but to see the general behavior of the filters (for example if the implicit forecasts seem relevant or not)*
+*In some of them, there are indeed a lot of information with several labels, but the goal is not to be able to read all the details of all the lines but to see the general behaviour of the filters (for example if the implicit forecasts seem relevant or not)*
 
 > It is somewhat unclear just how prominent the new functionality being added via the R package rjd3filters is intended to be in this paper.
 
-*We try to clarify in the section associated to the proposed methods: all the functions mentionned are already in rjd3filters.*
+*We try to clarify in the section associated to the proposed methods: all the functions mentioned are already in rjd3filters.*
 *The local parametrisation is not directly in the package but can be easily implemented (especially because the code is available): the variance estimator is in the package but not the moving-averages associated to slope/concavity estimators (which can be easily derived)*
 
 Other (non-exhaustive) [only remarks that require a response]
@@ -200,7 +204,7 @@ Other (non-exhaustive) [only remarks that require a response]
 
 > - P2 L29:  “good properties” -- This could be less vague.
 
-*TODO*
+*More explanation with the reference in parentheses*
 
 > - P7 L58:  There is a $q$ introduced here via “$w_t^q$ for $t>q$” that shows up later as well, but  itself does not appear to be properly defined otherwise.
 
@@ -271,7 +275,7 @@ Providing explanations for the results shown in the figure would be crucial for 
 > The meaning of "second and third estimates" in Table 3 on page 22 is not clear. 
 I recommend that the authors provide a more detailed description or explanation of the results to improve comprehension.
 
-*A lecture note is added in the tables and more explainations are added to the text*
+*A lecture note is added in the tables and more explanations are added to the text*
 
 
 > 8.  Consideration of Different Series Periodicity
@@ -287,7 +291,7 @@ I recommend that the authors provide a more detailed description or explanation 
 I had to read the paper a couple of times to clearly identify the contribution.
 I found the contribution of the paper clearly stated on page 16, but I think I should come before in the text.
 
-*We try to clarify the contribution in the abtract, introduction and in the beginning of sections 2 and 3*
+*We try to clarify the contribution in the abstract, introduction and in the beginning of sections 2 and 3*
 
 > 2) The paper omits to consider the Covid19 period and how this influences the trend and cycle decomposition. 
 I understand that this is not the main focus of the paper, but at least the authors should address this problem in word and possible solution to address it, e.g. outlier correction, robust distributions, etc.

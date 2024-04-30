@@ -85,7 +85,7 @@ Distribution of phase shift associated to the local parametrisation of the linea
 knitr::include_graphics("img/simulations/phase_shift_simul_local_final_ql.pdf")
 ```
 
-Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real-time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
 :::
 
 ::: {#fig-graphs-ql-deg}
@@ -93,7 +93,7 @@ Distribution of phase shift associated to the local parametrisation of the quadr
 knitr::include_graphics("img/simulations/phase_shift_simul_local_ql.pdf")
 ```
 
-Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
+Distribution of phase shift associated to the local parametrisation of the quadratic-linear (QL) filter using real-time estimates of $\delta/\sigma$, by the bandwidth $h$ of the henderson filter used to estimate $\sigma$ and the degree $d$ of the trend to estimate $\delta$.
 :::
 
 
@@ -159,7 +159,7 @@ knitr::include_graphics("img/simulations/phase_shift_simul_nn_lp_localparam.pdf"
 \justifying
 *Note: nearest bandwidth moving average are used to estimate slope and concavity.*
 *We thus do not distinguish local parametrisation and final local parametrisation which asumptions might not be plausible.*
-*Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).*
+*Indeed, using the same framework as for fixed bandwidth, the final local parametrisation for real-time estimates would implie modelling a polynomial of degree 2 or 3 other 25 months (which doesn't seem plausible).*
 
 Distribution of phase shift using nearest neighbour bandwidth for polynomial filters with local parametrisation.
 :::
