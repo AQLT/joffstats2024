@@ -976,7 +976,7 @@ Implicit forecasts linked to successive estimates of the trend-cycle in US emplo
 
 ## Discussion
 
-In the section we discuss the applicability of the presented methods to other frequencies (@sec-other-freq) and some limits of the presented methods (for example sensibility to outliers like COVID-19, @sec-out-covid) .
+In the section we discuss the applicability of the presented methods to other frequencies (@sec-other-freq) and some limits of the presented methods (for example sensitivity to outliers like COVID-19, @sec-out-covid) .
 
 ### Other frequencies {#sec-other-freq}
 
