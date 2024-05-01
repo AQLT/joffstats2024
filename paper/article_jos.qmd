@@ -987,7 +987,7 @@ Mechanically, since fewer points are used, there will be less differences betwee
 For example, on simulated series the results are similar in terms of phase shift but revisions are reduced with local parametrisation (see supplemental material).
 
 Since X-13ARIMA-SEATS can only be applied for series with frequency lower than monthly, for higher frequencies (weekly, daily, etc.), there is no reference on the length of the filters to uses.
-The length of the filters can be determined using local polynomial methods, for example minimising a cross-validation statistics (using the function `rjd3filters::cross_validation()`) or with more complex methods as describe by @Loader1999, but it will surely be necessary to use higher bandwidth than for monthly series.
+The length of the filters can be determined using local polynomial methods, for example minimising a cross-validation statistics (using the function `rjd3filters::cv()`) or with more complex methods as describe by @Loader1999, but it will surely be necessary to use higher bandwidth than for monthly series.
 The larger the window, the greater the bias in assuming that the trend is locally of degree 1: the LC method will then be certainly less appropriate than other methods (QL, CQ or DAF).
 Moreover, since the bias is higher, the local parametrisation of the filters will surely have more impact.
 
