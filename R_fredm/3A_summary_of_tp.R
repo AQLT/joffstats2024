@@ -67,6 +67,7 @@ for(dir in c("localic_daf_trunc", "localic_final")){
     compute_time_lag(readRDS(f),                    
                      peaks = nber_tp_m[,"Peak"],
                      troughs = nber_tp_m[,"Trough"],
+                     type = "first_detection",
                      n_ahead_max = 12)
   })
   
