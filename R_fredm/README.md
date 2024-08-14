@@ -1,10 +1,12 @@
-Ce dossier rassemble tous les programmes relatifs aux analyses sur les données simulées (sauf ceux où l'on fait varier localement le ratio I/C qui sont dans le dossier `R_local_ic`).
+This folder contains all the programs used to analyse the real data from FRED.
 
-
-- `0_download_files.R` : pour télécharger les séries et ne sélectionner que celles utilisées
-- `1_infobyseries.R` : on calcule des statistiques sur toutes les séries (ratio I/C, longueur "optimale")
-- `2A_est_lp.R`, `2B_est_rkhs.R`, `2C_est_fst.R`, `2D_est_arima.R` : estimation des tendance_cycle à chaque date pour les différentes méthodes du document de travail et détection des points de retournement. Les résultats sont stockés dans un dossier `results_fredm`
-- `3B_summary_of_tp_norev.R` : calcul du déphasage sur toutes les méthodes mais en utilisant une définition différente : nombre de mois nécessaires pour détecter un point de retournement **sans révision future**
-- `4_utils.R` :  fonctions utilisées dans les programmes suivants pour résumer toutes les sorties et effectuer des graphiques
-- `4A_Analyse_est.R` : analyse des estimations successives de la tendance_cycle autour de certains points de retournement (utilise aussi les résultats sur la paramétrisation locale des filtres polynomiaux à partir des programmes du dossier `R_local_ic`)
-- `4B_Analyse_implicit_forecast_dt.R` : analyse des prévisions implicites (utilise aussi les résultats sur la paramétrisation locale des filtres polynomiaux à partir des programmes du dossier `R_local_ic`)
+- `0_download_files.R`: to download the series and select only those used
+- `1_infobyseries.R`: computes statistics on all series (I/C ratio, ‘optimal’ length)
+- `1A_Est_final_slope.R`: estimates the final slope and concavity  (for local parametrisation)
+- `1B_Est_real_time_slope.R`: estimates the slope and concavity in real-time (for local parametrisation)
+- `2A_est_lp.R`, `2B_est_local_param_final.R`, `2C_est_local_param_real_time.R`, `2D_est_arima.R`: estimation of trend-cycle at each date for the different methods in the paper and detection of turning points. The results are stored in a `results_fredm` folder
+- `3A_summary_of_tp.R`: calculation of the phase shift for all methods: number of months required to detect a turning point **without future revision** (usual definition but not the one used in the paper)
+- `3B_summary_of_tp_norev.R`: calculation of the phase shift for all methods but using a different definition: number of months required to detect a turning point **without future revision**.
+- `4_utils.R`: functions used in the following programs to summarise all outputs and produce graphs
+- `4A_Analyse_est.R`: analysis of successive estimates of the cycle_trend around certain turning points
+- `4B_Analyse_implicit_forecast.R`: analysis of implicit forecasts 

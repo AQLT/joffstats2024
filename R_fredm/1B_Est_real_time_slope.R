@@ -5,10 +5,10 @@ plan(multisession)
 if(!dir.exists("data_fredm/byseriespente_daf_nber"))
   dir.create("data_fredm/byseriespente_daf_nber")
 
-# Dans ce programme, pour paramétrer les méthodes LC et QL :
-# 1. On prend les MM asymétriques d'estimation de la pente et polynôme degré 2 et on fait une estimation en temps réel
-# Pour chaque date on a donc h+1=6+1 moyennes mobiles
-# 2. la variance est estimée à chaque date sur les données connues
+# In this program, to parameterise the LC and QL methods:
+# 1. we take the asymmetric MMs for estimating the slope and polynomial degree 2 and we estimate them in real time.
+# For each date we therefore have h+1=6+1 moving averages
+# 2. the variance is estimated at each date on the known data
 
 X_gen <- function(d = 1, p = 6, q = p){
   sapply(0:d, function(exp) seq(-p, q)^exp)
