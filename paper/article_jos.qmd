@@ -71,9 +71,11 @@ For example, for trend-cycle extraction, X-11 uses Henderson's symmetric filter 
 Since the predicted values are linear combinations of past values, this amounts to applying asymmetric moving averages at the end of the series.
 If the classic asymmetric moving averages have good properties regarding the future revisions induced by the process (for example @pierce1980SA shows similar performances in terms of revisions of X-11 compared to theoretically superior procedure based on ARIMA forecast models), they create, by construction, phase shifts that impact the real-time estimation of turning points, introducing time delay in the detection.
 
+In the last decades, numerous authors proposed methods for the construction of alternative moving averages to derive trend-cycle estimates.
+In particular, @trilemmaWMR2019 put forth a model-based approach based on the mean squared error decomposition, while @proietti2008, @dagumbianconcini2008 and @ch15HBSA proposed non-parametric methods based, respectively, on local polynomial regression, Reproducing Kernel Hilbert Space (RKHS) theory and minimising of a weighted sum of moving average quality criteria.
+All of the aforementioned approaches encompass both Henderson's symmetric filter and Musgrave's asymmetric filters.
+More recently, @inseeDTM202401 conducted a comparative analysis of these methods by describing a general unifying framework to derive moving averages; @dagumBianconcini2023 provided statistical tests to assess the main properties of the filters defined in terms of revisions and the detection of turning points.
 
-Using local polynomial regression, @proietti2008 developed a general class of symmetric and asymmetric moving averages.
-In particular, this class encompass Henderson's symmetric filter and Musgrave's asymmetric filters.
 The aim of this study is to propose two extensions to the @proietti2008 class of filters in order to take account of two drawbacks of those methods: 
 firstly  adding, in the optimisation process, a timeliness criterion to directly control the phase shift (i.e., the delay in detecting turning points);
 secondly calibrating asymmetric filters locally, while they are generally calibrated globally using assumptions that may be wrong locally.
@@ -288,64 +290,6 @@ Furthermore, since the coefficients of the symmetric filter (and therefore the w
 This is why it may be necessary to define alternative criteria for judging the quality of asymmetric moving averages.
 
 
-<!-- ### Quality indicators for asymmetric moving averages {#subsec:crit-qual} -->
-
-<!-- For asymmetric filters, most of the criteria come from those defined by @ch15HBSA and @trilemmaWMR2019 to build asymmetric filters.  -->
-<!-- They are summarised in @tbl-qc and can be calculated using the `rjd3filters::diagnostic_matrix()` function. -->
-
-<!-- @ch15HBSA propose a general approach to derive linear filters, based on an optimisation problem involving three criteria: *Fidelity* ($F_g$), *Smoothness* ($S_g$) and *Timeliness* ($T_g$). -->
-<!-- Fidelity can be directly linked to the reduction in variance created by the filter, and timeliness to the notion of phase shift, which again we want to be low.  -->
-<!-- This method can be used in R with the function `rjd3filters::fst_filter()`. -->
-
-<!-- @trilemmaWMR2019 propose an approach based on the decomposition of the mean squared error between the symmetric and the asymmetric filter in four quantities: *Accuracy* ($A_w$), *Timeliness* ($T_w$), *Smoothness* ($S_w$) and *Residual* ($R_w$). -->
-<!-- A simplified version of this method can be used in R with the function `rjd3filters::dfa_filter()`. -->
-
-<!-- ```{r, include=FALSE} -->
-<!-- title <- "Quality criteria for a moving average $\\boldsymbol\\theta=(\\theta_k)_{-p\\leq k\\leq f}$ defined by a gain function $\\rho_{\\boldsymbol\\theta}$ and a phase shift function $\\varphi_{\\boldsymbol\\theta}$." -->
-<!-- footnotes <- c("$X_g$ criteria from Grun-Rehomme, Guggemos, and Ladiray (2018) and $X_w$ criteria from Wildi and McElroy (2019).", -->
-<!--                "$\\rho_s$ and  $\\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.", -->
-<!--                "$h$ e is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\\frac{1}{2(1-\\cos(x))}$)." -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ::: {#tbl-qc} -->
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- criteria_mm <- data.frame(Sigle = c("b_c", "b_l", "b_q", -->
-<!--                                     "F_g", "S_g", "T_g", -->
-<!--                                     "A_w", "T_w", "S_w", "R_w"), -->
-<!--                           Description = c(sprintf("%s bias", c("Constant", "Linear", "Quadratic")), -->
-<!--                                           sprintf("%s (Grun-Rehomme et al)", -->
-<!--                                                   c("Variance reduction / Fidelity", "Smoothness", "Timeliness")), -->
-<!--                                           sprintf("%s (Wildi and McElroy)",c("Accuracy", "Timeliness", "Smoothness", "Residual"))), -->
-<!--                           Formule = c("\\sum_{k=-p}^{+f}\\theta_{k}-1", -->
-<!--                                       "\\sum_{k=-p}^{+f}k\\theta_{k}", -->
-<!--                                       "\\sum_{k=-p}^{+f}k^{2}\\theta_{k}", -->
-<!--                                       "\\sum_{k=-p}^{+f}\\theta_{k}^{2}", -->
-<!--                                       "\\sum_{j}(\\nabla^{3}\\theta_{j})^{2}", -->
-<!--                                       "\\int_{0}^{\\omega_1}\\rho_{\\boldsymbol\\theta}(\\omega)\\sin(\\varphi_{\\boldsymbol\\theta}(\\omega))^{2}\\ud\\omega", -->
-<!--                                       "2\\int_0^{\\omega_1}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega", -->
-<!--                                       "8\\int_0^{\\omega_1} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega", -->
-<!--                                       "2\\int_{\\omega_1}^{\\pi}\\left(\\rho_{s}(\\omega)-\\rho_{\\boldsymbol\\theta}(\\omega)\\right)^{2}h(\\omega)\\ud\\omega", -->
-<!--                                       "8\\int_{\\omega_1}^{\\pi} \\rho_{s}(\\omega)\\rho_{\\boldsymbol\\theta}(\\omega)\\sin^{2}\\left(\\frac{\\varphi_s(\\omega)-\\varphi_{\\boldsymbol\\theta}(\\omega)}{2}\\right)h(\\omega)\\ud\\omega")) -->
-<!-- criteria_mm[,1] <- sprintf("$%s$", criteria_mm[,1]) -->
-<!-- criteria_mm[,3] <- sprintf("$%s$", criteria_mm[,3]) -->
-
-<!-- criteria_mm %>% -->
-<!--   kbl(align = "c", booktabs = T, row.names = FALSE, -->
-<!--         escape = FALSE,caption = title)  %>% -->
-<!-- kable_styling(latex_options = "scale_down")  -->
-<!--     # add_footnote_kable(stop_centering = TRUE) -->
-<!-- ``` -->
-
-<!-- *Note: $X_g$ criteria from Grun-Rehomme et al (2018) and $X_w$ criteria from Wildi and McElroy (2019).* -->
-<!-- *$\rho_s$ and $\varphi_s$ represent the gain and phase shift function of the symmetric Henderson filter.* -->
-<!-- *$h$ is the spectral density of the input series, considered to be that of white noise ($h_{WN}(x)=1$) or a random walk ($h_{RW}(x)=\frac{1}{2(1-\cos(x))}$).* -->
-
-<!-- Quality criteria for a moving average $\boldsymbol\theta=(\theta_k)_{-p\leq k\leq f}$ defined by a gain function $\rho_{\boldsymbol\theta}$ and a phase shift function $\varphi_{\boldsymbol\theta}$. -->
-<!-- ::: -->
-
-
 # Non-parametric regression and local polynomial regression {#sec-nonparamreg}
 
 Many trend-cycle extraction methods are based on non-parametric regressions, which are particularly flexible because they do not assume any predetermined dependency in the predictors. 
@@ -516,11 +460,11 @@ These asymmetric filters depend on the ratio $\lvert\delta_1/\sigma\rvert$, whic
 This ratio is used in particular in X-11 to determine the length of the Henderson filter. 
 For monthly data:
 
-- If the ratio is large ($3.5< R$) then a 23-term filter is used (to remove more noise).
+- If the ratio is large ($3.5< R$) then a 23-term filter is used (to remove more noise) and the ratio $R=4.5$ is used in X-11 to define the Musgrave filter.
 
-- If the ratio is small ($R<1$) a 9-term filter is used.
+- If the ratio is small ($R<1$) a 9-term filter is used and the ratio $R=1$ is used in X-11 to define the Musgrave filter.
 
-- Otherwise (most of the cases) a 13-term filter is used.
+- Otherwise (most of the cases) a 13-term filter is used and the ratio $R=3.5$ is used in X-11 to define the Musgrave filter.
 
 When $\boldsymbol U$ corresponds to the first $d^*+1$ columns of $\boldsymbol X$, $d^*<d$, the constraint is to reproduce polynomial trends of degree $d^*$.
 This introduces bias but reduces the variance. 
@@ -534,73 +478,6 @@ We obtain Musgrave filters when the Henderson filter is used for the symmetric f
 3. *Cubic-Quadratic* (CQ): $y_t$ cubic ($d=3$) and $\boldsymbol v$ preserves quadratic signals ($d^*=2$).
 
 Supplemental materials shows the coefficients, gain and phase shift functions of the four asymmetric filters.
-
-<!-- Table\ \ref{tab-criteriaLp} compares the quality criteria of the different methods using the Henderson filter and $h=6$ (a symmetric filter with 13 terms).  -->
-<!-- For real-time filters ($q=0$), a more complex asymmetric filter (in terms of polynomial preservation) results in lower timeliness and higher fidelity/smoothness: reduction in phase shift comes at the expense of an increase in variance.  -->
-<!-- This result varies as $q$ increases: for $q=2$, the QL filter has greater timeliness than the LC filter.  -->
-<!-- This surprising result highlights the fact that the phase shift is not controlled by @proietti2008's approach. -->
-
-<!-- In terms of revision ($A_w+S_w+T_w+R_w$), the LC and QL filters consistently outperform the CQ and DAF filters.  -->
-
-<!-- These theoretical properties are consistent with the empirical results observed in @sec-comparison. Revisions are more important for the CQ and DAF filters, which leads to greater variability in estimations and a longer delay in detecting turning points.  -->
-<!-- The globally parametrised QL filter (with $R$ fixed for all asymmetric filters) may result in later detection of turning points than the LC filter. -->
-<!-- Indeed, to identify a turning point at date $t$, it is necessary to have knowledge of at least two points after the given date to confirm the reversal in trend. -->
-
-
-<!-- ::: {#tbl-criteraLp} -->
-<!-- ```{r echo = FALSE} -->
-<!-- #| echo: false -->
-<!-- lp_diagnostics <- readRDS("data/lp_diagnostics_henderson.RDS") -->
-<!-- lp_diagnostics[,"$ EQM_w $"] <- rowSums(lp_diagnostics[,grep("_w", colnames(lp_diagnostics), fixed = TRUE)]) -->
-<!-- colnames(lp_diagnostics) <- gsub(" ?\\$ ?","$",colnames(lp_diagnostics)) -->
-<!-- lp_diagnostics[,1] <- gsub(" ?\\$ ?","$",lp_diagnostics[,1]) -->
-<!-- groupement <- table(lp_diagnostics[,1]) -->
-<!-- lp_diagnostics[,-(1:2)] <- round(lp_diagnostics[,-(1:2)],2) -->
-<!-- lp_diagnostics[,-1] %>% -->
-<!--   kable(format.args = list(digits = 2, -->
-<!--                            decimal.mark = "."), align = "c", booktabs = T, row.names = FALSE, -->
-<!--         escape = FALSE,caption = title,format = "latex") %>% -->
-<!--   kable_styling(latex_options=c(#"striped", -->
-<!--       "hold_position")) %>% -->
-<!--   pack_rows(index = groupement, escape = FALSE) %>% -->
-<!--   footnote("With $EQM_w=A_w + S_w + T_w + R_w$.") -->
-<!-- ``` -->
-
-<!-- Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.5$. -->
-<!-- ::: -->
-
-<!-- ```{=tex} -->
-<!-- \begin{table}[!h] -->
-<!-- \caption{\label{tab-criteriaLp} Quality criteria for asymmetric filters ($q=0,1,2$) computed by local polynomials using the Henderson kernel with $h=6$ and $R=3.55$.} -->
-<!-- \centering -->
-<!-- \begin{tabular}[t]{cccccccccccc} -->
-<!-- \toprule -->
-<!-- Method & $b_c$ & $b_l$ & $b_q$ & $F_g$ & $S_g$ & $T_g \times 10^{-3}$ & $A_w$ & $S_w$ & $T_w$ & $R_w$ & $EQM_w$\\ -->
-<!-- \midrule -->
-<!-- \addlinespace[0.3em] -->
-<!-- \multicolumn{12}{l}{\textbf{$q=0$}}\\ -->
-<!-- \hspace{1em}LC & 0 & -0.41 & -2.16 & 0.39 & 1.27 & 30.34 & 0.10 & 0.49 & 0.41 & 0.55 & 1.54\\ -->
-<!-- \hspace{1em}QL & 0 & 0.00 & -0.47 & 0.71 & 5.15 & 0.05 & 0.07 & 1.89 & 0.00 & 0.11 & 2.07\\ -->
-<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.91 & 11.94 & 0.01 & 0.02 & 2.23 & 0.00 & 0.10 & 2.35\\ -->
-<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.94 & 14.20 & 0.00 & 0.01 & 2.18 & 0.00 & 0.10 & 2.29\\ -->
-<!-- \addlinespace[0.3em] -->
-<!-- \multicolumn{12}{l}{\textbf{$q=1$}}\\ -->
-<!-- \hspace{1em}LC & 0 & -0.12 & -0.52 & 0.27 & 0.43 & 4.80 & 0.01 & 0.12 & 0.06 & 0.11 & 0.30\\ -->
-<!-- \hspace{1em}QL & 0 & 0.00 & -0.06 & 0.29 & 0.71 & 0.69 & 0.00 & 0.19 & 0.01 & 0.04 & 0.25\\ -->
-<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.57 & 0.16 & 0.02 & 0.58 & 0.00 & 0.06 & 0.66\\ -->
-<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.41 & 0.37 & 0.06 & 0.02 & 0.76 & 0.00 & 0.06 & 0.84\\ -->
-<!-- \addlinespace[0.3em] -->
-<!-- \multicolumn{12}{l}{\textbf{$q=2$}}\\ -->
-<!-- \hspace{1em}LC & 0 & 0.00 & 1.08 & 0.20 & 0.08 & 0.35 & 0.01 & 0.01 & 0.00 & 0.01 & 0.04\\ -->
-<!-- \hspace{1em}QL & 0 & 0.00 & 0.03 & 0.22 & 0.05 & 2.08 & 0.00 & 0.01 & 0.02 & 0.07 & 0.10\\ -->
-<!-- \hspace{1em}CQ & 0 & 0.00 & 0.00 & 0.37 & 0.66 & 0.13 & 0.02 & 0.56 & 0.00 & 0.06 & 0.64\\ -->
-<!-- \hspace{1em}DAF & 0 & 0.00 & 0.00 & 0.40 & 0.77 & 0.02 & 0.02 & 0.68 & 0.00 & 0.05 & 0.74\\ -->
-<!-- \bottomrule -->
-<!-- \end{tabular} -->
-
-<!-- \textit{Note: With $EQM_w=A_w + S_w + T_w + R_w$.} -->
-<!-- \end{table} -->
-<!-- ``` -->
 
 
 ## Extension with the timeliness criterion {#sec-lptimeliness}
@@ -685,7 +562,8 @@ In this paper we study monthly series with small bandwidth ($h=6$), and the vari
 
 - The parameter $\delta$ can be estimated by moving average from @eq-mmsym. 
 For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
-The DAF method then simply allows us to calculate the associated asymmetric moving averages.  
+The DAF method then simply allows us to calculate the associated asymmetric moving averages.
+To avoid unrealistic estimates of $|\delta/\sigma|=2/(|R|\sqrt{\pi})$ in real-time, with $R$ the I-C ratio defined in @sec-lppasymf, the value of $|R|$ is truncated to a maximum of 12 (the higher value used in X-11 being 4.5).
 For the construction of moving averages, the trend can be modelled as being locally of degree 2 or 3 (this has no impact on the final estimate of concavity).
 In this paper, we have chosen to model a trend of degree 2: this slightly reduces the phase shift (see supplemental material) but slightly increases the revisions linked to the first estimate of the trend-cycle. 
 @Fig-mmpenteconcac shows the moving averages used.
