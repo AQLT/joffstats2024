@@ -1,7 +1,7 @@
 # # To install rjd3filters
-# remotes::install_github("rjdemetra/rjd3toolkit")
-# remotes::install_github("rjdemetra/rjd3x11plus")
-# remotes::install_github("rjdemetra/rjd3filters")
+# remotes::install_github("rjdverse/rjd3toolkit")
+# remotes::install_github("rjdverse/rjd3x11plus")
+# remotes::install_github("rjdverse/rjd3filters")
 library(rjd3filters)
 library(ggplot2)
 library(patchwork)

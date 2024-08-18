@@ -1,16 +1,13 @@
-Ce dossier rassemble tous les programmes relatifs aux analyses sur les données simulées (sauf ceux où l'on fait varier localement le ratio I/C qui sont dans le dossier `R_local_ic`).
+This folder contains all the programs used to analyse results on **monthly** simulated data
 
-- `1A_data_creation.R` : création des données simulées
-- `1B_plot_data.R` : graphique des données simulées pour le document de travail
-- `2A_est_lp.R`, `2B_est_rkhs.R`, `2C_est_fst.R`, `2D_est_arima.R` : estimation des tendance_cycle à chaque date pour les différentes méthodes du document de travail et détection des points de retournement. Les résultats sont stockés dans un dossier `results_simul` 
-- `3A_summary_of_tp.R` : calcul du déphasage sur toutes les méthodes 
-- `3B_summary_of_tp_norev.R` : calcul du déphasage sur toutes les méthodes mais en utilisant une définition différente : nombre de mois nécessaires pour détecter un point de retournement **sans révision future**
-- `3C_summary_of_rev.R` : analyse des statistiques sur les révisions
-- `4_utils.R` :  fonctions utilisées dans les programmes suivants pour résumer toutes les sorties et effectuer des graphiques
-- `4A_Select_fst_filter.R` : sélection du filtre FST optimal
-- `4B_Analyse_tp.R` : analyse des statistiques sur les points de retournement (utilise aussi les résultats sur la paramétrisation locale des filtres polynomiaux à partir des programmes du dossier `R_local_ic`)
-- `4C_Analyse_tp_by_kernel.R` : analyse des statistiques sur les points de retournement en utilisant différents noyaux pour l'estimation polynomiale
-- `5_analyse_revisions.R` : analyse des révisions (utilise aussi les résultats sur la paramétrisation locale des filtres polynomiaux à partir des programmes du dossier `R_local_ic`)
-- `9_cross_validation_test.R` : tests sur la validation croisée pour la sélection de la longueur du filtre, non mentionné dans le DT
-
-
+- `1A_data_creation.R`: creation of simulated data
+- `1B_plot_data.R`: graph of simulated data
+- `1C_Est_final_slope.R`, `1C_Est_final_slope_nn.R`, `1D_Est_real_time_slope.R`: estimates of the slope and the concavity, final estimates (usual filters and nearest neighbour) and real-time estimates 
+- `1E_Example_slope_concavity.R`: example of slope and concavity estimates (figure 3)
+- `2A_est_lp_nn.R`, `2A_est_lp.R`, `2B_est_local_param_final_nn.R`, `2B_est_local_param_final.R`, `2C_est_local_param_real_time.R`, `2D_est_arima_robust.R` (different estimates span), `2D_est_arima.R` (full span), `2E_est_nn_hen.R`, `2F_est_nnr_lp.R`: estimation of the trend-cycle at each date for the different methods in the working document and detection of turning points. The results are stored in a `results_simul` folder. 
+- `3A_summary_of_tp.R`: calculation of the phase shift for all methods: number of months required to detect a turning point (usual definition but **not the one used in the paper**)
+- `3B_summary_of_tp_norev.R`: calculation of the phase shift for all methods but using a different definition: number of months required to detect a turning point **without future revision** (**definition used in the paper**).
+- `3C_summary_of_rev.R`: analysis of statistics on revisions
+- `4_utils.R`: functions used in the following programs to summarise all outputs and produce graphs 
+- `4B_Analyse_tp.R`: analysis of statistics on turning points defined as the number of months required to detect a turning point (usual definition but **not the one used in the paper**)
+- `4A_Analyse_tp_rev.R`: analysis of statistics on turning points defined as the number of months required to detect a turning point **without future revision** (**definition used in the paper**).
