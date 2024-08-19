@@ -5,7 +5,7 @@ plan(multisession)
 if(!dir.exists("data_fredm/byseriespente_daf_nber"))
   dir.create("data_fredm/byseriespente_daf_nber")
 
-# In this program, to parameterise the LC and QL methods:
+# In this program, to parametrise the LC and QL methods:
 # 1. we take the asymmetric MMs for estimating the slope and polynomial degree 2 and we estimate them in real time.
 # For each date we therefore have h+1=6+1 moving averages
 # 2. the variance is estimated at each date on the known data
