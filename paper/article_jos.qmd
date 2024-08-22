@@ -18,6 +18,7 @@ format:
       - left = 2.5cm
       - right = 2.5cm
     cite-method: biblatex
+    output-file: main_document
 crossref:
   tbl-prefix: table
   fig-prefix: figure
@@ -38,6 +39,16 @@ csl: chicago-author-date.csl
 library(kableExtra)
 ```
 
+
+::: {.content-visible when-format="docx"}
+$$
+\DeclareMathOperator{\e}{e}
+\newcommand\transp[1]{{#1}^T}
+\newcommand\1{{\mathbb 1}}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand\ud{\,\mathrm{d}}
+$$
+:::
 
 # Abstract {-}
 
@@ -131,8 +142,8 @@ $$
 Y_t = M_{\boldsymbol\theta}y_t = \sum_{k=-p}^{+f} \theta_k \e^{-i \omega (t+k)}
 = \left(\sum_{k=-p}^{+f} \theta_k \e^{-i \omega k}\right)\cdot y_t.
 $$
-The function $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{-i \omega k}$ is called the *transfer function* or *frequency response function*.
-The frequency response function can alternatively be defined as $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{i \omega k}$ or $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k e^{2\pi i \omega k}$.
+The function $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k \e^{-i \omega k}$ is called the *transfer function* or *frequency response function*.
+The frequency response function can alternatively be defined as $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k \e^{i \omega k}$ or $\Gamma_{\boldsymbol\theta}(\omega)=\sum_{k=-p}^{+f} \theta_k \e^{2\pi i \omega k}$.
 It can be rewritten as:
 $$
 \Gamma_{\boldsymbol\theta}(\omega) = \rho_{\boldsymbol\theta}(\omega)\e^{i\varphi_{\boldsymbol\theta}(\omega)},
@@ -212,18 +223,6 @@ $$
 $$
 - If $M_{\boldsymbol\theta}$ is symmetric ($p=f$ and $\theta_{-k} = \theta_k$) and preserves polynomials of degree $2d$ then it also preserves polynomials of degree $2d+1$.
 
-<!-- ### Noise reduction -->
-
-<!-- All time series are affected by noise, which can blur the extraction of trends and cycles. -->
-<!-- This is why we try to reduce this noise (by reducing its variance) while preserving the relevant trends. -->
-<!-- The sum of the squares of the coefficients $\sum_{k=-p}^{+f}\theta_k^2$ is the *reduction of variance* ratio. -->
-
-<!-- Indeed, let $\{\varepsilon_t\}$ be a sequence of independent random variables with $\E{\varepsilon_t}=0$, $\V{\varepsilon_t}=\sigma^2$: -->
-<!-- $$ -->
-<!-- \V{M_{\boldsymbol\theta}\varepsilon_t}=\V{\sum_{k=-p}^{+f} \theta_k \varepsilon_{t+k}} -->
-<!-- = \sum_{k=-p}^{+f} \theta_k^2 \V{\varepsilon_{t+k}}= -->
-<!-- \sigma^2\sum_{k=-p}^{+f} \theta_k^2. -->
-<!-- $$ -->
 
 
 ## Real-time estimation and asymmetric moving average {#sec-mmasym}
