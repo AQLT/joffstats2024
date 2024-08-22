@@ -1,0 +1,82 @@
+---
+title: "Response to referee (JOS-2023-0137.R1)"
+format: 
+  pdf:
+    geometry:
+      - top=2cm
+      - bottom=2cm
+      - left = 2.5cm
+      - right = 2.5cm
+lang: en-GB  
+---
+
+We would like to thanks all the reviewers and the associate editor for the comments, suggestions and the time spent proofreading the paper.
+
+# Associated Editor
+
+All the comments and suggestions were taken into account and the paper was improved accordingly.
+The "Lecture" was also removed for the table and put in the text.
+
+# Referee 3
+
+Thank you for reviewing our paper.
+However, it seems that you might have read the previous version of the paper since the reference to the pages/lines are not valid, the title has been changed and almost all the detailed comments have been adressed in the revised version of the paper.
+Below are our responses (*in italics*) to your comments and suggestions.
+
+
+## General comments
+
+> While the manuscript is comprehensive and methodologically sound, some sections could benefit from additional clarification to enhance readability and understanding. 
+The literature review should be expanded to better contextualize this work within the broader field of time series analysis and trend estimation. 
+Additionally, validating key assumptions, such as the proportional odds assumption, needs to be more thoroughly addressed.
+Comparative analysis with existing methods would provide a more balanced view of the proposed approach's strengths and limitations.
+
+*The manuscript was simplified and clarified and a literature review has been added in the introduction.*
+*The proposed approach was compared to the classical parametrisation of local polynomial filters (the "global parametrisation" corresponds to the current usual approach, the LC method corresponds to the Musgrave filter used in the X-11 decomposition method).*
+*The proportional odds assumption (same slope in all the sample for the LC/Musgrave filter, same concavity for the QL filter) is the usual assumption made in the current methods but the aim of the proposed approach is to release this assumption (local parametrisation).*
+*Even if the proposed approach could be compared to other recent methods mentioned in the bibliography, it would have complexify the readability of the paper (and considerably increased the number of pages, which we believe would not be relevent for a research paper).*
+*Therefore, we decided to limit the comparison to the classical parametrisation used in X-11 (Musgrave=LC with "global parametrisation") and to the other local polynomial filters (filters for which we proposed extensions).*
+*However, we have added in the bibliography a working paper with a broader comparison of the existing methods and their implementation in `rjd3filters`.*
+
+## Detailed Comments
+
+> 1. The introduction effectively outlines the importance of real-time trend estimation but could provide a broader overview of related methods and how this research fits within the existing literature.
+
+*The following has been added to the introduction, mentioning the recent literature trend-cycle estimates using moving averages:*\
+*In the last decades, numerous authors proposed methods for the construction of alternative moving averages to derive trend-cycle estimates. In particular, Wildi and McElroy (2019) put forth a model-based approach based on the mean squared error decomposition, while Proietti and Luati (2008), Dagum and Bianconcini (2008) and Grun-Rehomme, Guggemos, and Ladiray (2018) proposed non-parametric methods based, respectively, on local polynomial regression, Reproducing Kernel Hilbert Space (RKHS) theory and minimising of a weighted sum of moving average quality criteria. All of the aforementioned approaches encompass both Henderson’s symmetric filter and Musgrave’s asymmetric filters. More recently, Quartier-la-Tente (2024) conducted a comparative analysis of these methods by describing a general unifying framework to derive moving averages; Dagum and Bianconcini (2023) provided statistical tests to assess the main properties of the filters defined in terms of revisions and the detection of turning points.*
+
+
+> 2. The methodology section is robust but dense. More intuitive explanations or graphical representations of key concepts could enhance accessibility for readers.
+
+*Adressed in the first revision of the paper: this section was rewriten in the and simplified to make it clearer (unused sections were removed).*
+
+> 2.  Some symbols and notations, such as the symbol [[ ]] on page 11, lines 53-54, are not clearly defined. Providing explicit definitions or explanations would prevent any ambiguity.
+
+*Adressed in the first revision of the paper: This symbol was referring to integer interval, it was removed to avoid confusion (for example $[[1,d]]$ was replaced by $\{1,2,\dots, d\}$).*
+
+> 4. It would be helpful to explain how phase shift is computed more clearly. More details on the method used for determining phase shift, particularly in relation to the identification of true turning points, would also be beneficial.
+
+*Adressed in the first revision of the paper: The corresponding text was rewritten to clarify the definition of phase-shift used in this paper.*
+
+> 5. Variance Determination: The determination of variance in the local parameterization of asymmetric filters (page 17) could be more detailed. Clearly identifying the quantities appearing in the denominator would improve understanding.
+
+*Adressed in the first revision of the paper: More explanations was added to this paragraph: the formula comes from local regression theory simplified because we are here in the case of local polynomial approximation.*
+
+> 6. Applicability to High-Frequency Data: The manuscript should explicitly address the proposed procedure's applicability to high-frequency data. Discussing any necessary modifications or considerations for such data would provide a more comprehensive understanding of the methodology.
+
+*Adressed in the first revision of the paper: Quarterly series with simulated data are added in supplemental material, a new section was added to discuss the use of the methods with different periodicities (high-frequency).*
+
+
+# Other modifications
+
+- In section 3.4 (description of the local parameterisation approach), a was added to clarify an implementation choice which wasn't mentionned in the previous version of the paper: for the real time estimates of the slope/concavity, since the moving averages used can lead to a lot of variability (DAF filters), the I/C ratio computed using the slope/concavity + variance estimated was truncated to a maximum of 12 (the higher value used in X-11 being 4.5). The following sentence was added to the paper:\
+*To avoid unrealistic estimates of $|\delta/\sigma|=2/(|R|\sqrt{\pi})$ in real-time, where $R$ is the I-C ratio defined in section 3.2, the value of $|R|$ is truncated to a maximum of 12 (the higher value used in X-11 being 4.5), which slighly reduces revisions and phase shift.*
+
+- At the end of section 3.4 (description of the local parameterisation approach), the sentence in italic was added to refer to a specific program available in the code:\
+"There is no function in `rjd3filters` to directly compute those moving averages but they can be easily computed using matrix computation formula and applied to the series using `rjd3filters`.
+*See for example the file `Simplified_example.R` available at <https://github.com/AQLT/joffstats2024>.*"
+
+
+- All the URL are now available (including the URL to the code).
+
+- DOI was added for all the article when they are available, when URL is used, the date of access was added, Dates and places of conferences are given for proceedings.

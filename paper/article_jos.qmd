@@ -562,8 +562,8 @@ In this paper we study monthly series with small bandwidth ($h=6$), and the vari
 
 - The parameter $\delta$ can be estimated by moving average from @eq-mmsym. 
 For example, for the LC method we can use the moving average $\boldsymbol \theta_2=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{2}$ to obtain a local estimate of the slope and for the QL method we can use $\boldsymbol \theta_3=\boldsymbol K\boldsymbol X(\transp{\boldsymbol X}\boldsymbol K\boldsymbol X)^{-1}\boldsymbol e_{3}$ to obtain a local estimate of the concavity. 
-The DAF method then simply allows us to calculate the associated asymmetric moving averages.
-To avoid unrealistic estimates of $|\delta/\sigma|=2/(|R|\sqrt{\pi})$ in real-time, with $R$ the I-C ratio defined in @sec-lppasymf, the value of $|R|$ is truncated to a maximum of 12 (the higher value used in X-11 being 4.5).
+The DAF method then simply allows us to calculate the associated asymmetric moving averages.\
+To avoid unrealistic estimates of $|\delta/\sigma|=2/(|R|\sqrt{\pi})$ in real-time, where $R$ is the I-C ratio defined in @sec-lppasymf, the value of $|R|$ is truncated to a maximum of 12 (the higher value used in X-11 being 4.5), which slighly reduces revisions and phase shift.\
 For the construction of moving averages, the trend can be modelled as being locally of degree 2 or 3 (this has no impact on the final estimate of concavity).
 In this paper, we have chosen to model a trend of degree 2: this slightly reduces the phase shift (see supplemental material) but slightly increases the revisions linked to the first estimate of the trend-cycle. 
 @Fig-mmpenteconcac shows the moving averages used.
@@ -598,6 +598,7 @@ knitr::include_graphics(c("img/filters_used/mm_penteconcavite_ex.pdf",
 ```
 
 There is no function in `rjd3filters` to directly compute those moving averages but they can be easily computed using matrix computation formula and applied to the series using `rjd3filters`.
+See for example the file `Simplified_example.R` available at <https://github.com/AQLT/joffstats2024>.
 
 # Comparison of different methods {#sec-comparison}
 

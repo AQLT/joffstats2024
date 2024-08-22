@@ -12,7 +12,13 @@
     "AQLThesis": {
       "Package": "AQLThesis",
       "Version": "0.1.2",
-      "Source": "unknown",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "AQLThesis",
+      "RemoteUsername": "AQLT",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "286e045debf0e4e4dedb782ece065788d2d980e5",
       "Requirements": [
         "MASS",
         "R",
@@ -22,11 +28,11 @@
         "rjd3filters",
         "zoo"
       ],
-      "Hash": "5f2ba56d030da1506e4e5772de918ee5"
+      "Hash": "8850c3acea838ff13a629e8c661f65cb"
     },
     "MASS": {
       "Package": "MASS",
-      "Version": "7.3-60.2",
+      "Version": "7.3-61",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -37,7 +43,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "2f342c46163b0b54d7b64d1f798e2c78"
+      "Hash": "0cafd6f0500e5deba33be22c46bf6055"
     },
     "Matrix": {
       "Package": "Matrix",
@@ -93,18 +99,18 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.12",
+      "Version": "1.0.13",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "methods",
         "utils"
       ],
-      "Hash": "5ea2700d21e038ace58269ecdbeb9ec0"
+      "Hash": "f27411eb6d9c3dada5edd444b8416675"
     },
     "RcppArmadillo": {
       "Package": "RcppArmadillo",
-      "Version": "0.12.8.2.1",
+      "Version": "14.0.0-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -114,7 +120,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "d5448fb24fb114c4da1275a37a571f37"
+      "Hash": "a711769be34214addf7805278b72d56b"
     },
     "TTR": {
       "Package": "TTR",
@@ -174,7 +180,7 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.7.0",
+      "Version": "0.8.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -192,7 +198,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "8644cc53f43828f19133548195d7e59e"
+      "Hash": "b299c6741ca9746fb227debcb0f9fb6c"
     },
     "cachem": {
       "Package": "cachem",
@@ -207,26 +213,26 @@
     },
     "checkmate": {
       "Package": "checkmate",
-      "Version": "2.3.1",
+      "Version": "2.3.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "R",
         "backports",
         "utils"
       ],
-      "Hash": "c01cab1cb0f9125211a6fc99d540e315"
+      "Hash": "0e14e01ce07e7c88fd25de6d4260d26b"
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.6.2",
+      "Version": "3.6.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "1216ac65ac55ec0058a6f75d7ca0fd52"
+      "Hash": "b21916dd77a27642b447374a5d30ecf3"
     },
     "clipr": {
       "Package": "clipr",
@@ -250,7 +256,7 @@
     },
     "colorspace": {
       "Package": "colorspace",
-      "Version": "2.1-0",
+      "Version": "2.1-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -260,7 +266,7 @@
         "methods",
         "stats"
       ],
-      "Hash": "f20c47fd52fae58b4e377c37bb8c335b"
+      "Hash": "d954cb1c57e8d8b756165d7ba18aa55a"
     },
     "cpp11": {
       "Package": "cpp11",
@@ -274,7 +280,7 @@
     },
     "crayon": {
       "Package": "crayon",
-      "Version": "1.5.2",
+      "Version": "1.5.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -282,7 +288,7 @@
         "methods",
         "utils"
       ],
-      "Hash": "e8a1e41acf02548751f45c718d55aa6a"
+      "Hash": "859d96e65ef198fd43e82b9628d593ef"
     },
     "curl": {
       "Package": "curl",
@@ -296,14 +302,14 @@
     },
     "digest": {
       "Package": "digest",
-      "Version": "0.6.35",
+      "Version": "0.6.37",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "698ece7ba5a4fa4559e3d537e7ec3d31"
+      "Hash": "33698c4b3127fc9f506654607fb73676"
     },
     "dplyr": {
       "Package": "dplyr",
@@ -330,14 +336,14 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.23",
+      "Version": "0.24.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "daf4a1246be12c1fa8c7705a0935c1a0"
+      "Hash": "a1066cbc05caee9a4bf6d90f194ff4da"
     },
     "fansi": {
       "Package": "fansi",
@@ -397,7 +403,7 @@
     },
     "forecast": {
       "Package": "forecast",
-      "Version": "8.22.0",
+      "Version": "8.23.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -417,9 +423,10 @@
         "timeDate",
         "tseries",
         "urca",
+        "withr",
         "zoo"
       ],
-      "Hash": "74a366d7d4aba6ad715beb9d408b4894"
+      "Hash": "7bcbf8c17ac848d9593bebc182b5195a"
     },
     "fracdiff": {
       "Package": "fracdiff",
@@ -444,7 +451,7 @@
     },
     "future": {
       "Package": "future",
-      "Version": "1.33.2",
+      "Version": "1.34.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -455,7 +462,7 @@
         "parallelly",
         "utils"
       ],
-      "Hash": "fd7b1d69d16d0d114e4fa82db68f184c"
+      "Hash": "475771e3edb711591476be387c9a8c2e"
     },
     "generics": {
       "Package": "generics",
@@ -590,14 +597,14 @@
     },
     "highr": {
       "Package": "highr",
-      "Version": "0.10",
+      "Version": "0.11",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "xfun"
       ],
-      "Hash": "06230136b2d2b9ba5805e1963fa6e890"
+      "Hash": "d65ba49117ca223614f71b60d85b8ab7"
     },
     "hms": {
       "Package": "hms",
@@ -687,7 +694,7 @@
     },
     "knitr": {
       "Package": "knitr",
-      "Version": "1.46",
+      "Version": "1.48",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -699,7 +706,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "6e008ab1d696a5283c79765fa7b56b47"
+      "Hash": "acf380f300c721da9fde7df115a5f86f"
     },
     "labeling": {
       "Package": "labeling",
@@ -835,7 +842,7 @@
     },
     "nlme": {
       "Package": "nlme",
-      "Version": "3.1-164",
+      "Version": "3.1-166",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -845,7 +852,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "a623a2239e642806158bc4dc3f51565d"
+      "Hash": "ccbb8846be320b627e6aa2b4616a2ded"
     },
     "nnet": {
       "Package": "nnet",
@@ -861,7 +868,7 @@
     },
     "parallelly": {
       "Package": "parallelly",
-      "Version": "1.37.1",
+      "Version": "1.38.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -869,7 +876,7 @@
         "tools",
         "utils"
       ],
-      "Hash": "5410df8d22bd36e616f2a2343dbb328c"
+      "Hash": "6e8b139c1904f5e9e14c69db64453bbe"
     },
     "patchwork": {
       "Package": "patchwork",
@@ -1061,7 +1068,7 @@
     },
     "rjd3filters": {
       "Package": "rjd3filters",
-      "Version": "2.1.1",
+      "Version": "2.1.1.9000",
       "Source": "GitHub",
       "Remotes": "github::rjdverse/rjd3toolkit",
       "RemoteType": "github",
@@ -1069,7 +1076,7 @@
       "RemoteRepo": "rjd3filters",
       "RemoteUsername": "rjdverse",
       "RemoteRef": "HEAD",
-      "RemoteSha": "7b2373f0d3aa8a512392b818a451a061f1bfb1ae",
+      "RemoteSha": "404bfed0a1805a05a34e062a1309caaea4cf2ec6",
       "Requirements": [
         "MASS",
         "R",
@@ -1079,19 +1086,19 @@
         "rjd3toolkit",
         "stats"
       ],
-      "Hash": "d9bffcdc72d8c99b929654bc1d11af4e"
+      "Hash": "3659ac4db45138ee7a2bbea9cb234347"
     },
     "rjd3highfreq": {
       "Package": "rjd3highfreq",
       "Version": "2.1.1",
       "Source": "GitHub",
-      "Remotes": "github::rjdverse/rjd3toolkit, github::rjdverse/rjd3sts",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "rjd3highfreq",
       "RemoteUsername": "rjdverse",
+      "RemoteRepo": "rjd3highfreq",
       "RemoteRef": "HEAD",
-      "RemoteSha": "8983590003a4f3b1757e0eab6a4cd37a054809a3",
+      "RemoteSha": "1d23e8b7177fd23ac2acda437ce27c9746274e62",
+      "RemoteHost": "api.github.com",
+      "Remotes": "github::rjdverse/rjd3toolkit, github::rjdverse/rjd3sts",
       "Requirements": [
         "R",
         "RProtoBuf",
@@ -1101,19 +1108,19 @@
         "rjd3sts",
         "rjd3toolkit"
       ],
-      "Hash": "2aa60565df03415bdc37300e636ffa3d"
+      "Hash": "b3efcb2a1d66fbc2c4a66ea1147a5c28"
     },
     "rjd3sts": {
       "Package": "rjd3sts",
-      "Version": "2.1.1",
+      "Version": "2.1.1.9000",
       "Source": "GitHub",
-      "Remotes": "github::rjdverse/rjd3toolkit",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "rjd3sts",
       "RemoteUsername": "rjdverse",
+      "RemoteRepo": "rjd3sts",
       "RemoteRef": "HEAD",
-      "RemoteSha": "d76df72f5f2686c0e87f9500756bec8f68cca5a8",
+      "RemoteSha": "a3cfd8037bba78245a2a405590b269b5f117955c",
+      "RemoteHost": "api.github.com",
+      "Remotes": "github::rjdverse/rjd3toolkit",
       "Requirements": [
         "R",
         "RProtoBuf",
@@ -1121,18 +1128,18 @@
         "rJava",
         "rjd3toolkit"
       ],
-      "Hash": "ed383e3701ee4de369356e686e68ea48"
+      "Hash": "d8328c9eeffa1d7a9000fbb991e72d7f"
     },
     "rjd3toolkit": {
       "Package": "rjd3toolkit",
-      "Version": "3.2.3",
+      "Version": "3.2.4.9000",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "rjd3toolkit",
       "RemoteUsername": "rjdverse",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "a65c58f8e034d85ca6ac14b1c0eca4c47a70b0a1",
+      "RemoteRepo": "rjd3toolkit",
+      "RemoteRef": "develop",
+      "RemoteSha": "1d60277dafc477069e3f548d3c76bf645075b08c",
       "Requirements": [
         "R",
         "RProtoBuf",
@@ -1140,30 +1147,30 @@
         "methods",
         "rJava"
       ],
-      "Hash": "9e0a9c780c212c31ecd1a41f65819153"
+      "Hash": "3c5b953b2093f6b88b3c2115d00a3aa9"
     },
     "rjd3tramoseats": {
       "Package": "rjd3tramoseats",
-      "Version": "3.2.2",
+      "Version": "3.2.3.9000",
       "Source": "GitHub",
-      "Remotes": "github::rjdverse/rjd3toolkit",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "rjd3tramoseats",
       "RemoteUsername": "rjdverse",
+      "RemoteRepo": "rjd3tramoseats",
       "RemoteRef": "HEAD",
-      "RemoteSha": "f21ffc5bc544213577be9190786d74e839b3a7a6",
+      "RemoteSha": "3524c53b745d408c079934d6f95207cd6f578758",
+      "RemoteHost": "api.github.com",
+      "Remotes": "github::rjdverse/rjd3toolkit",
       "Requirements": [
         "R",
         "RProtoBuf",
         "rJava",
         "rjd3toolkit"
       ],
-      "Hash": "fff65429f36249de92498e71f0ca76cc"
+      "Hash": "5e097f6e9cfeaf284795dbdef7eab69d"
     },
     "rjd3x11plus": {
       "Package": "rjd3x11plus",
-      "Version": "2.1.1",
+      "Version": "2.1.1.9000",
       "Source": "GitHub",
       "Remotes": "github::rjdverse/rjd3toolkit, github::rjdverse/rjd3filters",
       "RemoteType": "github",
@@ -1171,33 +1178,33 @@
       "RemoteRepo": "rjd3x11plus",
       "RemoteUsername": "rjdverse",
       "RemoteRef": "HEAD",
-      "RemoteSha": "eb8c9e0c731d320811afbcc1e83a46217c62feee",
+      "RemoteSha": "adb73b26d39db0becf20c20962a0450782097c50",
       "Requirements": [
         "R",
         "rJava",
         "rjd3filters",
         "rjd3toolkit"
       ],
-      "Hash": "6a5ae25c2a732f2531f4ca9c498bc659"
+      "Hash": "fd32535c15c9ed0e1618b6eacfc943b1"
     },
     "rjd3x13": {
       "Package": "rjd3x13",
-      "Version": "3.2.3",
+      "Version": "3.2.3.9000",
       "Source": "GitHub",
-      "Remotes": "github::rjdverse/rjd3toolkit",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "rjd3x13",
       "RemoteUsername": "rjdverse",
+      "RemoteRepo": "rjd3x13",
       "RemoteRef": "HEAD",
-      "RemoteSha": "c59cbb5c711db998c0811118f761d678933c4820",
+      "RemoteSha": "e0a52002f47d0f48bb07dd49b8a3dbebdb0b0542",
+      "RemoteHost": "api.github.com",
+      "Remotes": "github::rjdverse/rjd3toolkit",
       "Requirements": [
         "R",
         "RProtoBuf",
         "rJava",
         "rjd3toolkit"
       ],
-      "Hash": "18d1979024d256de1fb0b3706dc99b68"
+      "Hash": "738b5a1b8771fdbbca95a72f10a09f69"
     },
     "rlang": {
       "Package": "rlang",
@@ -1212,7 +1219,7 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.27",
+      "Version": "2.28",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1231,7 +1238,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "27f9502e1cdbfa195f94e03b0f517484"
+      "Hash": "062470668513dcda416927085ee9bdc7"
     },
     "rstudioapi": {
       "Package": "rstudioapi",
@@ -1420,17 +1427,17 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.51",
+      "Version": "0.52",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "xfun"
       ],
-      "Hash": "d44e2fcd2e4e076f0aac540208559d1d"
+      "Hash": "cfbad971a71f0e27cec22e544a08bc3b"
     },
     "tseries": {
       "Package": "tseries",
-      "Version": "0.10-55",
+      "Version": "0.10-57",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1443,7 +1450,7 @@
         "utils",
         "zoo"
       ],
-      "Hash": "8a3928cb53aca9921f0db707550dfa84"
+      "Hash": "36006aa919f9c70971159c11af1e6f3e"
     },
     "tzdb": {
       "Package": "tzdb",
@@ -1458,7 +1465,7 @@
     },
     "urca": {
       "Package": "urca",
-      "Version": "1.3-3",
+      "Version": "1.3-4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1468,7 +1475,7 @@
         "nlme",
         "stats"
       ],
-      "Hash": "efec213571f99114c63562e4c076ac25"
+      "Hash": "b664d22e4483f8299ce03d3146971e56"
     },
     "utf8": {
       "Package": "utf8",
@@ -1532,7 +1539,7 @@
     },
     "withr": {
       "Package": "withr",
-      "Version": "3.0.0",
+      "Version": "3.0.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1540,19 +1547,20 @@
         "grDevices",
         "graphics"
       ],
-      "Hash": "d31b6c62c10dcf11ec530ca6b0dd5d35"
+      "Hash": "07909200e8bbe90426fbfeb73e1e27aa"
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.44",
+      "Version": "0.47",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
+        "R",
         "grDevices",
         "stats",
         "tools"
       ],
-      "Hash": "317a0538d32f4a009658bcedb7923f4b"
+      "Hash": "36ab21660e2d095fef0d83f689e0477c"
     },
     "xml2": {
       "Package": "xml2",
@@ -1569,7 +1577,7 @@
     },
     "xts": {
       "Package": "xts",
-      "Version": "0.13.2",
+      "Version": "0.14.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1577,14 +1585,14 @@
         "methods",
         "zoo"
       ],
-      "Hash": "7a7e2b2f6ef5fa41fb766d2a885af39e"
+      "Hash": "288bc0fd02bb4e1489f37831d8803b2b"
     },
     "yaml": {
       "Package": "yaml",
-      "Version": "2.3.8",
+      "Version": "2.3.10",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "29240487a071f535f5e5d5a323b7afbd"
+      "Hash": "51dab85c6c98e50a18d7551e9d49f76c"
     },
     "zoo": {
       "Package": "zoo",

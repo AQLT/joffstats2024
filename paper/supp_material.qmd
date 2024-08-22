@@ -6,6 +6,7 @@ format:
     number-sections: true
     pdf-engine: pdflatex
     toc: false
+    keep-tex: true
     include-in-header: [preamble.tex]
     #include-before-body: template/preambule.tex
     geometry:
