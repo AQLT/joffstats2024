@@ -61,3 +61,9 @@ All R programs are gathered in each folder, each containing an explanatory `READ
 - `R_simul`: programs used to compare the filters on simulated monthly series;
 
 - `R_simul_quarter`: programs used to compare the filters on simulated quarterly series.
+
+
+# License
+
+ [CC BY-NC 4.0 <img src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" alt="Licence Creative Commons" style="display: inline-block; margin: 0"/>](https://creativecommons.org/licenses/by-nc/4.0/).
+
