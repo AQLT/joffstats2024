@@ -693,7 +693,7 @@ Even if it would improve the results in term of phase shift (see supplemental ma
 ## Comparison 
 
 
-@Fig-graphstpsimul represents box plots of the phase shift: the box represents the interquartile range, the central horizontal line the median the dot the outliers and the whisker the range of the data (if no outlier).
+@Fig-graphstpsimul represents box plots of the phase shift: the box represents the interquartile range, the central horizontal line represents the median, the dot represents the outliers and the whisker the range of the data (if no outlier).
 For simulated series with medium variability (when a symmetric filter of length 13 is relevant), with the linear constant (LC) method, 50% of the turning point are detected with a phase shift of at most 5 months whereas when the LC filter is parametrised locally, 50% of the turning point are detected with a phase shift of at most 4 months.
 For the direct asymmetric filter (DAF), 25% of the turning are detected with a phase shift of at least 7 months (compares to 5 for the LC method).
 
