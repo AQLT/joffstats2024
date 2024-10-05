@@ -115,7 +115,7 @@ $$
 with $\xi_t$ a stochastic process uncorrelated with $\varepsilon_t$.
 Even if some papers model $\xi_t$ and $\varepsilon_t$ separately [see for example @GrayThomson2002], a usual assumption, adopted in this paper, is to is to gather $\xi_t$ and $\varepsilon_t$.
 Thus, the trend-cycle $TC_t$ is considered as deterministic and modelled as a polynomial trend of degree $d$.
-The coefficients $(\beta_0,\dots,\beta_k)$ can be estimated by weighted least squares.
+The coefficients $(\beta_0,\dots,\beta_d)$ can be estimated by weighted least squares.
 The estimate $\hat \beta_0$ provides the trend-cycle estimate $\widehat{TC}_t$ and it can be shown that this equivalent to apply of moving average (@sec-nonparamreg).
 The goal of this paper is to present two new methods to separate the trend-cycle component from the noise component in real-time (i.e., when no future point is known), using moving averages build on local polynomial smoothing techniques.
 
@@ -227,7 +227,7 @@ $$
 
 ## Real-time estimation and asymmetric moving average {#sec-mmasym}
 
-For symmetric filters, the phase shift function is equal to zero (modulo $\pi$).
+For symmetric filters, the phase shift function is equal to 0 (modulo $\pi$).
 So there is no delay in detecting turning points.
 However, they cannot be used in the beginning and in the end of the time series because no past or future value can be used. 
 Thus, for real-time estimation, it is needed to build asymmetric moving averages that approximate the symmetric moving average.
@@ -381,7 +381,7 @@ Moreover, since $\transp{\boldsymbol X}\boldsymbol \theta=\boldsymbol e_{1}$ we 
 $$
 \sum_{j=-h}^{h}\theta_{j}=1,\quad\forall r\in\left\{1,2,\dots,d\right\}:\sum_{j=-h}^{h}j^{r}\theta_{j}=0.
 $$
-Hence, the filter $\boldsymbol w$ preserves deterministic polynomials of order $d$.
+Hence, the filter $\boldsymbol \theta$ preserves deterministic polynomials of order $d$.
 
 Regarding parameter selection, the general consensus is that the choice between different kernels is not crucial.
 See, for example, @cleveland1996smoothing or @Loader1999.
@@ -590,7 +590,7 @@ However, the real-time local estimates of $|\delta_1/\sigma|$ are noisy: the var
 #| fig-cap: "Comparison of the estimates of $|\\delta_1/\\sigma|$ with a local estimator and global estimator (with IC ratio) on a simulated series, the vertical lines being the simulated turning points."
 #| fig-subcap: 
 #|   - "Symmetric moving average used for $\\hat \\delta_1$."
-#|   - "Asymmetric moving average using two future points ($q=2$) used for $\\hat \\delta_1$."
+#|   - "Asymmetric moving average using two future points ($q=2$) for $\\hat \\delta_1$."
 #| layout-ncol: 1
 knitr::include_graphics(c("img/filters_used/mm_penteconcavite_ex.pdf",
                           "img/filters_used/mm_penteconcavite_ex2.pdf"))
