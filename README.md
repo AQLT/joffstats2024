@@ -1,27 +1,23 @@
 
 
-# DT-tvcoef
-
-[![Build](https://github.com/AQLT/dt-tvcoef/workflows/Dockerize/badge.svg)](https://hub.docker.com/repository/docker/aqlt/dt-tvcoef)
-[![Onyxia](https://img.shields.io/badge/Launch-Datalab-orange?logo=R)](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.pullPolicy=%C2%ABAlways%C2%BB&service.image.custom.version=%C2%ABaqlt%2Fdt-tvcoef%3Alatest%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2Faqlt%2Fdt-tvcoef%2Fmaster%2F.github%2Fsetup_onyxia.sh%C2%BB)
+# joffstats2024
 
 This repository contains the code and data used in the paper:
 
-**Quartier-la-Tente A.**, "Improving real-time trend estimates using local parametrisation of polynomial regression filters", Journal of Official Statistics, vol.XX, no.XX, 2024, pp.XX-XX.
-
+Quartier-la-Tente, A. (2024). Improving Real-Time Trend Estimates Using Local Parametrization of Polynomial Regression Filters. *Journal of Official Statistics, 40*(4), 685-715. <https://doi.org/10.1177/0282423X241283207>
 
 To cite this article:
 
 ```
 @article{jos2024AQLT,
-  author={Quartier{-la-}Tente, Alain},
-doi = {doi:10.2478/jos-2024-todo},
+author={Quartier{-la-}Tente, Alain},
+doi = {10.1177/0282423X241283207},
 title = {Improving real-time trend estimates using local parametrisation of polynomial regression filters},
 journal = {Journal of Official Statistics},
-number = {TODO},
-volume = {TODO},
+number = {4},
+volume = {40},
 year = {2024},
-pages = {TODO}
+pages = {685-715}
 }
 
 ```
