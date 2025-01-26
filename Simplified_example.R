@@ -3,6 +3,7 @@
 # remotes::install_github("rjdverse/rjd3x11plus")
 # remotes::install_github("rjdverse/rjd3filters")
 library(rjd3filters)
+library(rjd3x11plus)
 library(ggplot2)
 library(patchwork)
 library(zoo)
@@ -85,7 +86,7 @@ est_concav <- finite_filters(all_mm[[1]]$concav,
 
 henderson_f <- lp_filter(h=6)@sfilter
 lp_filter2 <- function(icr, method = "LC", h = 6, kernel = "Henderson"){
-  all_coef = lapply(as.numeruc(icr), function(ic){
+  all_coef = lapply(as.numeric(icr), function(ic){
     lp_filter(horizon = h,
               kernel = kernel,
               endpoints = method,
